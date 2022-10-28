@@ -1,0 +1,17 @@
+{
+    "names": {
+        "rmw_microxrcedds": {
+            "cmake-args": [
+                "-DRMW_UXRCE_MAX_NODES=1",
+                "-DRMW_UXRCE_MAX_PUBLISHERS=25",
+                "-DRMW_UXRCE_MAX_SUBSCRIPTIONS=25",
+                "-DRMW_UXRCE_MAX_SERVICES=25",
+                "-DRMW_UXRCE_MAX_CLIENTS=10",
+                "-DRMW_UXRCE_MAX_HISTORY=4",
+                "-DRMW_UXRCE_TRANSPORT=udp",
+                "-DRMW_UXRCE_DEFAULT_UDP_IP=192.168.1.155",
+                "-DRMW_UXRCE_DEFAULT_UDP_PORT=8888"
+            ]
+        }
+    }
+}

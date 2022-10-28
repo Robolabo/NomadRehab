@@ -1,0 +1,8 @@
+**/build
+**/Build
+**/Install
+**/Log
+**/Debug
+**/microROS/include
+**/microROS/firmware
+**/microROS/*.a
