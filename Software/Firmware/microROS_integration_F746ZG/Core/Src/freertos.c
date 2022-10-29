@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "microros_app.h"
+#include "nomad_sonar.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,10 +119,16 @@ void StartDefaultTask(void *argument)
   MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
+  uint8_t index = 0U;
+  float distance = 0.0;
   create_ros_task();
+
+  NOMAD_sonar_init();
   for(;;)
   {
-	HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+    distance = NOMAD_get_sonar_distance(index);
+    index = (index + 1)%16;
+    HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
     osDelay(500);
   }
   /* USER CODE END StartDefaultTask */

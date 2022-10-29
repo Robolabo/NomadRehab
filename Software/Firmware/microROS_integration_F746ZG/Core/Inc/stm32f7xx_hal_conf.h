@@ -146,7 +146,7 @@
   * @brief This is the HAL system configuration section
   */
 #define  VDD_VALUE                    3300U /*!< Value of VDD in mv */
-#define  TICK_INT_PRIORITY            ((uint32_t)15U) /*!< tick interrupt priority */
+#define  TICK_INT_PRIORITY            ((uint32_t)0U) /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
 #define  PREFETCH_ENABLE              0U
 #define  ART_ACCELERATOR_ENABLE        0U /* To enable instruction cache and prefetch */
@@ -185,7 +185,7 @@
 #define  USE_HAL_SPDIFRX_REGISTER_CALLBACKS     0U /* SPDIFRX register callback disabled   */
 #define  USE_HAL_SMBUS_REGISTER_CALLBACKS       0U /* SMBUS register callback disabled     */
 #define  USE_HAL_SPI_REGISTER_CALLBACKS         0U /* SPI register callback disabled       */
-#define  USE_HAL_TIM_REGISTER_CALLBACKS         0U /* TIM register callback disabled       */
+#define  USE_HAL_TIM_REGISTER_CALLBACKS         1U /* TIM register callback enabled       */
 #define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
 #define  USE_HAL_USART_REGISTER_CALLBACKS       0U /* USART register callback disabled     */
 #define  USE_HAL_WWDG_REGISTER_CALLBACKS        0U /* WWDG register callback disabled      */
