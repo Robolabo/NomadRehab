@@ -25,8 +25,20 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "rcl/rcl.h"
+#include "rclc/rclc.h"
+#include "rclc/executor.h"
+#include "rclc/node.h"
+#include "rclc/publisher.h"
+#include "rclc/subscription.h"
+#include "rmw_microxrcedds_c/config.h"
+#include "ucdr/microcdr.h"
+#include "uxr/client/client.h"
+#include "rmw_microros/rmw_microros.h"
+
+
 #include "microros_app.h"
-#include "nomad_sonar.h"
+#include "uros_sonar.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,13 +64,28 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 1024 * 4,
+  .stack_size = 1024U,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
+
+void init_uros() {
+
+  // Launch app thread when IP configured
+  rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
+  freeRTOS_allocator.allocate = __freertos_allocate;
+  freeRTOS_allocator.deallocate = __freertos_deallocate;
+  freeRTOS_allocator.reallocate = __freertos_reallocate;
+  freeRTOS_allocator.zero_allocate = __freertos_zero_allocate;
+
+  if (!rcutils_set_default_allocator(&freeRTOS_allocator))
+  {
+    while (1);
+  }
+}
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -117,17 +144,14 @@ void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
   MX_LWIP_Init();
+  init_uros();
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  uint8_t index = 0U;
-  float distance = 0.0;
-  create_ros_task();
+ // create_ros_task();
+  UROS_sonar_create_app();
 
-  NOMAD_sonar_init();
   for(;;)
   {
-    distance = NOMAD_get_sonar_distance(index);
-    index = (index + 1)%16;
     HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
     osDelay(500);
   }

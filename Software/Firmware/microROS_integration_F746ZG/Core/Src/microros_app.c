@@ -49,45 +49,18 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
 
 
-void init_uros() {
 
-	/*
-	rmw_uros_set_custom_transport(
-	true,
-	(void *) &huart3,
-	transport_serial_open,
-	transport_serial_close,
-	transport_serial_write,
-	transport_serial_read);
-*/
-
-	  // Launch app thread when IP configured
-	  rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
-	  freeRTOS_allocator.allocate = __freertos_allocate;
-	  freeRTOS_allocator.deallocate = __freertos_deallocate;
-	  freeRTOS_allocator.reallocate = __freertos_reallocate;
-	  freeRTOS_allocator.zero_allocate = __freertos_zero_allocate;
-
-	  if (!rcutils_set_default_allocator(&freeRTOS_allocator))
-	  {
-	    while (1);
-	  }
-}
-rclc_support_t support;
+rclc_support_t* support;
 rcl_node_t node;
-void main_ros_app() {
+void main_ros_app(void* params) {
 
-	init_uros();
 
+    support = (rclc_support_t*)(params);
     rcl_allocator_t allocator = rcl_get_default_allocator();
-
-    // create init_options
-
-    RCCHECK(rclc_support_init(&support, 0, NULL, &allocator));
 
     // create node
 
-    RCCHECK(rclc_node_init_default(&node, "add_twoints_server_rclc", "", &support));
+    RCCHECK(rclc_node_init_default(&node, "add_twoints_server_rclc", "", support));
 
 
 	rcl_ret_t ret = 0;
@@ -108,11 +81,11 @@ void main_ros_app() {
 
 
 	/* Create timer */
-	ret = rclc_timer_init_default(&pub_timer, &support, RCL_MS_TO_NS(1), timer_callback);
+	ret = rclc_timer_init_default(&pub_timer, support, RCL_MS_TO_NS(1), timer_callback);
 
 	rclc_executor_t executor;
 
-	ret = rclc_executor_init(&executor, &support.context, 3, &allocator);
+	ret = rclc_executor_init(&executor, &(support->context), 3, &allocator);
 
 	ret = rclc_executor_add_subscription(
 			&executor,
@@ -126,15 +99,16 @@ void main_ros_app() {
 
 	while(1){
 		rclc_executor_spin_period(&executor, RCL_MS_TO_NS(10));
+		vTaskDelay(10);
 	}
 }
 
-void create_ros_task() {
+void create_ros_task(rclc_support_t* support) {
 	xTaskCreate(
 			main_ros_app,
 			ROS_TASK_NAME,
 			ROS_TASK_STACK,
-			NULL,
+			(void*)(support),
 			ROS_TASK_PRIO,
 			NULL);
 }
