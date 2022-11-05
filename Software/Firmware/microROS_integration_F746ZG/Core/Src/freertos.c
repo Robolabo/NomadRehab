@@ -64,7 +64,7 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 1024*4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
@@ -149,10 +149,9 @@ void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
   MX_LWIP_Init();
-  init_uros();
-
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
+  init_uros();
   create_ros_task(&support);
   UROS_sonar_create_app(&support);
 

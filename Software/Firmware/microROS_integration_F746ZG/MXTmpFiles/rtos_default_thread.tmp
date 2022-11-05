@@ -1,0 +1,21 @@
+
+#n#n
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+#t/* init code for LWIP */
+#tMX_LWIP_Init();#n#t/* USER CODE BEGIN StartDefaultTask */
+#t/* Infinite loop */
+#tfor(;;)
+#t{
+#t#tosDelay(1);
+#t}
+#t/* USER CODE END StartDefaultTask */
+}
+#n

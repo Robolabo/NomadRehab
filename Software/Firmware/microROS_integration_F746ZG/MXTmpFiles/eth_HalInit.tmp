@@ -1,0 +1,22 @@
+
+#t uint8_t MACAddr[6] ;
+#theth.Instance = ETH;
+#tMACAddr[0] = 0x00;
+#tMACAddr[1] = 0x80;
+#tMACAddr[2] = 0xE1;
+#tMACAddr[3] = 0x00;
+#tMACAddr[4] = 0x00;
+#tMACAddr[5] = 0x00;
+#theth.Init.MACAddr = &MACAddr[0];
+#theth.Init.MediaInterface = HAL_ETH_RMII_MODE;
+#theth.Init.TxDesc = DMATxDscrTab;
+#theth.Init.RxDesc = DMARxDscrTab;
+#theth.Init.RxBuffLen = 1536;
+#n
+#t/* USER CODE BEGIN MACADDRESS */
+#t#t
+#t/* USER CODE END MACADDRESS */
+#n
+#thal_eth_init_status = HAL_ETH_Init(&heth);
+#n#tmemset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));#n#tTxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;#n#tTxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;#n#tTxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
+#n
