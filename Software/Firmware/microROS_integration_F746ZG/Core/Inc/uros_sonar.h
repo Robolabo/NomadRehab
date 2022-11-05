@@ -43,14 +43,14 @@
 /* Task parameters */
 
 #define UROS_SONAR_TASK_NAME        "UROS_sonar_tsk"
-#define UROS_SONAR_TASK_STACK       3000U
-#define UROS_SONAR_TASK_PRIO        (tskIDLE_PRIORITY) + 1U
+#define UROS_SONAR_TASK_STACK       1024U
+#define UROS_SONAR_TASK_PRIO        (tskIDLE_PRIORITY) + 3U
 
 
 /* Application parameters */
 
-#define UROS_SONAR_NODE_NAME        "sonar_node"
-#define UROS_SONAR_NAMESPACE        "sonar"
+#define UROS_SONAR_NODE_NAME        "uros_sonar_node"
+#define UROS_SONAR_NAMESPACE        ""
 #define UROS_SONAR_ENABLE_PERIODIC  1U
 #define UROS_SONAR_PERIOD_MS        50U
 #define UROS_SONAR_TOPIC_NAME       "distance"

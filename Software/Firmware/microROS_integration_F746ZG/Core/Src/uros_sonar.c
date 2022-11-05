@@ -53,17 +53,28 @@ void UROS_periodic_sonar_callback(rcl_timer_t * timer, int64_t last_call_time) {
   }
 }
 
-static void UROS_sonar_app() {
-  rcl_node_t node;
-  rclc_support_t support;
-  rclc_executor_t executor;
-  rcl_allocator_t allocators = rcl_get_default_allocator();
+
+
+static rcl_node_t node;
+static rclc_support_t* support;
+static rclc_executor_t executor;
+static rcl_allocator_t allocators;
+
+
+static void UROS_sonar_app(void* param) {
+  while (1) {
+    rclc_executor_spin_some(&executor, RCL_MS_TO_NS(UROS_SONAR_EXEC_PERIOD_MS));
+    vTaskDelay(UROS_SONAR_EXEC_PERIOD_MS);
+  }
+}
+
+void UROS_sonar_init(rclc_support_t* uros_support) {
+  support = uros_support;
+  allocators = rcl_get_default_allocator();
 
   NOMAD_sonar_init();
-
-  rclc_support_init(&support, 0, NULL, &allocators);
-  rclc_node_init_default(&node, UROS_SONAR_NODE_NAME, UROS_SONAR_NAMESPACE, &support);
-  rclc_executor_init(&executor, &support.context, UROS_SONAR_MAX_HANDLES, &allocators);
+  rclc_node_init_default(&node, UROS_SONAR_NODE_NAME, UROS_SONAR_NAMESPACE, support);
+  rclc_executor_init(&executor, &(support->context), UROS_SONAR_MAX_HANDLES, &allocators);
 
 #if defined(UROS_SONAR_ENABLE_PERIODIC) && ((UROS_SONAR_ENABLE_PERIODIC) == 1)
   rclc_publisher_init_default(
@@ -74,7 +85,7 @@ static void UROS_sonar_app() {
 
   rclc_timer_init_default(
       &UROS_sonar_timer,
-      &support,
+      support,
       RCL_MS_TO_NS(UROS_SONAR_PERIOD_MS),
       UROS_periodic_sonar_callback);
 
@@ -93,15 +104,12 @@ static void UROS_sonar_app() {
       (void*)(&UROS_sonar_request),
       (void*)(&UROS_sonar_response),
       UROS_sonar_service_callback);
-
-  while (1) {
-    rclc_executor_spin_some(&executor, RCL_MS_TO_NS(UROS_SONAR_EXEC_PERIOD_MS));
-    vTaskDelay(UROS_SONAR_EXEC_PERIOD_MS);
-  }
 }
 
 
-void UROS_sonar_create_app() {
+void UROS_sonar_create_app(rclc_support_t* uros_support) {
+
+  UROS_sonar_init(uros_support);
   xTaskCreate(
       UROS_sonar_app,
       UROS_SONAR_TASK_NAME,

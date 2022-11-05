@@ -99,18 +99,18 @@ static void NOMAD_timer_init() {
 
   if (HAL_TIM_Base_Init(&htim_sonar) != HAL_OK)
   {
-    Error_Handler();
+    while(1);
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
   if (HAL_TIM_ConfigClockSource(&htim_sonar, &sClockSourceConfig) != HAL_OK)
   {
-    Error_Handler();
+    while(1);
   }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim_sonar, &sMasterConfig) != HAL_OK)
   {
-    Error_Handler();
+    while(1);
   }
 
   HAL_NVIC_SetPriority(SN_TIMER_IRQn, 5, 0);

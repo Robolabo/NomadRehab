@@ -52,63 +52,67 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
 rclc_support_t* support;
 rcl_node_t node;
+rcl_allocator_t allocator;
+rclc_executor_t executor;
+
+void main_ros_init(rclc_support_t* uros_support) {
+  support = (rclc_support_t*)(uros_support);
+  allocator = rcl_get_default_allocator();
+
+  // create node
+
+  RCCHECK(rclc_node_init_default(&node, "add_twoints_server_rclc", "", support));
+
+
+  rcl_ret_t ret = 0;
+  /* Create publisher */
+  ret = rclc_publisher_init_default(
+      &telemetry_pub,
+      &node,
+      ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_telemetry, msg, Telemetry),
+      TELEMETRY_TOPIC);
+
+  /* Create subscriber */
+
+  ret = rclc_subscription_init_default(
+      &led_enable_sub,
+      &node,
+      ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool),
+      LED_TOPIC);
+
+
+  /* Create timer */
+  ret = rclc_timer_init_default(&pub_timer, support, RCL_MS_TO_NS(1), timer_callback);
+
+  ret = rclc_executor_init(&executor, &(support->context), 3, &allocator);
+
+  ret = rclc_executor_add_subscription(
+      &executor,
+      &led_enable_sub,
+      &inconming_led,
+      led_subscription_callback,
+      ON_NEW_DATA);
+
+  ret = rclc_executor_add_timer(&executor, &pub_timer);
+}
+
+
+
 void main_ros_app(void* params) {
-
-
-    support = (rclc_support_t*)(params);
-    rcl_allocator_t allocator = rcl_get_default_allocator();
-
-    // create node
-
-    RCCHECK(rclc_node_init_default(&node, "add_twoints_server_rclc", "", support));
-
-
-	rcl_ret_t ret = 0;
-	/* Create publisher */
-	ret = rclc_publisher_init_default(
-			&telemetry_pub,
-			&node,
-			ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_telemetry, msg, Telemetry),
-			TELEMETRY_TOPIC);
-
-	/* Create subscriber */
-
-	ret = rclc_subscription_init_default(
-			&led_enable_sub,
-			&node,
-			ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Bool),
-			LED_TOPIC);
-
-
-	/* Create timer */
-	ret = rclc_timer_init_default(&pub_timer, support, RCL_MS_TO_NS(1), timer_callback);
-
-	rclc_executor_t executor;
-
-	ret = rclc_executor_init(&executor, &(support->context), 3, &allocator);
-
-	ret = rclc_executor_add_subscription(
-			&executor,
-			&led_enable_sub,
-			&inconming_led,
-			led_subscription_callback,
-			ON_NEW_DATA);
-
-	ret = rclc_executor_add_timer(&executor, &pub_timer);
-
-
 	while(1){
 		rclc_executor_spin_period(&executor, RCL_MS_TO_NS(10));
 		vTaskDelay(10);
 	}
 }
 
-void create_ros_task(rclc_support_t* support) {
+void create_ros_task(rclc_support_t* uros_support) {
+
+  main_ros_init(uros_support);
 	xTaskCreate(
 			main_ros_app,
 			ROS_TASK_NAME,
 			ROS_TASK_STACK,
-			(void*)(support),
+			NULL,
 			ROS_TASK_PRIO,
 			NULL);
 }

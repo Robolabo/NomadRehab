@@ -44,7 +44,7 @@
 
 /************** Defines **************/
 #define ROS_TASK_NAME		"uROS_task"
-#define ROS_TASK_STACK		(configMINIMAL_STACK_SIZE) + 1024U
+#define ROS_TASK_STACK	1024U
 #define ROS_TASK_PRIO		(tskIDLE_PRIORITY) + 3U
 
 

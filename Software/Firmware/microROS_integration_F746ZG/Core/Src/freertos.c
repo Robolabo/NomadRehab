@@ -64,27 +64,32 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 1024U,
+  .stack_size = 1024*4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
+static rclc_support_t support;
+static rcl_allocator_t allocators;
 
 void init_uros() {
 
   // Launch app thread when IP configured
-  rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
-  freeRTOS_allocator.allocate = __freertos_allocate;
-  freeRTOS_allocator.deallocate = __freertos_deallocate;
-  freeRTOS_allocator.reallocate = __freertos_reallocate;
-  freeRTOS_allocator.zero_allocate = __freertos_zero_allocate;
+  allocators = rcutils_get_zero_initialized_allocator();
+  allocators.allocate = __freertos_allocate;
+  allocators.deallocate = __freertos_deallocate;
+  allocators.reallocate = __freertos_reallocate;
+  allocators.zero_allocate = __freertos_zero_allocate;
 
-  if (!rcutils_set_default_allocator(&freeRTOS_allocator))
+  if (!rcutils_set_default_allocator(&allocators))
   {
     while (1);
   }
+
+  rclc_support_init(&support, 0, NULL, &allocators);
+
 }
 /* USER CODE END FunctionPrototypes */
 
@@ -145,14 +150,15 @@ void StartDefaultTask(void *argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   init_uros();
+
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
- // create_ros_task();
-  UROS_sonar_create_app();
+  create_ros_task(&support);
+  UROS_sonar_create_app(&support);
 
   for(;;)
   {
-    HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+   // HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
     osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
