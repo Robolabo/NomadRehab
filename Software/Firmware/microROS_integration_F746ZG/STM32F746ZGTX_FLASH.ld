@@ -44,11 +44,11 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 320K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
-  Memory_B1(xrw)   : ORIGIN = 0x2004C000, LENGTH = 0xA0
-  Memory_B2(xrw)   : ORIGIN = 0x2004C0A0, LENGTH = 0xA0
-  Memory_B3(xrw)   : ORIGIN = 0x2004C200, LENGTH = 32K
+  RAM    (xrw)     : ORIGIN = 0x20000000, LENGTH = 320K
+  FLASH    (rx)    : ORIGIN = 0x8000000,  LENGTH = 1024K
+  Memory_B1(xrw)   : ORIGIN = 0x20047EC0, LENGTH = 0xA0
+  Memory_B2(xrw)   : ORIGIN = 0x20047F60, LENGTH = 0xA0
+  Memory_B3(xrw)   : ORIGIN = 0x20048000, LENGTH = 32K
 }
 
 /* Sections */

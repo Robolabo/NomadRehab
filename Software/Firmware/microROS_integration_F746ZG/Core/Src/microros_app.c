@@ -82,7 +82,7 @@ void main_ros_init(rclc_support_t* uros_support) {
 
 
   /* Create timer */
-  ret = rclc_timer_init_default(&pub_timer, support, RCL_MS_TO_NS(1), timer_callback);
+  ret = rclc_timer_init_default(&pub_timer, support, RCL_US_TO_NS(500), timer_callback);
 
   ret = rclc_executor_init(&executor, &(support->context), 3, &allocator);
 
@@ -100,8 +100,9 @@ void main_ros_init(rclc_support_t* uros_support) {
 
 void main_ros_app(void* params) {
 	while(1){
-		rclc_executor_spin_period(&executor, RCL_MS_TO_NS(10));
-		vTaskDelay(10);
+	  rclc_executor_spin(&executor);
+		//rclc_executor_spin_period(&executor, RCL_MS_TO_NS(1));
+		//vTaskDelay(1);
 	}
 }
 

@@ -56,7 +56,7 @@
 #define UROS_SONAR_TOPIC_NAME       "distance"
 #define UROS_SONAR_SERVICE_NAME     "get_distance"
 #define UROS_SONAR_MAX_HANDLES      2U
-#define UROS_SONAR_EXEC_PERIOD_MS   10U
+#define UROS_SONAR_EXEC_PERIOD_MS   1U
 
 
 void UROS_sonar_create_app();

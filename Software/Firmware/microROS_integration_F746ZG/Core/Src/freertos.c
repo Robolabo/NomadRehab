@@ -152,7 +152,7 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   init_uros();
-  create_ros_task(&support);
+  //create_ros_task(&support);
   UROS_sonar_create_app(&support);
 
   for(;;)

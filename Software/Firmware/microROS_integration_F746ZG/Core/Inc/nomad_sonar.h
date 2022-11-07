@@ -9,10 +9,15 @@
 #define INC_NOMAD_SONAR_H_
 
 #include "stm32f7xx_hal.h"
-
+#include "FreeRTOS.h"
+#include "semphr.h"
+#include "queue.h"
 
 /* Configuration */
-#define STABILIZATION_TIME_MS   10U
+#define SN_STABILIZATION_TIME_MS   10U
+#define SN_ECHO_TIMEOUT_US         31470U  /* 10.7 m at 340 m/s */
+#define SN_MEASURE_TIMEOUT         ((SN_ECHO_TIMEOUT_US)/1000U) + (STABILIZATION_TIME_MS)
+#define SN_ECHO_TIMEOUT_MS         ((SN_ECHO_TIMEOUT_US)/1000U) + 1U
 
 /* 6500 Ranging Module control pins */
 #define ECHO_Pin 	      GPIO_PIN_2
@@ -53,8 +58,10 @@
 #define SN_TIMER		    TIM13
 #define SN_TIMER_IRQn	  TIM8_UP_TIM13_IRQn
 #define SN_TIMER_EN_Clk	__HAL_RCC_TIM13_CLK_ENABLE
-#define SN_TIMER_FREQ   72000000UL
+#define SN_TIMER_FREQ   108000000UL
 
+
+#define SN_US_TO_METERS(US)  (float)((US) * 340.0)/(2.0*1000000.0)
 
 typedef enum {
   SONAR_INDEX_1  = 0U,
@@ -74,6 +81,7 @@ typedef enum {
   SONAR_INDEX_15 = 14U,
   SONAR_INDEX_16 = 15U,
 }  SONAR_index_t;
+
 #define IS_CORRECT_SONAR_INDEX(index) (((index) >= SONAR_INDEX_1) && ((index) <= SONAR_INDEX_16))
 
 

@@ -118,6 +118,8 @@
 #define CHECKSUM_CHECK_ICMP6 0
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
+extern uint8_t ram_custom_heap[];
+#define LWIP_RAM_HEAP_POINTER ram_custom_heap
 
 // #define LWIP_SOCKET                     1
 #define LWIP_DNS_API_DECLARE_STRUCTS    1
