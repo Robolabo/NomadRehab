@@ -41,6 +41,13 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 	outcomming_telemetry.temperature += 0.5;
 	outcomming_telemetry.humidity += 0.5;
 
+	if (outcomming_telemetry.temperature > 1000.0) {
+	  outcomming_telemetry.temperature = 0;
+	}
+  if (outcomming_telemetry.humidity > 1000.0) {
+    outcomming_telemetry.temperature = 0;
+  }
+
 	if (timer != NULL) {
 		rcl_publish(&telemetry_pub, &outcomming_telemetry, NULL);
 	}
@@ -82,7 +89,7 @@ void main_ros_init(rclc_support_t* uros_support) {
 
 
   /* Create timer */
-  ret = rclc_timer_init_default(&pub_timer, support, RCL_US_TO_NS(500), timer_callback);
+  ret = rclc_timer_init_default(&pub_timer, support, RCL_MS_TO_NS(1), timer_callback);
 
   ret = rclc_executor_init(&executor, &(support->context), 3, &allocator);
 
@@ -100,9 +107,9 @@ void main_ros_init(rclc_support_t* uros_support) {
 
 void main_ros_app(void* params) {
 	while(1){
-	  rclc_executor_spin(&executor);
-		//rclc_executor_spin_period(&executor, RCL_MS_TO_NS(1));
-		//vTaskDelay(1);
+
+		rclc_executor_spin_some(&executor, RCL_MS_TO_NS(1));
+		vTaskDelay(1);
 	}
 }
 

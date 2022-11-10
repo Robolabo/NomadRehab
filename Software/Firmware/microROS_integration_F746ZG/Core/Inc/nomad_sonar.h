@@ -15,7 +15,7 @@
 
 /* Configuration */
 #define SN_STABILIZATION_TIME_MS   10U
-#define SN_ECHO_TIMEOUT_US         31470U  /* 10.7 m at 340 m/s */
+#define SN_ECHO_TIMEOUT_US         0xFFFFU  /* 10.7 m at 340 m/s */
 #define SN_MEASURE_TIMEOUT         ((SN_ECHO_TIMEOUT_US)/1000U) + (STABILIZATION_TIME_MS)
 #define SN_ECHO_TIMEOUT_MS         ((SN_ECHO_TIMEOUT_US)/1000U) + 1U
 

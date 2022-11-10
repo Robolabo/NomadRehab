@@ -44,7 +44,7 @@
 
 #define UROS_SONAR_TASK_NAME        "UROS_sonar_tsk"
 #define UROS_SONAR_TASK_STACK       1024U
-#define UROS_SONAR_TASK_PRIO        (tskIDLE_PRIORITY) + 3U
+#define UROS_SONAR_TASK_PRIO        (tskIDLE_PRIORITY) + 1U
 
 
 /* Application parameters */

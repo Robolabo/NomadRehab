@@ -21,11 +21,9 @@ static void NOMAD_period_elapsed_callback(TIM_HandleTypeDef *htim) {
   }
 
   /* Check if the measure has been triggered */
-  if (uxQueueMessagesWaitingFromISR(irq_semaphore) == 0) {
-    HAL_TIM_Base_Stop(&htim_sonar);
-    xSemaphoreGiveFromISR(irq_semaphore, NULL);
-    measureFinished = 1U;
-  }
+  HAL_TIM_Base_Stop(&htim_sonar);
+  xSemaphoreGiveFromISR(irq_semaphore, NULL);
+  measureFinished = 1U;
 }
 
 
@@ -188,12 +186,11 @@ void NOMAD_echo_callback() {
   if(__HAL_GPIO_EXTI_GET_IT(ECHO_Pin) != RESET)
   {
     /* Check if the measure has been triggered */
-    if (uxQueueMessagesWaitingFromISR(irq_semaphore) == 0) {
-      __HAL_GPIO_EXTI_CLEAR_IT(ECHO_Pin);
-      HAL_TIM_Base_Stop(&htim_sonar);
-      xSemaphoreGiveFromISR(irq_semaphore, NULL);
-      measureFinished = 1U;
-    }
+    __HAL_GPIO_EXTI_CLEAR_IT(ECHO_Pin);
+    HAL_TIM_Base_Stop(&htim_sonar);
+    xSemaphoreGiveFromISR(irq_semaphore, NULL);
+    measureFinished = 1U;
+
   }
 }
 
