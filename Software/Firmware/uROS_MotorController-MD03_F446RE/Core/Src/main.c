@@ -19,9 +19,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
+#include "DM03.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -45,97 +47,61 @@
 
 /* USER CODE BEGIN PV */
 
-#define MD03_TEMPERATURE_RATIO  1.42
-
-uint8_t MD03_isInitializaed = 0U;
 
 typedef enum {
-  MD03_STATUS_OK = 0,
-  MD03_STATUS_ERROR = -1
-}MD03_status_t;
+  PWM_CHANNEL_1 = TIM_CHANNEL_1,
+  PWM_CHANNEL_2 = TIM_CHANNEL_2,
+  PWM_CHANNEL_3 = TIM_CHANNEL_3,
+}PWM_Channel_t;
 
 typedef enum {
-  MD03_ADDR_COMMAND       = 0x00,
-  MD03_ADDR_STATUS        = 0x01,
-  MD03_ADDR_SPEED         = 0x02,
-  MD03_ADDR_ACCELERATION  = 0x03,
-  MD03_ADDR_TEMPERATURE   = 0x04,
-  MD03_ADDR_CURRENT       = 0x05,
-  /* 0x06 unused */
-  MD03_ADDR_VERSION       = 0x07,
-}MD03_register_t;
+  PWM_DIR_FORWARD = 0U,
+  PWM_DIR_BACKWARD = 1
+}PWM_Direction_t;
+
+#define DIR1    PWM_DIR_1_GPIO_Port, PWM_DIR_1_Pin
+#define DIR2    PWM_DIR_2_GPIO_Port, PWM_DIR_2_Pin
+#define DIR3    PWM_DIR_3_GPIO_Port, PWM_DIR_3_Pin
 
 
-MD03_status_t MD03_Init_port() {
-  return MD03_STATUS_OK;
+void PWM_init() {
+  HAL_TIM_Base_Start(&htim1);
 }
 
-MD03_status_t MD03_RegisterRead_port(uint8_t dev_address, uint8_t reg_address, uint8_t* data) {
-  MD03_status_t status = MD03_STATUS_OK;
+void PWM_start(PWM_Channel_t channel) {
+  HAL_TIM_PWM_Start(&htim1, channel);
+}
 
-  if (HAL_I2C_Mem_Read(&hi2c1, dev_address, reg_address, 1U, data, 1U, 100U) != HAL_OK) {
-    status = MD03_STATUS_ERROR;
+
+void PWM_setDuty(PWM_Channel_t channel, float duty) {
+
+  if (duty >= 100) {
+    duty = 100;
+  } else if (duty <= 0) {
+    duty = 0.0;
   }
-  return status;
+
+  uint16_t autoreload = __HAL_TIM_GET_AUTORELOAD(&htim1);
+  float aux = (duty*(float)(autoreload))/100.0;
+  __HAL_TIM_SET_COMPARE(&htim1, channel, (uint32_t)(aux));
 }
 
-MD03_status_t MD03_RegisterWrite_port(uint8_t dev_address, uint8_t reg_address, uint8_t data) {
-  MD03_status_t status = MD03_STATUS_OK;
-  if (HAL_I2C_Mem_Write(&hi2c1, dev_address, reg_address, 1U, &data, 1U, 100U) != HAL_OK) {
-    status = MD03_STATUS_ERROR;
+void PWM_set_direction(PWM_Channel_t channel, PWM_Direction_t dir) {
+  switch (channel) {
+  case PWM_CHANNEL_1:
+    HAL_GPIO_WritePin(DIR1, dir);
+    break;
+  case PWM_CHANNEL_2:
+    HAL_GPIO_WritePin(DIR2, dir);
+    break;
+  case PWM_CHANNEL_3:
+    HAL_GPIO_WritePin(DIR3, dir);
+    break;
+  default:
+    break;
   }
-  return status;
 }
 
-
-MD03_status_t MD03_init() {
-  MD03_status_t status = MD03_STATUS_ERROR;
-  if (!MD03_isInitializaed) {
-    if (MD03_Init_port() == MD03_STATUS_OK) {
-      MD03_isInitializaed = 1U;
-      status = MD03_STATUS_OK;
-    }
-  }
-  return status;
-}
-
-MD03_status_t MD03_get_register(uint8_t dev_address, uint8_t reg_address, uint8_t* data) {
-  MD03_status_t status = MD03_STATUS_ERROR;
-  if (MD03_isInitializaed) {
-    if (MD03_RegisterRead_port(dev_address, reg_address, data) == MD03_STATUS_OK) {
-      status = MD03_STATUS_OK;
-    }
-  }
-  return status;
-}
-
-MD03_status_t MD03_set_register(uint8_t dev_address, uint8_t reg_address, uint8_t data) {
-  MD03_status_t status = MD03_STATUS_ERROR;
-  if (MD03_isInitializaed) {
-    if (MD03_RegisterWrite_port(dev_address, reg_address, data) == MD03_STATUS_OK) {
-      status = MD03_STATUS_OK;
-    }
-  }
-  return status;
-}
-
-
-uint8_t MD03_get_version(uint8_t address) {
-  uint8_t buffer;
-  if (MD03_get_register(address, MD03_ADDR_VERSION, &buffer) != MD03_STATUS_OK) {
-    buffer = 0xFFU;
-  }
-  return buffer;
-}
-
-float MD03_get_temp(uint8_t address) {
-  uint8_t buffer;
-
-  if (MD03_get_register(address, MD03_ADDR_TEMPERATURE, &buffer) != MD03_STATUS_OK) {
-    buffer = 0x00U;
-  }
-  return (float)(buffer*MD03_TEMPERATURE_RATIO);
-}
 
 
 /* USER CODE END PV */
@@ -183,33 +149,59 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t version;
-  float temp;
-  uint8_t address, ret;
-  MD03_isInitializaed = 1;
+  float duty = 50;
+  PWM_Channel_t channel = PWM_CHANNEL_1;
+  PWM_Direction_t dir = PWM_DIR_FORWARD;
+  PWM_init();
+  PWM_start(PWM_CHANNEL_1);
+  PWM_start(PWM_CHANNEL_2);
+  PWM_start(PWM_CHANNEL_3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
-
-
-    version = MD03_get_version(ADDRESS_M1);
-    temp = MD03_get_temp(ADDRESS_M1);
-    version = MD03_get_version(ADDRESS_M2);
-    temp = MD03_get_temp(ADDRESS_M2);
-    version = MD03_get_version(ADDRESS_M3);
-    temp = MD03_get_temp(ADDRESS_M3);
-
-
+    PWM_setDuty(channel, duty);
+    PWM_set_direction(channel, dir);
     /* USER CODE END WHILE */
+
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
+
+#if 0
+void test1() {
+  uint8_t version, speed, status, current, temp, direction, acc;
+  uint8_t address, ret;
+  MD03_isInitializaed = 1;
+  speed = 255;
+  acc = 255;
+
+  MD03_set_direction(ADDRESS_M1, MD03_DIRECTION_STOP);
+  MD03_set_acceleration_raw(ADDRESS_M1, acc);
+  MD03_set_speed_raw(ADDRESS_M1, speed);
+
+  while (1)
+  {
+    MD03_set_direction(ADDRESS_M1, MD03_DIRECTION_FORWARD);
+    MD03_set_speed_raw(ADDRESS_M1, speed);
+
+
+    current = MD03_get_curremt_raw(ADDRESS_M1);
+    direction = MD03_get_direction(ADDRESS_M1);
+    speed = MD03_get_speed_raw(ADDRESS_M1);
+    acc = MD03_get_acceleration_raw(ADDRESS_M1);
+
+  }
+
+}
+#endif
 
 /**
   * @brief System Clock Configuration
@@ -233,9 +225,9 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 16;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 120;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
   RCC_OscInitStruct.PLL.PLLR = 2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -249,10 +241,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }

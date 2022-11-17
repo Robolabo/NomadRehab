@@ -59,12 +59,24 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
+#define PWM_DIR_1_Pin GPIO_PIN_0
+#define PWM_DIR_1_GPIO_Port GPIOC
+#define PWM_DIR_2_Pin GPIO_PIN_1
+#define PWM_DIR_2_GPIO_Port GPIOC
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define PWM_DIR_3_Pin GPIO_PIN_0
+#define PWM_DIR_3_GPIO_Port GPIOB
+#define PWM_CH_3_Pin GPIO_PIN_8
+#define PWM_CH_3_GPIO_Port GPIOA
+#define PWM_CH_2_Pin GPIO_PIN_9
+#define PWM_CH_2_GPIO_Port GPIOA
+#define PWM_CH_1_Pin GPIO_PIN_10
+#define PWM_CH_1_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
