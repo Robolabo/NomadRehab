@@ -18,15 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
-#include "DM03.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "nomad_pwm.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,59 +48,9 @@
 /* USER CODE BEGIN PV */
 
 
-typedef enum {
-  PWM_CHANNEL_1 = TIM_CHANNEL_1,
-  PWM_CHANNEL_2 = TIM_CHANNEL_2,
-  PWM_CHANNEL_3 = TIM_CHANNEL_3,
-}PWM_Channel_t;
-
-typedef enum {
-  PWM_DIR_FORWARD = 0U,
-  PWM_DIR_BACKWARD = 1
-}PWM_Direction_t;
-
-#define DIR1    PWM_DIR_1_GPIO_Port, PWM_DIR_1_Pin
-#define DIR2    PWM_DIR_2_GPIO_Port, PWM_DIR_2_Pin
-#define DIR3    PWM_DIR_3_GPIO_Port, PWM_DIR_3_Pin
 
 
-void PWM_init() {
-  HAL_TIM_Base_Start(&htim1);
-}
 
-void PWM_start(PWM_Channel_t channel) {
-  HAL_TIM_PWM_Start(&htim1, channel);
-}
-
-
-void PWM_setDuty(PWM_Channel_t channel, float duty) {
-
-  if (duty >= 100) {
-    duty = 100;
-  } else if (duty <= 0) {
-    duty = 0.0;
-  }
-
-  uint16_t autoreload = __HAL_TIM_GET_AUTORELOAD(&htim1);
-  float aux = (duty*(float)(autoreload))/100.0;
-  __HAL_TIM_SET_COMPARE(&htim1, channel, (uint32_t)(aux));
-}
-
-void PWM_set_direction(PWM_Channel_t channel, PWM_Direction_t dir) {
-  switch (channel) {
-  case PWM_CHANNEL_1:
-    HAL_GPIO_WritePin(DIR1, dir);
-    break;
-  case PWM_CHANNEL_2:
-    HAL_GPIO_WritePin(DIR2, dir);
-    break;
-  case PWM_CHANNEL_3:
-    HAL_GPIO_WritePin(DIR3, dir);
-    break;
-  default:
-    break;
-  }
-}
 
 
 
@@ -108,6 +58,7 @@ void PWM_set_direction(PWM_Channel_t channel, PWM_Direction_t dir) {
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -150,58 +101,40 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   float duty = 50;
-  PWM_Channel_t channel = PWM_CHANNEL_1;
-  PWM_Direction_t dir = PWM_DIR_FORWARD;
-  PWM_init();
-  PWM_start(PWM_CHANNEL_1);
-  PWM_start(PWM_CHANNEL_2);
-  PWM_start(PWM_CHANNEL_3);
+  NOMAD_PWM_Channel_t channel = NOMAD_PWM_CHANNEL_1;
+  NOMAD_PWM_Direction_t dir = NOMAD_PWM_DIR_FORWARD;
+  NOMAD_PWM_init();
+  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_1);
+  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_2);
+  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_3);
   /* USER CODE END 2 */
 
+  /* Init scheduler */
+  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
   while (1)
   {
-    PWM_setDuty(channel, duty);
-    PWM_set_direction(channel, dir);
+    NOMAD_PWM_setDuty(channel, duty);
+    NOMAD_PWM_set_direction(channel, dir);
     /* USER CODE END WHILE */
-
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
-
-#if 0
-void test1() {
-  uint8_t version, speed, status, current, temp, direction, acc;
-  uint8_t address, ret;
-  MD03_isInitializaed = 1;
-  speed = 255;
-  acc = 255;
-
-  MD03_set_direction(ADDRESS_M1, MD03_DIRECTION_STOP);
-  MD03_set_acceleration_raw(ADDRESS_M1, acc);
-  MD03_set_speed_raw(ADDRESS_M1, speed);
-
-  while (1)
-  {
-    MD03_set_direction(ADDRESS_M1, MD03_DIRECTION_FORWARD);
-    MD03_set_speed_raw(ADDRESS_M1, speed);
-
-
-    current = MD03_get_curremt_raw(ADDRESS_M1);
-    direction = MD03_get_direction(ADDRESS_M1);
-    speed = MD03_get_speed_raw(ADDRESS_M1);
-    acc = MD03_get_acceleration_raw(ADDRESS_M1);
-
-  }
-
-}
-#endif
 
 /**
   * @brief System Clock Configuration
@@ -255,6 +188,27 @@ void SystemClock_Config(void)
 
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM6 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
