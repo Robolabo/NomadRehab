@@ -63,9 +63,9 @@ void UROS_position_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
   RCLC_UNUSED(last_call_time);
 
   /* Get current position */
-  UROS_motor_position_tx_buffer.pos_motor_1 = 0.0;
-  UROS_motor_position_tx_buffer.pos_motor_3 = 0.0;
-  UROS_motor_position_tx_buffer.pos_motor_2 = 0.0;
+  UROS_motor_position_tx_buffer.pos_motor_1 = NOMAD_ENCODER_get_position(NOMAD_ENCODER_1);
+  UROS_motor_position_tx_buffer.pos_motor_3 = NOMAD_ENCODER_get_position(NOMAD_ENCODER_2);
+  UROS_motor_position_tx_buffer.pos_motor_2 = NOMAD_ENCODER_get_position(NOMAD_ENCODER_3);
 
   if (timer != NULL) {
     rcl_publish(&UROS_position_publisher, &UROS_motor_position_tx_buffer, NULL);

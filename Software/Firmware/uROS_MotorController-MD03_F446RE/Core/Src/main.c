@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "nomad_pwm.h"
+#include "nomad_encoder.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -112,6 +113,10 @@ int main(void)
   NOMAD_PWM_start(NOMAD_PWM_CHANNEL_1);
   NOMAD_PWM_start(NOMAD_PWM_CHANNEL_2);
   NOMAD_PWM_start(NOMAD_PWM_CHANNEL_3);
+  NOMAD_ENCODER_init(&htim2, NOMAD_ENCODER_1, 10, 10.0);
+  NOMAD_ENCODER_init(&htim3, NOMAD_ENCODER_2, 10, 10.0);
+  NOMAD_ENCODER_init(&htim4, NOMAD_ENCODER_3, 10, 10.0);
+
   /* USER CODE END 2 */
 
   /* Init scheduler */

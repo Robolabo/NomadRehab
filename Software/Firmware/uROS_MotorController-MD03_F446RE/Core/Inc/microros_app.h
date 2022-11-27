@@ -16,6 +16,7 @@
 #include "gpio.h"
 #include "usart.h"
 #include "nomad_pwm.h"
+#include "nomad_encoder.h"
 
 /* micro-ROS */
 #include "rcl/rcl.h"
