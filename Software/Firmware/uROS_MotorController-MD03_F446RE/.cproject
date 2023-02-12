@@ -194,4 +194,5 @@
 			<resource resourceType="PROJECT" workspacePath="/uROS_MotorController-MD03_F446RE"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

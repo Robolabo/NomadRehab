@@ -50,11 +50,6 @@
 
 
 
-
-
-
-
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -117,6 +112,7 @@ int main(void)
   NOMAD_ENCODER_init(&htim3, NOMAD_ENCODER_2, 10, 10.0);
   NOMAD_ENCODER_init(&htim4, NOMAD_ENCODER_3, 10, 10.0);
 
+  /* Hello world */
   /* USER CODE END 2 */
 
   /* Init scheduler */
