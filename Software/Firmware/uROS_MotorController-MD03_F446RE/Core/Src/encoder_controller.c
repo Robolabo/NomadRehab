@@ -47,8 +47,12 @@ Encoder_controller_t* ENC_CONTROL_init(
   if (instance == NULL){
     /* Sanity check! */
     if (ENC_CONTROL_encoderIndex < ENC_CONTROL_MAX_ENCODERS) {
-      instance = ENC_CONTROL_encoders[ENC_CONTROL_encoderIndex];
+      instance = &ENC_CONTROL_encoders[ENC_CONTROL_encoderIndex];
       ENC_CONTROL_encoderIndex++;
+    }
+    else {
+      /* Something went wrong */
+      while(1);
     }
   }
 
@@ -56,14 +60,14 @@ Encoder_controller_t* ENC_CONTROL_init(
   /* Initialize encoder parameters */
   instance->htim = htim;
   instance->countPerRevolution = countPerRevolution;
-  instance->reduction = reduction;
+  instance->reduction = reductionFactor;
   instance->revolutions = 0;
 
 
   /* Set the period to the total count of pulses in a complete revolution */
   /* This way the interrupt will be called every time a full revolution is performed */
 
-  instance->htim->Init.Period = (uint32_t)(countPerRevolution*reduction);
+  instance->htim->Init.Period = (uint32_t)(countPerRevolution*reductionFactor);
   instance->htim->Instance->ARR = instance->htim->Init.Period;
   instance->htim->PeriodElapsedCallback = ENC_CONTROL_periodElapsedCallback;
 
@@ -80,7 +84,7 @@ Encoder_controller_t* ENC_CONTROL_init(
  * @param htim timer handle.
  */
 void ENC_CONTROL_reset (TIM_HandleTypeDef* htim) {
-  Encoder_controller_t instance = ENC_CONTROL_getEncoderInstance(htim);
+  Encoder_controller_t* instance = ENC_CONTROL_getEncoderInstance(htim);
   if (instance != NULL) {
     /* Reset the counter values */
     instance->revolutions = 0;
@@ -99,7 +103,7 @@ double ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
 
   double position = 0.0;
   uint32_t counts = 0;
-  Encoder_controller_t instance = ENC_CONTROL_getEncoderInstance(htim);
+  Encoder_controller_t* instance = ENC_CONTROL_getEncoderInstance(htim);
 
   if (instance != NULL) {
     counts = instance->htim->Instance->CNT;
@@ -120,7 +124,7 @@ double ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
  */
 static Encoder_controller_t* ENC_CONTROL_getEncoderInstance (TIM_HandleTypeDef* htim) {
   uint32_t index = 0U;
-  Encoder_controller_t result = NULL;
+  Encoder_controller_t* result = NULL;
 
   for (index = 0; index < ENC_CONTROL_MAX_ENCODERS; index++) {
     if (ENC_CONTROL_encoders[index].htim == htim) {
@@ -138,7 +142,7 @@ static Encoder_controller_t* ENC_CONTROL_getEncoderInstance (TIM_HandleTypeDef* 
  * @param htim timer handler.
  */
 static void ENC_CONTROL_periodElapsedCallback (TIM_HandleTypeDef* htim) {
-  Encoder_controller_t instance = ENC_CONTROL_getEncoderInstance(htim);
+  Encoder_controller_t* instance = ENC_CONTROL_getEncoderInstance(htim);
 
   if (instance != NULL) {
     if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim)) {

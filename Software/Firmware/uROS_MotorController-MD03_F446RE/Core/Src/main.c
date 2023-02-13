@@ -28,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include "nomad_pwm.h"
 #include "nomad_encoder.h"
+#include "encoder_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,19 +101,10 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  /* USER CODE BEGIN 2 */
-  float duty = 50;
-  NOMAD_PWM_Channel_t channel = NOMAD_PWM_CHANNEL_1;
-  NOMAD_PWM_Direction_t dir = NOMAD_PWM_DIR_FORWARD;
-  NOMAD_PWM_init();
-  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_1);
-  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_2);
-  NOMAD_PWM_start(NOMAD_PWM_CHANNEL_3);
-  NOMAD_ENCODER_init(&htim2, NOMAD_ENCODER_1, 10, 10.0);
-  NOMAD_ENCODER_init(&htim3, NOMAD_ENCODER_2, 10, 10.0);
-  NOMAD_ENCODER_init(&htim4, NOMAD_ENCODER_3, 10, 10.0);
 
-  /* Hello world */
+  /* USER CODE BEGIN 2 */
+  ENCODER_TEST_Init();
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -128,8 +120,6 @@ int main(void)
 
   while (1)
   {
-    NOMAD_PWM_setDuty(channel, duty);
-    NOMAD_PWM_set_direction(channel, dir);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
