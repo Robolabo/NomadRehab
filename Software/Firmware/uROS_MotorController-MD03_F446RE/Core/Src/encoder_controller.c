@@ -109,7 +109,8 @@ double ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
     counts = instance->htim->Instance->CNT;
 
     position = (double)(instance->revolutions);
-    position += 2*M_PI*(counts/instance->htim->Init.Period);
+    position += ((double)counts/instance->htim->Init.Period);
+    position =  2*M_PI*position;
   }
 
   return position;

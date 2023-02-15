@@ -6,67 +6,7 @@
  */
 
 
-#include "tim.h"
-#include "encoder_controller.h"
-#include "nomad_pwm.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
-
-
-#define NOMAD_WHEEL_TASK_NAME           "Wheel_controller_task"
-#define NOMAD_WHEEL_TASK_PRIO           (tskIDLE_PRIORITY) + 1
-#define NOMAD_WHEEL_TASK_STACK          (configMINIMAL_STACK_SIZE) + 512U
-
-
-
-#define NOMAD_WHEEL_WHEEL_ENC           &htim2
-#define NOMAD_WHEEL_WHEEL_PWM_CH        NOMAD_PWM_CHANNEL_1
-#define NOMAD_WHEEL_WHEEL_CPR           500U
-#define NOMAD_WHEEL_WHEEL_REDUCTION     4.5f
-#define NOMAD_WHEEL_WHEEL_KP            1.0f
-#define NOMAD_WHEEL_WHEEL_KD            0.0f
-#define NOMAD_WHEEL_WHEEL_KI            0.0f
-#define NOMAD_WHEEL_WHEEL_LIMIT         100.0f
-
-
-#define NOMAD_WHEEL_ROTATION_ENC        &htim3
-#define NOMAD_WHEEL_ROTATION_PWM_CH    NOMAD_PWM_CHANNEL_2
-#define NOMAD_WHEEL_ROTATION_CPR        500U
-#define NOMAD_WHEEL_ROTATION_REDUCTION  4.5f
-#define NOMAD_WHEEL_ROTATION_KP         1.0f
-#define NOMAD_WHEEL_ROTATION_KD         0.0f
-#define NOMAD_WHEEL_ROTATION_KI         0.0f
-#define NOMAD_WHEEL_ROTATION_LIMIT      100.0f
-
-
-#define NOMAD_WHEEL_TASK_PERIOD_MS 10U
-
-/**
- * @brief
- *
- */
-typedef struct {
-  float kp;
-  float kd;
-  float ki;
-
-  float setpoit;
-  float dt;
-
-  float last_input;
-  float last_output;
-  float last_error;
-
-  float output_limit;
-}Control_pid_t;
-
-
-typedef struct {
-  Control_pid_t speed;
-  Control_pid_t rotation;
-}Nomad_Wheel_Control_t;
-
+#include "nomad_wheel_controller.h"
 
 
 static Nomad_Wheel_Control_t NOMAD_WHEEL_controller;
@@ -80,7 +20,7 @@ static Nomad_Wheel_Control_t NOMAD_WHEEL_controller;
  *        The input value will be limited to +- threshold
  * @return Clamped value.
  */
-inline float NOMAD_WHEEL_clamp (float value, float threshold) {
+static float NOMAD_WHEEL_clamp (float value, float threshold) {
   if (value > threshold) {
     value = threshold;
   }
@@ -203,10 +143,14 @@ void NOMAD_WHEEL_TaskFn() {
     while (1);
   }
 
+  ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
+  ENC_CONTROL_reset(NOMAD_WHEEL_WHEEL_ENC);
   while (1) {
     /* Get controller inputs */
     rotation_input = ENC_CONTROL_getPostion(NOMAD_WHEEL_ROTATION_ENC);
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
+
+    /* ToDo: Speed also depends on the wheel radius. Update calculation */
     speed_input = (position - NOMAD_WHEEL_controller.speed.last_input)/(NOMAD_WHEEL_controller.speed.dt);
 
     /* Calculate control signals */
@@ -221,6 +165,42 @@ void NOMAD_WHEEL_TaskFn() {
     vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS));
   }
 }
+
+/**
+ * @brief Set controller reference point.
+ *
+ * @param speed Reference speed.
+ * @param rotation reference position.
+ */
+void NOMAD_WHEEL_setPoint (float speed, float rotation) {
+
+  /* ToDO: protect with mutex */
+  NOMAD_WHEEL_controller.speed.setpoit = speed;
+  NOMAD_WHEEL_controller.rotation.setpoit = rotation;
+}
+
+
+/**
+ * @brief Get current wheel speed in radians per second.
+ *
+ * @return Wheel speed in radians per second.
+ */
+float NOMAD_WHEEL_getSpeed () {
+
+  return NOMAD_WHEEL_controller.speed.last_input;
+}
+
+/**
+ * @brief Get current wheel angle in radians.
+ *
+ * @return wheel angle in radians.
+ */
+float NOMAD_WHEEL_getRotation () {
+  return NOMAD_WHEEL_controller.rotation.last_input;
+}
+
+/* ToDo: add reset function */
+/* ToDo: add disable function */
 
 /**
  * @brief Initialze wheel controller

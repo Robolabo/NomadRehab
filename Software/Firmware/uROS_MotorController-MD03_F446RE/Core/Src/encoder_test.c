@@ -7,11 +7,12 @@
 
 #include "encoder_test.h"
 
+static double position = 0.0;
 
 static void ENCODER_TEST_taskFN() {
 
-  float position = 0.0;
-  Encoder_controller_t* controller = ENC_CONTROL_init(
+
+   Encoder_controller_t* controller = ENC_CONTROL_init(
       ENCODER_TEST_TIM_HANDLE,
       ENCODER_TEST_CPR,
       ENCODER_TEST_REDUCTION);

@@ -42,10 +42,11 @@ void NOMAD_PWM_setDuty(NOMAD_PWM_Channel_t channel, float duty) {
   uint16_t autoreload = 0;
 
   /* Sanity check */
+#if 0 /* ToDo: this condition is not working */
   if (!NOMAD_PWM_IS_CHANNEL(channel)) {
     return;
   }
-
+#endif
   /* Check motor direction */
   if (duty < 0.0) {
     direction = NOMAD_PWM_DIR_BACKWARD;

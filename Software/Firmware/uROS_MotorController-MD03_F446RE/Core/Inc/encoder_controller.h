@@ -23,7 +23,7 @@ typedef struct {
   TIM_HandleTypeDef* htim;        /*<! Associated timer handle*/
   uint32_t countPerRevolution;    /*<! Encoder resolution */
   float reduction;                /*<! Motor speed reduction factor */
-  uint32_t revolutions;           /*<! Total number of revolutions */
+  int32_t revolutions;           /*<! Total number of revolutions */
 
 } Encoder_controller_t;
 

@@ -29,6 +29,8 @@
 #include "nomad_pwm.h"
 #include "nomad_encoder.h"
 #include "encoder_test.h"
+#include "pwm_test.h"
+#include "pid_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,9 +103,13 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-
   /* USER CODE BEGIN 2 */
+  /*
   ENCODER_TEST_Init();
+  PWM_TEST_Init ();
+  */
+
+  PID_TEST_Init();
 
   /* USER CODE END 2 */
 
