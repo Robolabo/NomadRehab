@@ -99,17 +99,17 @@ void ENC_CONTROL_reset (TIM_HandleTypeDef* htim) {
  * @param htim timer handle.
  * @return Relative position in radians.
  */
-double ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
+float ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
 
-  double position = 0.0;
+  float position = 0.0;
   uint32_t counts = 0;
   Encoder_controller_t* instance = ENC_CONTROL_getEncoderInstance(htim);
 
   if (instance != NULL) {
     counts = instance->htim->Instance->CNT;
 
-    position = (double)(instance->revolutions);
-    position += ((double)counts/instance->htim->Init.Period);
+    position = (float)(instance->revolutions);
+    position += ((float)counts/instance->htim->Init.Period);
     position =  2*M_PI*position;
   }
 

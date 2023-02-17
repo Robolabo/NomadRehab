@@ -28,8 +28,8 @@ static void PID_TEST_taskFn () {
   /* Test position controller */
   while (1) {
     for (index = 0; index < PID_TEST_posSize; index++) {
-      NOMAD_WHEEL_setPoint(0.0, setPoint);
-      real_pos = NOMAD_WHEEL_getRotation();
+      NOMAD_WHEEL_setPoint(setPoint, 0.0);
+      real_pos = NOMAD_WHEEL_getSpeed();
       vTaskDelay(10);
     }
 

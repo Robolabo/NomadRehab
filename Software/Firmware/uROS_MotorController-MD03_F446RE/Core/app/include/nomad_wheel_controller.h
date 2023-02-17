@@ -8,6 +8,7 @@
 #ifndef INC_NOMAD_WHEEL_CONTROLLER_H_
 #define INC_NOMAD_WHEEL_CONTROLLER_H_
 
+#include <stdbool.h>
 
 #include "tim.h"
 #include "encoder_controller.h"
@@ -15,6 +16,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
+#include "semphr.h"
 
 
 #define NOMAD_WHEEL_TASK_NAME           "Wheel_controller_task"
@@ -22,18 +24,18 @@
 #define NOMAD_WHEEL_TASK_STACK          (configMINIMAL_STACK_SIZE) + 512U
 
 
-#define NOMAD_WHEEL_WHEEL_ENC           &htim3
-#define NOMAD_WHEEL_WHEEL_PWM_CH        NOMAD_PWM_CHANNEL_1
-#define NOMAD_WHEEL_WHEEL_CPR           500U
-#define NOMAD_WHEEL_WHEEL_REDUCTION     4.5f
-#define NOMAD_WHEEL_WHEEL_KP            100.0f
+#define NOMAD_WHEEL_WHEEL_ENC           &htim2
+#define NOMAD_WHEEL_WHEEL_PWM_CH        NOMAD_PWM_CHANNEL_3
+#define NOMAD_WHEEL_WHEEL_CPR           48U
+#define NOMAD_WHEEL_WHEEL_REDUCTION     10.0f
+#define NOMAD_WHEEL_WHEEL_KP            10.0f
 #define NOMAD_WHEEL_WHEEL_KD            0.0f
 #define NOMAD_WHEEL_WHEEL_KI            0.0f
 #define NOMAD_WHEEL_WHEEL_LIMIT         100.0f
 
 
-#define NOMAD_WHEEL_ROTATION_ENC        &htim2
-#define NOMAD_WHEEL_ROTATION_PWM_CH     NOMAD_PWM_CHANNEL_3
+#define NOMAD_WHEEL_ROTATION_ENC        &htim3
+#define NOMAD_WHEEL_ROTATION_PWM_CH     NOMAD_PWM_CHANNEL_2
 #define NOMAD_WHEEL_ROTATION_CPR        48U
 #define NOMAD_WHEEL_ROTATION_REDUCTION  10.0f
 #define NOMAD_WHEEL_ROTATION_KP         10.0f
@@ -42,7 +44,8 @@
 #define NOMAD_WHEEL_ROTATION_LIMIT      100.0f
 
 
-#define NOMAD_WHEEL_TASK_PERIOD_MS 10U
+#define NOMAD_WHEEL_TASK_PERIOD_MS  10U
+#define NOMAD_WHEEL_RESET_TIME_MS   100U
 
 /**
  * @brief

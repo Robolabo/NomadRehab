@@ -8,9 +8,8 @@
 
 #include "nomad_wheel_controller.h"
 
-
+static bool NOMAD_WHEEL_isEnabled = false;
 static Nomad_Wheel_Control_t NOMAD_WHEEL_controller;
-
 
 /**
  * @brief Clamp value to a threshold value
@@ -23,11 +22,25 @@ static Nomad_Wheel_Control_t NOMAD_WHEEL_controller;
 static float NOMAD_WHEEL_clamp (float value, float threshold) {
   if (value > threshold) {
     value = threshold;
-  }
-  else if (value < -threshold) {
+  } else if (value < -threshold) {
     value = -threshold;
   }
   return value;
+}
+
+
+/**
+ * @brief Reset the motor controller.
+ *
+ * @param controller
+ */
+static void NOMAD_WHEEL_resetController (Control_pid_t* controller) {
+  if (controller != NULL) {
+    controller->last_error = 0.0;
+    controller->last_input = 0.0;
+    controller->last_output = 0.0;
+    controller->setpoit = 0.0;
+  }
 }
 
 /**
@@ -46,17 +59,18 @@ static void NOMAD_WHEEL_InitController(
     float ki,
     float limit)
 {
-  controller->kp = kp;
-  controller->ki = ki;
-  controller->kd = kd;
-  controller->output_limit = limit;
-  controller->dt = ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f;
 
-  controller->last_error = 0.0;
-  controller->last_input = 0.0;
-  controller->last_output = 0.0;
-  controller->setpoit = 0.0;
+  if (controller != NULL) {
+    controller->kp = kp;
+    controller->ki = ki;
+    controller->kd = kd;
+    controller->output_limit = limit;
+    controller->dt = ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f;
+
+    NOMAD_WHEEL_resetController(controller);
+  }
 }
+
 
 /**
  * @brief Calculate the PID output.
@@ -76,7 +90,7 @@ static float NOMAD_WHEEL_execute(Control_pid_t* controller, float input) {
   error =  controller->setpoit - input;
   /* Calculate PID values */
   proportional = controller->kp*error;
-  derivative = controller->kd*(error - controller->last_error)/controller->dt;
+  derivative =controller->kd*(error - controller->last_error)/controller->dt;
   integral = controller->ki*error*controller->dt;
   /* Avoid windup */
   integral = NOMAD_WHEEL_clamp(integral, controller->output_limit);
@@ -102,6 +116,7 @@ void NOMAD_WHEEL_TaskFn() {
   float speed_input = 0.0;
   float speed_output = 0.0;
   float position = 0.0;
+  float last_position = 0;
 
   /* Initialize hardware encoders */
   Encoder_controller_t* rotation_enc = ENC_CONTROL_init(
@@ -151,15 +166,23 @@ void NOMAD_WHEEL_TaskFn() {
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
 
     /* ToDo: Speed also depends on the wheel radius. Update calculation */
-    speed_input = (position - NOMAD_WHEEL_controller.speed.last_input)/(NOMAD_WHEEL_controller.speed.dt);
+    speed_input = (position - last_position)/(NOMAD_WHEEL_controller.speed.dt);
+    last_position = position;
 
     /* Calculate control signals */
     speed_output = NOMAD_WHEEL_execute(&NOMAD_WHEEL_controller.speed, speed_input);
     rotation_output = NOMAD_WHEEL_execute(&NOMAD_WHEEL_controller.rotation, rotation_input);
 
     /* Update motor values */
-    NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, speed_output);
-    NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, rotation_output);
+    if (NOMAD_WHEEL_isEnabled) {
+      NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, speed_output);
+      NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, rotation_output);
+
+    } else {
+      /* This allows to move the motor manually */
+      NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, 0.0);
+      NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, 0.0);
+    }
 
     /* Wait until next activation */
     vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS));
@@ -199,8 +222,57 @@ float NOMAD_WHEEL_getRotation () {
   return NOMAD_WHEEL_controller.rotation.last_input;
 }
 
-/* ToDo: add reset function */
-/* ToDo: add disable function */
+/**
+ * @brief Check if the control is enabled.
+ *
+ * @return True if is enabled, else false.
+ */
+bool NOMAD_WHEEL_isControlEnabled () {
+  return NOMAD_WHEEL_isEnabled;
+}
+
+/**
+ * @brief Enable the controller.
+ *
+ */
+void NOMAD_WHEEL_enableControl () {
+  NOMAD_WHEEL_isEnabled = true;
+}
+
+/**
+ * @brief Disable the controller.
+ *
+ */
+void NOMAD_WHEEL_disableControl () {
+  NOMAD_WHEEL_isEnabled = false;
+}
+
+/**
+ * @brief Reset the controller. Set the origin.
+ *
+ */
+void NOMAD_WHEEL_reset () {
+  /* Disable control */
+  NOMAD_WHEEL_disableControl();
+  /* Set both PWM to 0 */
+  NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, 0.0);
+  NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, 0.0);
+
+  /* Wait until the motors are complete stopped */
+  vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_RESET_TIME_MS));
+
+  /* Reset encoders */
+  ENC_CONTROL_reset(NOMAD_WHEEL_WHEEL_ENC);
+  ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
+
+  /* Reset controllers */
+  NOMAD_WHEEL_resetController(&NOMAD_WHEEL_controller.rotation);
+  NOMAD_WHEEL_resetController(&NOMAD_WHEEL_controller.speed);
+
+  /* Enable control */
+  NOMAD_WHEEL_enableControl();
+}
+
 
 /**
  * @brief Initialze wheel controller

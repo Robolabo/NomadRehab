@@ -38,7 +38,7 @@ Encoder_controller_t* ENC_CONTROL_init (
 
 void ENC_CONTROL_reset (TIM_HandleTypeDef* htim);
 
-double ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim);
+float ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim);
 
 
 
