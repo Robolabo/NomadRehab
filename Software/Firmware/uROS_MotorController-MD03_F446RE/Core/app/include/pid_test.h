@@ -10,6 +10,7 @@
 
 
 #include <math.h>
+#include "pid_controller.h"
 #include "nomad_wheel_controller.h"
 
 #include "FreeRTOS.h"

@@ -1,116 +1,59 @@
-/*
- * NOMAD_wheel_controller.c
+/**                             _____________
+ *              /\      /\     /             \
+ *             //\\____//\\   |  TUlBVVVVVSE= |
+ *            /     '      \   \  ___________/
+ *           /   /\ '  /\    \ /_/                / /  ___
+ *          |    == o ==      |       /|         / /  / _ \
+ *           \      '        /       | |        / /__|  __/
+ *             \           /         \ \        \____/\___|
+ *             /----<o>---- \         / /        __  __  __  __      __        ___
+ *             |            ' \       \ \       |__)/  \|__)/  \ __ /  |__| /\  |
+ *             |    |    | '   '\      \ \      | \ \__/|__)\__/    \__|  |/--\ |
+ *  _________  | ´´ |  ' |     '  \    / /
+ *  |  MAYA  | |  ' |    | '       |__/ /
+ *   \______/   \__/ \__/ \_______/____/
  *
- *  Created on: 12 feb. 2023
- *      Author: Alejo
+ * @file nomad_wheel_controller.c
+ * @author Alejandro Gomez Molina (@Alejo2313)
+ * @brief Nomad 200 wheel controller. Source code for controlling
+ *        the speed and the position of the synchro driver.
+ *
+ * @version 0.1
+ * @date 12 feb. 2023
+ *
+ * @copyright Copyright (c) 2023
+ *
  */
 
+/************************************************************************
+    INCLUDES
+************************************************************************/
 
 #include "nomad_wheel_controller.h"
 
-static bool NOMAD_WHEEL_isEnabled = false;
-static Nomad_Wheel_Control_t NOMAD_WHEEL_controller;
+/************************************************************************
+    DEFINES AND TYPES
+************************************************************************/
 
-/**
- * @brief Clamp value to a threshold value
- *
- * @param value Input value.
- * @param threshold Max value.
- *        The input value will be limited to +- threshold
- * @return Clamped value.
- */
-static float NOMAD_WHEEL_clamp (float value, float threshold) {
-  if (value > threshold) {
-    value = threshold;
-  } else if (value < -threshold) {
-    value = -threshold;
-  }
-  return value;
-}
+#define NOMAD_WHEEL_DT                  ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f
 
+/************************************************************************
+    DECLARATIONS
+************************************************************************/
 
-/**
- * @brief Reset the motor controller.
- *
- * @param controller
- */
-static void NOMAD_WHEEL_resetController (Control_pid_t* controller) {
-  if (controller != NULL) {
-    controller->last_error = 0.0;
-    controller->last_input = 0.0;
-    controller->last_output = 0.0;
-    controller->setpoit = 0.0;
-  }
-}
+static bool NOMAD_WHEEL_isEnabled = false;                   /*<! Enable flag used to enable/disable the controllers */
+static Base_Controller_t*  NOMAD_WHEEL_speed_controller;     /*<! Pointer to the speed controller structure */
+static Base_Controller_t*  NOMAD_WHEEL_rotation_controller;  /*<! Pointer to the rotation controller structure */
 
-/**
- * @brief Initialize a controller structure.
- *
- * @param controller PID controller structure.
- * @param kp  Proportional constant.
- * @param kd  Derivative constant.
- * @param ki  Integral threshold
- * @param limit Output limit (anti-windup)
- */
-static void NOMAD_WHEEL_InitController(
-    Control_pid_t* controller,
-    float kp,
-    float kd,
-    float ki,
-    float limit)
-{
-
-  if (controller != NULL) {
-    controller->kp = kp;
-    controller->ki = ki;
-    controller->kd = kd;
-    controller->output_limit = limit;
-    controller->dt = ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f;
-
-    NOMAD_WHEEL_resetController(controller);
-  }
-}
-
-
-/**
- * @brief Calculate the PID output.
- *        Simple PID controller implementation
- *
- * @param controller PID controller structure.
- * @param input Input value from the feedback network.
- */
-static float NOMAD_WHEEL_execute(Control_pid_t* controller, float input) {
-  float error = 0.0;
-  float proportional = 0.0;
-  float derivative = 0.0;
-  float integral = 0.0;
-
-  // ToDo: Add sanity checks for the PID input
-
-  error =  controller->setpoit - input;
-  /* Calculate PID values */
-  proportional = controller->kp*error;
-  derivative =controller->kd*(error - controller->last_error)/controller->dt;
-  integral = controller->ki*error*controller->dt;
-  /* Avoid windup */
-  integral = NOMAD_WHEEL_clamp(integral, controller->output_limit);
-
-  /* Store values for future use */
-  controller->last_input = input;
-  controller->last_error = error;
-  controller->last_output = proportional + derivative + integral;
-  /* Avoid windup */
-  controller->last_output = NOMAD_WHEEL_clamp(controller->last_output, controller->output_limit);
-
-  return controller->last_output;
-}
-
+/************************************************************************
+    FUNCTIONS
+************************************************************************/
 
 /**
  * @brief Main control task
  *
  */
-void NOMAD_WHEEL_TaskFn() {
+static void NOMAD_WHEEL_TaskFn() {
   float rotation_input = 0.0;
   float rotation_output = 0.0;
   float speed_input = 0.0;
@@ -137,25 +80,9 @@ void NOMAD_WHEEL_TaskFn() {
   NOMAD_PWM_start(NOMAD_WHEEL_WHEEL_PWM_CH);
   NOMAD_PWM_start(NOMAD_WHEEL_ROTATION_PWM_CH);
 
-  /* Initialize controllers */
-  NOMAD_WHEEL_InitController(
-      &NOMAD_WHEEL_controller.speed,
-      NOMAD_WHEEL_WHEEL_KP,
-      NOMAD_WHEEL_WHEEL_KD,
-      NOMAD_WHEEL_WHEEL_KI,
-      NOMAD_WHEEL_WHEEL_LIMIT);
-
-  NOMAD_WHEEL_InitController(
-      &NOMAD_WHEEL_controller.rotation,
-      NOMAD_WHEEL_ROTATION_KP,
-      NOMAD_WHEEL_ROTATION_KD,
-      NOMAD_WHEEL_ROTATION_KI,
-      NOMAD_WHEEL_ROTATION_LIMIT);
-
   /* Sanity check */
-  if ((wheel_enc == NULL) || (rotation_enc == NULL)) {
-    /* Something went wrong */
-    while (1);
+  if ((rotation_enc == NULL) || (wheel_enc == NULL)) {
+    while(1);
   }
 
   ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
@@ -166,12 +93,12 @@ void NOMAD_WHEEL_TaskFn() {
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
 
     /* ToDo: Speed also depends on the wheel radius. Update calculation */
-    speed_input = (position - last_position)/(NOMAD_WHEEL_controller.speed.dt);
+    speed_input = (position - last_position)/(NOMAD_WHEEL_DT);
     last_position = position;
 
     /* Calculate control signals */
-    speed_output = NOMAD_WHEEL_execute(&NOMAD_WHEEL_controller.speed, speed_input);
-    rotation_output = NOMAD_WHEEL_execute(&NOMAD_WHEEL_controller.rotation, rotation_input);
+    speed_output = NOMAD_WHEEL_speed_controller->functions.execute(NOMAD_WHEEL_speed_controller, speed_input);
+    rotation_output = NOMAD_WHEEL_rotation_controller->functions.execute(NOMAD_WHEEL_rotation_controller, rotation_input);
 
     /* Update motor values */
     if (NOMAD_WHEEL_isEnabled) {
@@ -198,8 +125,8 @@ void NOMAD_WHEEL_TaskFn() {
 void NOMAD_WHEEL_setPoint (float speed, float rotation) {
 
   /* ToDO: protect with mutex */
-  NOMAD_WHEEL_controller.speed.setpoit = speed;
-  NOMAD_WHEEL_controller.rotation.setpoit = rotation;
+  NOMAD_WHEEL_speed_controller->params.setpoit = speed;
+  NOMAD_WHEEL_rotation_controller->params.setpoit = rotation;
 }
 
 
@@ -209,8 +136,7 @@ void NOMAD_WHEEL_setPoint (float speed, float rotation) {
  * @return Wheel speed in radians per second.
  */
 float NOMAD_WHEEL_getSpeed () {
-
-  return NOMAD_WHEEL_controller.speed.last_input;
+  return NOMAD_WHEEL_speed_controller->params.last_input;
 }
 
 /**
@@ -219,7 +145,7 @@ float NOMAD_WHEEL_getSpeed () {
  * @return wheel angle in radians.
  */
 float NOMAD_WHEEL_getRotation () {
-  return NOMAD_WHEEL_controller.rotation.last_input;
+  return NOMAD_WHEEL_rotation_controller->params.last_input;
 }
 
 /**
@@ -266,8 +192,8 @@ void NOMAD_WHEEL_reset () {
   ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
 
   /* Reset controllers */
-  NOMAD_WHEEL_resetController(&NOMAD_WHEEL_controller.rotation);
-  NOMAD_WHEEL_resetController(&NOMAD_WHEEL_controller.speed);
+  NOMAD_WHEEL_rotation_controller->functions.reset(NOMAD_WHEEL_rotation_controller);
+  NOMAD_WHEEL_speed_controller->functions.reset(NOMAD_WHEEL_speed_controller);
 
   /* Enable control */
   NOMAD_WHEEL_enableControl();
@@ -275,19 +201,34 @@ void NOMAD_WHEEL_reset () {
 
 
 /**
- * @brief Initialze wheel controller
+ * @brief Initialize the wheel controller.
  *
+ * @param speed_controller Controller structure used for speed control.
+ * @param rotation_controller Controller structure used for ration control.
  */
-void NOMAD_WHEEL_Init () {
-  // ToDo: Create software timer watchdog
-  // ToDo: Create pose calculation for odometry
-  // ToDo: Add sanity check
-  xTaskCreate(
-      NOMAD_WHEEL_TaskFn,
-      NOMAD_WHEEL_TASK_NAME,
-      NOMAD_WHEEL_TASK_STACK,
-      NULL,
-      NOMAD_WHEEL_TASK_PRIO,
-      NULL);
+void NOMAD_WHEEL_Init (Base_Controller_t* speed_controller, Base_Controller_t* rotation_controller) {
+
+  if ((speed_controller != NULL) && (rotation_controller != NULL)) {
+    // ToDo: Create software timer watchdog
+    // ToDo: Create pose calculation for odometry
+    // ToDo: Add sanity check
+
+    NOMAD_WHEEL_rotation_controller = rotation_controller;
+    NOMAD_WHEEL_speed_controller = speed_controller;
+
+    /* initialize period constant */
+    NOMAD_WHEEL_rotation_controller->params.dt = NOMAD_WHEEL_DT;
+    NOMAD_WHEEL_speed_controller->params.dt = NOMAD_WHEEL_DT;
+
+
+    xTaskCreate(
+        NOMAD_WHEEL_TaskFn,
+        NOMAD_WHEEL_TASK_NAME,
+        NOMAD_WHEEL_TASK_STACK,
+        NULL,
+        NOMAD_WHEEL_TASK_PRIO,
+        NULL);
+  }
 
 }
+

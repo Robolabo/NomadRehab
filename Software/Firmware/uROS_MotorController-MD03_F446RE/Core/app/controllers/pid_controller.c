@@ -1,31 +1,57 @@
-/*
- * pid_controller.c
+/**                             _____________
+ *              /\      /\     /             \
+ *             //\\____//\\   |  TUlBVVVVVSE= |
+ *            /     '      \   \  ___________/
+ *           /   /\ '  /\    \ /_/                / /  ___
+ *          |    == o ==      |       /|         / /  / _ \
+ *           \      '        /       | |        / /__|  __/
+ *             \           /         \ \        \____/\___|
+ *             /----<o>---- \         / /        __  __  __  __      __        ___
+ *             |            ' \       \ \       |__)/  \|__)/  \ __ /  |__| /\  |
+ *             |    |    | '   '\      \ \      | \ \__/|__)\__/    \__|  |/--\ |
+ *  _________  | ´´ |  ' |     '  \    / /
+ *  |  MAYA  | |  ' |    | '       |__/ /
+ *   \______/   \__/ \__/ \_______/____/
  *
- *  Created on: Feb 17, 2023
- *      Author: Alejo
+ * @file pid_controller.c
+ * @author Alejandro Gomez Molina (@Alejo2313)
+ * @brief Simple PID controller implementation.
+ *
+ * @version 0.1
+ * @date Feb 17, 2023
+ *
+ * @copyright Copyright (c) 2023
+ *
  */
 
+/************************************************************************
+    INCLUDES
+************************************************************************/
 
-#include "base_controller.h"
-#include <stddef.h>
-
-typedef struct {
-  float kp;
-  float kd;
-  float ki;
-  float limit;
-} PID_parameters_t;
+#include "pid_controller.h"
 
 
-typedef struct {
-  Base_Controller_t base;
-  PID_parameters_t params;
-}PID_controller_t;
+/************************************************************************
+    DECLARATIONS
+************************************************************************/
 
-
-float PID_CONTROLLER_execute (Base_Controller_t* controller, float input);
 void PID_CONTROLLER_reset (Base_Controller_t* controller);
+float PID_CONTROLLER_execute (Base_Controller_t* controller, float input);
 
+
+/************************************************************************
+    FUNCTIONS
+************************************************************************/
+
+/**
+ * @brief Initialize a controller structure.
+ *
+ * @param controller PID controller structure.
+ * @param kp  Proportional constant.
+ * @param kd  Derivative constant.
+ * @param ki  Integral threshold
+ * @param limit Output limit (anti-windup)
+ */
 void PID_CONTROLLER_Init (
     PID_controller_t* controller,
     float kp,
@@ -35,9 +61,13 @@ void PID_CONTROLLER_Init (
 {
 
   if (controller != NULL) {
+
+    BASE_CONROLLER_reset((Base_Controller_t*)controller);
+
     controller->params.kp = kp;
     controller->params.kd = kd;
     controller->params.ki = kd;
+    controller->params.limit = limit;
 
     controller->base.functions.execute = PID_CONTROLLER_execute;
     controller->base.functions.reset = PID_CONTROLLER_reset;
@@ -64,6 +94,13 @@ static float PID_CONTROLLER_clamp (float value, float threshold) {
 }
 
 
+/**
+ * @brief Calculate the PID output.
+ *        Simple PID controller implementation
+ *
+ * @param controller PID controller structure.
+ * @param input Input value from the feedback network.
+ */
 float PID_CONTROLLER_execute (Base_Controller_t* controller, float input) {
   float result = -1.0;
   float error = 0.0;
@@ -103,9 +140,8 @@ float PID_CONTROLLER_execute (Base_Controller_t* controller, float input) {
 }
 
 /**
- * @brief
+ * @brief Reset the controller. Set the origin.
  *
- * @param controller
  */
 void PID_CONTROLLER_reset (Base_Controller_t* controller) {
   PID_controller_t* pid_controller = (PID_controller_t*)(controller);

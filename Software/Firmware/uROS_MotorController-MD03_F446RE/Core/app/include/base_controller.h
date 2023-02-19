@@ -8,6 +8,7 @@
 #ifndef APP_INCLUDE_BASE_CONTROLLER_H_
 #define APP_INCLUDE_BASE_CONTROLLER_H_
 
+#include <string.h>
 
 struct BASE_CONTROLLER_controller_s;
 typedef struct BASE_CONTROLLER_controller_s Base_Controller_t;
@@ -38,7 +39,9 @@ struct BASE_CONTROLLER_controller_s {
 };
 
 
-
+static inline void BASE_CONROLLER_reset (Base_Controller_t* controller) {
+  memset((void*)controller, 0, sizeof(Base_Controller_t));
+}
 
 
 
