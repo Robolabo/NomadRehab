@@ -42,8 +42,12 @@
 ************************************************************************/
 
 static bool NOMAD_WHEEL_isEnabled = false;                   /*<! Enable flag used to enable/disable the controllers */
-static Base_Controller_t*  NOMAD_WHEEL_speed_controller;     /*<! Pointer to the speed controller structure */
-static Base_Controller_t*  NOMAD_WHEEL_rotation_controller;  /*<! Pointer to the rotation controller structure */
+static Base_Controller_t*  NOMAD_WHEEL_speed_controller_ptr;     /*<! Pointer to the speed controller structure */
+static Base_Controller_t*  NOMAD_WHEEL_rotation_controller_ptr;  /*<! Pointer to the rotation controller structure */
+
+static PID_controller_t NOMAD_WHEEL_speed_controller;
+static PID_controller_t NOMAD_WHEEL_rotation_controller;
+
 
 /************************************************************************
     FUNCTIONS
@@ -97,8 +101,8 @@ static void NOMAD_WHEEL_TaskFn() {
     last_position = position;
 
     /* Calculate control signals */
-    speed_output = NOMAD_WHEEL_speed_controller->functions.execute(NOMAD_WHEEL_speed_controller, speed_input);
-    rotation_output = NOMAD_WHEEL_rotation_controller->functions.execute(NOMAD_WHEEL_rotation_controller, rotation_input);
+    speed_output = NOMAD_WHEEL_speed_controller_ptr->functions.execute(NOMAD_WHEEL_speed_controller_ptr, speed_input);
+    rotation_output = NOMAD_WHEEL_rotation_controller_ptr->functions.execute(NOMAD_WHEEL_rotation_controller_ptr, rotation_input);
 
     /* Update motor values */
     if (NOMAD_WHEEL_isEnabled) {
@@ -125,8 +129,8 @@ static void NOMAD_WHEEL_TaskFn() {
 void NOMAD_WHEEL_setPoint (float speed, float rotation) {
 
   /* ToDO: protect with mutex */
-  NOMAD_WHEEL_speed_controller->params.setpoit = speed;
-  NOMAD_WHEEL_rotation_controller->params.setpoit = rotation;
+  NOMAD_WHEEL_speed_controller_ptr->params.setpoit = speed;
+  NOMAD_WHEEL_rotation_controller_ptr->params.setpoit = rotation;
 }
 
 
@@ -136,7 +140,7 @@ void NOMAD_WHEEL_setPoint (float speed, float rotation) {
  * @return Wheel speed in radians per second.
  */
 float NOMAD_WHEEL_getSpeed () {
-  return NOMAD_WHEEL_speed_controller->params.last_input;
+  return NOMAD_WHEEL_speed_controller_ptr->params.last_input;
 }
 
 /**
@@ -145,7 +149,7 @@ float NOMAD_WHEEL_getSpeed () {
  * @return wheel angle in radians.
  */
 float NOMAD_WHEEL_getRotation () {
-  return NOMAD_WHEEL_rotation_controller->params.last_input;
+  return NOMAD_WHEEL_rotation_controller_ptr->params.last_input;
 }
 
 /**
@@ -192,8 +196,8 @@ void NOMAD_WHEEL_reset () {
   ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
 
   /* Reset controllers */
-  NOMAD_WHEEL_rotation_controller->functions.reset(NOMAD_WHEEL_rotation_controller);
-  NOMAD_WHEEL_speed_controller->functions.reset(NOMAD_WHEEL_speed_controller);
+  NOMAD_WHEEL_rotation_controller_ptr->functions.reset(NOMAD_WHEEL_rotation_controller_ptr);
+  NOMAD_WHEEL_speed_controller_ptr->functions.reset(NOMAD_WHEEL_speed_controller_ptr);
 
   /* Enable control */
   NOMAD_WHEEL_enableControl();
@@ -202,33 +206,46 @@ void NOMAD_WHEEL_reset () {
 
 /**
  * @brief Initialize the wheel controller.
- *
- * @param speed_controller Controller structure used for speed control.
- * @param rotation_controller Controller structure used for ration control.
  */
-void NOMAD_WHEEL_Init (Base_Controller_t* speed_controller, Base_Controller_t* rotation_controller) {
+void NOMAD_WHEEL_Init () {
 
-  if ((speed_controller != NULL) && (rotation_controller != NULL)) {
-    // ToDo: Create software timer watchdog
-    // ToDo: Create pose calculation for odometry
-    // ToDo: Add sanity check
+  // ToDo: Create software timer watchdog
+  // ToDo: Create pose calculation for odometry
+  // ToDo: Add sanity check
 
-    NOMAD_WHEEL_rotation_controller = rotation_controller;
-    NOMAD_WHEEL_speed_controller = speed_controller;
+  /* Initialize controllers */
 
-    /* initialize period constant */
-    NOMAD_WHEEL_rotation_controller->params.dt = NOMAD_WHEEL_DT;
-    NOMAD_WHEEL_speed_controller->params.dt = NOMAD_WHEEL_DT;
+  PID_CONTROLLER_Init(
+      &NOMAD_WHEEL_speed_controller,
+      NOMAD_WHEEL_WHEEL_KP,
+      NOMAD_WHEEL_WHEEL_KD,
+      NOMAD_WHEEL_WHEEL_KI,
+      NOMAD_WHEEL_WHEEL_LIMIT);
 
+  PID_CONTROLLER_Init(
+      &NOMAD_WHEEL_rotation_controller,
+      NOMAD_WHEEL_ROTATION_KP,
+      NOMAD_WHEEL_ROTATION_KD,
+      NOMAD_WHEEL_ROTATION_KI,
+      NOMAD_WHEEL_ROTATION_LIMIT);
 
-    xTaskCreate(
-        NOMAD_WHEEL_TaskFn,
-        NOMAD_WHEEL_TASK_NAME,
-        NOMAD_WHEEL_TASK_STACK,
-        NULL,
-        NOMAD_WHEEL_TASK_PRIO,
-        NULL);
-  }
+  NOMAD_WHEEL_rotation_controller_ptr = (Base_Controller_t*)&NOMAD_WHEEL_rotation_controller;
+  NOMAD_WHEEL_speed_controller_ptr = (Base_Controller_t*)&NOMAD_WHEEL_speed_controller;
+
+  /* initialize period constant */
+  NOMAD_WHEEL_rotation_controller_ptr->params.dt = NOMAD_WHEEL_DT;
+  NOMAD_WHEEL_speed_controller_ptr->params.dt = NOMAD_WHEEL_DT;
+
+  /* Create task */
+
+  xTaskCreate(
+      NOMAD_WHEEL_TaskFn,
+      NOMAD_WHEEL_TASK_NAME,
+      NOMAD_WHEEL_TASK_STACK,
+      NULL,
+      NOMAD_WHEEL_TASK_PRIO,
+      NULL);
+
 
 }
 

@@ -59,10 +59,10 @@
 #define NOMAD_ROTATION_REDUCTION  10.0f               /*<! Motor reduction factor */
 
 
-#define NOMAD_ROTATION_KP          10.0f
-#define NOMAD_ROTATION_KD          0.0f
-#define NOMAD_ROTATION_KI          0.0f
-#define NOMAD_ROTATION_LIMIT       100.0f
+#define NOMAD_ROTATION_KP          10.0f  /*<! Proportional constant */
+#define NOMAD_ROTATION_KD          0.0f   /*<! Derivative constant */
+#define NOMAD_ROTATION_KI          0.0f   /*<! Integral constant */
+#define NOMAD_ROTATION_LIMIT       100.0f /*<! Controller max output */
 
 /************************************************************************
     FUNCTIONS
