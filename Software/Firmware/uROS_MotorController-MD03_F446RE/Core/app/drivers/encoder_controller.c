@@ -1,23 +1,52 @@
-/*
- * encoder_controller.c
+/**                             _____________
+ *              /\      /\     /             \
+ *             //\\____//\\   |  TUlBVVVVVSE= |
+ *            /     '      \   \  ___________/
+ *           /   /\ '  /\    \ /_/                / /  ___
+ *          |    == o ==      |       /|         / /  / _ \
+ *           \      '        /       | |        / /__|  __/
+ *             \           /         \ \        \____/\___|
+ *             /----<o>---- \         / /        __  __  __  __      __        ___
+ *             |            ' \       \ \       |__)/  \|__)/  \ __ /  |__| /\  |
+ *             |    |    | '   '\      \ \      | \ \__/|__)\__/    \__|  |/--\ |
+ *  _________  | ´´ |  ' |     '  \    / /
+ *  |  MAYA  | |  ' |    | '       |__/ /
+ *   \______/   \__/ \__/ \_______/____/
  *
- *  Created on: 12 feb. 2023
- *      Author: Alejo
+ * @file encoder_controller.c
+ * @author Alejandro Gomez Molina (@Alejo2313)
+ * @brief Rotatory encoder controller.
+ *
+ * @version 0.1
+ * @date 12 feb. 2023
+ *
+ * @copyright Copyright (c) 2023
+ *
  */
 
+/************************************************************************
+    INCLUDES
+************************************************************************/
 #include "encoder_controller.h"
 
 
-/*************** Variables **************/
+/************************************************************************
+    PRIVATE DECLARATIONS
+************************************************************************/
+
 static Encoder_controller_t ENC_CONTROL_encoders[ENC_CONTROL_MAX_ENCODERS];     /*<! Encoder handle allocation */
 static uint32_t ENC_CONTROL_encoderIndex = 0U;                                  /*<! Encoder allocation index */
 
-/************** Prototypes **************/
+/************************************************************************
+    PROTOTYPES
+************************************************************************/
+
 static Encoder_controller_t* ENC_CONTROL_getEncoderInstance (TIM_HandleTypeDef* htim);
 static void ENC_CONTROL_periodElapsedCallback (TIM_HandleTypeDef* htim);
 
-/************** Source code **************/
-
+/************************************************************************
+    FUNCTIONS
+************************************************************************/
 
 /**
  * @brief Initialize an encoder structure.
@@ -29,7 +58,7 @@ static void ENC_CONTROL_periodElapsedCallback (TIM_HandleTypeDef* htim);
  * @param reductionFactor Motor speed reduction factor
  * @return
  */
-Encoder_controller_t* ENC_CONTROL_init(
+Encoder_controller_t* ENC_CONTROL_init (
     TIM_HandleTypeDef* htim,
     uint32_t countPerRevolution,
     float reductionFactor)

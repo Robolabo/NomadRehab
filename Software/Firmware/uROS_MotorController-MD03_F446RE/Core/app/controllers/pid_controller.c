@@ -35,8 +35,8 @@
     DECLARATIONS
 ************************************************************************/
 
-void PID_CONTROLLER_reset (Base_Controller_t* controller);
-float PID_CONTROLLER_execute (Base_Controller_t* controller, float input);
+static void PID_CONTROLLER_reset (Base_Controller_t* controller);
+static float PID_CONTROLLER_execute (Base_Controller_t* controller, float input);
 
 
 /************************************************************************
@@ -101,7 +101,7 @@ static float PID_CONTROLLER_clamp (float value, float threshold) {
  * @param controller PID controller structure.
  * @param input Input value from the feedback network.
  */
-float PID_CONTROLLER_execute (Base_Controller_t* controller, float input) {
+static float PID_CONTROLLER_execute (Base_Controller_t* controller, float input) {
   float result = -1.0;
   float error = 0.0;
   float proportional = 0.0;
@@ -143,7 +143,7 @@ float PID_CONTROLLER_execute (Base_Controller_t* controller, float input) {
  * @brief Reset the controller. Set the origin.
  *
  */
-void PID_CONTROLLER_reset (Base_Controller_t* controller) {
+static void PID_CONTROLLER_reset (Base_Controller_t* controller) {
   PID_controller_t* pid_controller = (PID_controller_t*)(controller);
   if (pid_controller != NULL) {
     pid_controller->base.params.last_error = 0.0;

@@ -70,12 +70,62 @@
     FUNCTIONS
 ************************************************************************/
 
-float NOMAD_WHEEL_getRotation ();
-
-float NOMAD_WHEEL_getSpeed ();
-
+/**
+ * @brief Set controller reference point.
+ *
+ * @param speed Reference speed.
+ * @param rotation reference position.
+ */
 void NOMAD_WHEEL_setPoint (float speed, float rotation);
 
+/**
+ * @brief Get current wheel speed in radians per second.
+ *
+ * @return Wheel speed in radians per second.
+ */
+float NOMAD_WHEEL_getSpeed ();
+
+/**
+ * @brief Get current wheel angle in radians.
+ *
+ * @return wheel angle in radians.
+ */
+float NOMAD_WHEEL_getRotation ();
+
+/**
+ * @brief Check if the control is enabled.
+ *
+ * @return True if is enabled, else false.
+ */
+bool NOMAD_WHEEL_isControlEnabled ();
+
+/**
+ * @brief Enable the controller.
+ *
+ */
+void NOMAD_WHEEL_enableControl ();
+
+/**
+ * @brief Disable the controller.
+ *
+ */
+void NOMAD_WHEEL_disableControl ();
+
+/**
+ * @brief Reset the controller. Set the origin.
+ *
+ */
+void NOMAD_WHEEL_reset ();
+
+/**
+ * @brief Initialize the wheel controller.
+ *
+ * @param speed_controller Controller structure used for speed control.
+ * @param rotation_controller Controller structure used for ration control.
+ */
 void NOMAD_WHEEL_Init (Base_Controller_t* speed_controller, Base_Controller_t* rotation_controller);
+
+
+
 
 #endif /* INC_NOMAD_WHEEL_CONTROLLER_H_ */

@@ -27,7 +27,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "nomad_pwm.h"
-#include "nomad_encoder.h"
 #include "encoder_test.h"
 #include "pwm_test.h"
 #include "pid_test.h"
