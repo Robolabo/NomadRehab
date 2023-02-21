@@ -28,7 +28,6 @@
     INCLUDES
 ************************************************************************/
 #include "nomad_rotation_controller.h"
-
 /************************************************************************
     PRIVATE DEFINES AND TYPES
 ************************************************************************/
@@ -67,7 +66,11 @@ static void NOMAD_ROTATION_TaskFn() {
   NOMAD_PWM_start(NOMAD_ROTATION_PWM_CH);
 
   /* Initialize encoder */
-  ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
+
+  if (!__HAL_RCC_GET_FLAG(RCC_FLAG_SFTRST)){
+    ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
+  }
+
 
 
   while (1) {

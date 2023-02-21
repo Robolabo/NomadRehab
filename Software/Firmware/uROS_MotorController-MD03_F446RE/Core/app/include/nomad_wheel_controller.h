@@ -136,6 +136,15 @@ void NOMAD_WHEEL_reset ();
  */
 void NOMAD_WHEEL_Init ();
 
+/**
+ * @brief store the context in ram to restore in case of soft reset.
+ */
+void NOMAD_WHEEL_saveContext ();
+
+/**
+ * @brief Restore context.
+ */
+void NOMAD_WHEEL_restoreContext ();
 
 
 

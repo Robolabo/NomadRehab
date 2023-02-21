@@ -67,7 +67,7 @@
     DEFINES AND TYPES
 ************************************************************************/
 #define UROS_MOTOR_TASK_NAME      "uROS_motor_task"                     /*<! Task name */
-#define UROS_MOTOR_TASK_STACK     (configMINIMAL_STACK_SIZE) + 1520U    /*<! Task priority*/
+#define UROS_MOTOR_TASK_STACK     (configMINIMAL_STACK_SIZE) + 2048U    /*<! Task priority*/
 #define UROS_MOTOR_TASK_PRIO      (tskIDLE_PRIORITY) + 1U               /*<! Task stack size*/
 
 #define UROS_MOTOR_NODE_NAME      "wheels"

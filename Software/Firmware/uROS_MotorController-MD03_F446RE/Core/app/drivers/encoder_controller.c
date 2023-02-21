@@ -35,7 +35,7 @@
 ************************************************************************/
 
 static Encoder_controller_t ENC_CONTROL_encoders[ENC_CONTROL_MAX_ENCODERS];     /*<! Encoder handle allocation */
-static uint32_t ENC_CONTROL_encoderIndex = 0U;                                  /*<! Encoder allocation index */
+static uint32_t ENC_CONTROL_encoderIndex = 0U ;                                  /*<! Encoder allocation index */
 
 /************************************************************************
     PROTOTYPES
@@ -47,6 +47,8 @@ static void ENC_CONTROL_periodElapsedCallback (TIM_HandleTypeDef* htim);
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
+
+
 
 /**
  * @brief Initialize an encoder structure.
@@ -84,7 +86,6 @@ Encoder_controller_t* ENC_CONTROL_init (
       while(1);
     }
   }
-
 
   /* Initialize encoder parameters */
   instance->htim = htim;
@@ -163,8 +164,6 @@ static Encoder_controller_t* ENC_CONTROL_getEncoderInstance (TIM_HandleTypeDef* 
   }
   return result;
 }
-
-
 
 /**
  * @brief Period elapsed callback. Triggered every revolution

@@ -30,12 +30,26 @@
 ************************************************************************/
 
 #include "nomad_wheel_controller.h"
-
 /************************************************************************
     DEFINES AND TYPES
 ************************************************************************/
 
 #define NOMAD_WHEEL_DT                  ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f
+#define NOMAG_WHEEL_MAGIC   0xDEADBEEFU
+
+struct NOMAD_WHEEL_context_s {
+  PID_controller_t speed_controller;
+  PID_controller_t rotation_controller;
+  Encoder_controller_t speed_encoder;
+  Encoder_controller_t rotation_encoder;
+  uint32_t magicNumber;
+};
+
+struct NOMAD_WHEEL_context_s NOMAD_WHEEL_context __attribute__ ((section (".no_init")));
+
+#define NOMAD_WHEEL_IS_VALID_CONTEXT() (NOMAD_WHEEL_context.magicNumber == NOMAG_WHEEL_MAGIC)
+#define NOMAD_WHEEL_INVALIDATE_CONTEXT() (NOMAD_WHEEL_context.magicNumber = 0)
+
 
 /************************************************************************
     DECLARATIONS
@@ -45,9 +59,12 @@ static bool NOMAD_WHEEL_isEnabled = false;                   /*<! Enable flag us
 static Base_Controller_t*  NOMAD_WHEEL_speed_controller_ptr;     /*<! Pointer to the speed controller structure */
 static Base_Controller_t*  NOMAD_WHEEL_rotation_controller_ptr;  /*<! Pointer to the rotation controller structure */
 
+
 static PID_controller_t NOMAD_WHEEL_speed_controller;
 static PID_controller_t NOMAD_WHEEL_rotation_controller;
 
+Encoder_controller_t* NOMAD_WHEEL_wheel_enc;
+Encoder_controller_t* NOMAD_WHEEL_rotation_enc;
 
 /************************************************************************
     FUNCTIONS
@@ -66,12 +83,12 @@ static void NOMAD_WHEEL_TaskFn() {
   float last_position = 0;
 
   /* Initialize hardware encoders */
-  Encoder_controller_t* rotation_enc = ENC_CONTROL_init(
+  NOMAD_WHEEL_rotation_enc = ENC_CONTROL_init(
       NOMAD_WHEEL_ROTATION_ENC,
       NOMAD_WHEEL_ROTATION_CPR,
       NOMAD_WHEEL_ROTATION_REDUCTION);
 
-  Encoder_controller_t* wheel_enc = ENC_CONTROL_init(
+  NOMAD_WHEEL_wheel_enc = ENC_CONTROL_init(
       NOMAD_WHEEL_WHEEL_ENC,
       NOMAD_WHEEL_WHEEL_CPR,
       NOMAD_WHEEL_WHEEL_REDUCTION);
@@ -85,12 +102,19 @@ static void NOMAD_WHEEL_TaskFn() {
   NOMAD_PWM_start(NOMAD_WHEEL_ROTATION_PWM_CH);
 
   /* Sanity check */
-  if ((rotation_enc == NULL) || (wheel_enc == NULL)) {
+  if ((NOMAD_WHEEL_rotation_enc == NULL) || (NOMAD_WHEEL_wheel_enc == NULL)) {
     while(1);
   }
 
-  ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
-  ENC_CONTROL_reset(NOMAD_WHEEL_WHEEL_ENC);
+  if (NOMAD_WHEEL_IS_VALID_CONTEXT()) {
+    NOMAD_WHEEL_restoreContext();
+    NOMAD_WHEEL_INVALIDATE_CONTEXT();
+  }
+  else {
+    ENC_CONTROL_reset(NOMAD_WHEEL_ROTATION_ENC);
+    ENC_CONTROL_reset(NOMAD_WHEEL_WHEEL_ENC);
+  }
+
   while (1) {
     /* Get controller inputs */
     rotation_input = ENC_CONTROL_getPostion(NOMAD_WHEEL_ROTATION_ENC);
@@ -203,6 +227,32 @@ void NOMAD_WHEEL_reset () {
   NOMAD_WHEEL_enableControl();
 }
 
+/**
+ * @brief store the context in ram to restore in case of soft reset.
+ */
+void NOMAD_WHEEL_saveContext () {
+  NOMAD_WHEEL_rotation_enc->cnt = NOMAD_WHEEL_rotation_enc->htim->Instance->CNT;
+  NOMAD_WHEEL_wheel_enc->cnt = NOMAD_WHEEL_wheel_enc->htim->Instance->CNT;
+
+  memcpy(&NOMAD_WHEEL_speed_controller, &NOMAD_WHEEL_context.speed_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_rotation_controller, &NOMAD_WHEEL_context.rotation_controller, sizeof(PID_controller_t));
+  memcpy(NOMAD_WHEEL_rotation_enc, &NOMAD_WHEEL_context.rotation_encoder, sizeof(Encoder_controller_t));
+  memcpy(NOMAD_WHEEL_wheel_enc, &NOMAD_WHEEL_context.speed_encoder, sizeof(Encoder_controller_t));
+  NOMAD_WHEEL_context.magicNumber = NOMAG_WHEEL_MAGIC;
+}
+
+/**
+ * @brief Restore context.
+ */
+void NOMAD_WHEEL_restoreContext () {
+  memcpy(&NOMAD_WHEEL_context.speed_controller, &NOMAD_WHEEL_speed_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_context.rotation_controller, &NOMAD_WHEEL_rotation_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_context.rotation_encoder, NOMAD_WHEEL_rotation_enc, sizeof(Encoder_controller_t));
+  memcpy(&NOMAD_WHEEL_context.speed_encoder,NOMAD_WHEEL_wheel_enc , sizeof(Encoder_controller_t));
+
+  NOMAD_WHEEL_rotation_enc->htim->Instance->CNT = NOMAD_WHEEL_rotation_enc->cnt;
+  NOMAD_WHEEL_wheel_enc->htim->Instance->CNT = NOMAD_WHEEL_wheel_enc->cnt;
+}
 
 /**
  * @brief Initialize the wheel controller.

@@ -52,10 +52,30 @@ static rcl_publisher_t UROS_MOTOR_speedPub;
 static rcl_publisher_t UROS_MOTOR_rotationPub;
 static rcl_timer_t UROS_MOTOR_pubTimer;
 
+
+static rcl_node_t UROS_MOTOR_node;
+static rclc_executor_t UROS_MOTOR_executor;
+static rcl_allocator_t UROS_MOTOR_allocator;
+static rclc_support_t UROS_MOTOR_support;
+
+static bool UROS_MOTOR_restart = false;
+static uint16_t UROS_MOTOR_errors = 0;
 static TickType_t puRate = 0;
+
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
+#define UROS_MOTOR_MAX_ERROS  5U
+#define UROS_MOTOR_CHECK(ret) { \
+  if ((ret) != RMW_RET_OK ) {   \
+    UROS_MOTOR_errors++;        \
+    }                           \
+   if(UROS_MOTOR_errors > (UROS_MOTOR_MAX_ERROS)) {  \
+     UROS_MOTOR_restart = true; \
+   }                            \
+}
+
+
 
 /**
  * @brief Speed subscription callback. Called on new data.
@@ -106,8 +126,8 @@ static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_tim
     UROS_MOTOR_currentSpeed.twist.linear.x = NOMAD_WHEEL_getSpeed();
     UROS_MOTOR_currentRotation.pose.orientation.x = NOMAD_ROTATION_getRotation();
     /* Publish data */
-    result = rcl_publish(&UROS_MOTOR_speedPub, &UROS_MOTOR_currentSpeed, NULL);
-    result = rcl_publish(&UROS_MOTOR_rotationPub, &UROS_MOTOR_currentRotation, NULL);
+    UROS_MOTOR_CHECK(rcl_publish(&UROS_MOTOR_speedPub, &UROS_MOTOR_currentSpeed, NULL));
+    UROS_MOTOR_CHECK(rcl_publish(&UROS_MOTOR_rotationPub, &UROS_MOTOR_currentRotation, NULL));
 
   }
 
@@ -142,84 +162,85 @@ static void UROS_MOTOR_setup () {
     while(1);
   }
 }
-
-/**
- * @brief Motor application main function.
- */
-static void UROS_MOTOR_TaskFn () {
-  rcl_node_t node;
-  rclc_executor_t executor;
-  rcl_allocator_t allocator;
-  rclc_support_t support;
-
+static void UROS_MOTOR_appInit () {
   rcl_ret_t result;
   RCL_UNUSED(result);
 
-  UROS_MOTOR_setup();
-  allocator = rcl_get_default_allocator();
-  result = rclc_support_init(&support, 0, NULL, &allocator);
-  result = rclc_node_init_default(&node, UROS_MOTOR_NODE_NAME, UROS_MOTOR_NODE_NS, &support);
+  UROS_MOTOR_allocator = rcl_get_default_allocator();
+  result = rclc_support_init(&UROS_MOTOR_support, 0, NULL, &UROS_MOTOR_allocator);
+  result = rclc_node_init_default(&UROS_MOTOR_node, UROS_MOTOR_NODE_NAME, UROS_MOTOR_NODE_NS, &UROS_MOTOR_support);
 
-  rmw_
   result = rclc_subscription_init_best_effort(
       &UROS_MOTOR_speedSub,
-      &node,
+      &UROS_MOTOR_node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, TwistStamped),
       UROS_MOTOR_SUB_SPEED);
 
   result = rclc_subscription_init_best_effort(
       &UROS_MOTOR_rotationSub,
-      &node,
+      &UROS_MOTOR_node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, PoseStamped),
       UROS_MOTOR_SUB_ROTATION);
 
   result = rclc_publisher_init_default(
       &UROS_MOTOR_speedPub,
-      &node,
+      &UROS_MOTOR_node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, TwistStamped),
       UROS_MOTOR_PUB_SPEED);
 
   result = rclc_publisher_init_default(
       &UROS_MOTOR_rotationPub,
-      &node,
+      &UROS_MOTOR_node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, PoseStamped),
       UROS_MOTOR_PUB_ROTATION);
 
   result = rclc_timer_init_default(
       &UROS_MOTOR_pubTimer,
-      &support,
+      &UROS_MOTOR_support,
       RCL_MS_TO_NS(UROS_MOTOR_PUB_PERIOD_MS),
       UROS_MOTOR_timerCallback);
 
-
   result = rclc_executor_init(
-      &executor,
-      &support.context,
+      &UROS_MOTOR_executor,
+      &UROS_MOTOR_support.context,
       UROS_MOTOR_N_INSTANCES,
-      &allocator);
-
+      &UROS_MOTOR_allocator);
 
   result = rclc_executor_add_subscription(
-      &executor,
+      &UROS_MOTOR_executor,
       &UROS_MOTOR_speedSub,
       &UROS_MOTOR_newSpeed,
       UROS_MOTOR_speedCallback,
       ON_NEW_DATA);
 
   result = rclc_executor_add_subscription(
-      &executor,
+      &UROS_MOTOR_executor,
       &UROS_MOTOR_rotationSub,
       &UROS_MOTOR_newRotation,
       UROS_MOTOR_rotationCallback,
       ON_NEW_DATA);
 
-  result = rclc_executor_add_timer(&executor, &UROS_MOTOR_pubTimer);
+  result = rclc_executor_add_timer(&UROS_MOTOR_executor, &UROS_MOTOR_pubTimer);
+}
 
-  RCL_UNUSED(result);
+
+static void UROS_MOTOR_appFinit () {
+  NOMAD_WHEEL_saveContext();
+  NVIC_SystemReset();
+}
+/**
+ * @brief Motor application main function.
+ */
+static void UROS_MOTOR_TaskFn () {
 
   while (1) {
-    rclc_executor_spin_some(&executor, RCL_MS_TO_NS(UROS_MOTOR_SPIN_TIME_MS));
-    vTaskDelay(pdMS_TO_TICKS(UROS_MOTOR_DELAY_TIME_MS));
+    UROS_MOTOR_appInit();
+    UROS_MOTOR_restart = false;
+    while (!UROS_MOTOR_restart) {
+      UROS_MOTOR_CHECK(rclc_executor_spin_some(&UROS_MOTOR_executor, RCL_MS_TO_NS(UROS_MOTOR_SPIN_TIME_MS)));
+      vTaskDelay(pdMS_TO_TICKS(UROS_MOTOR_DELAY_TIME_MS));
+    }
+    UROS_MOTOR_appFinit();
   }
 }
 
@@ -228,6 +249,8 @@ static void UROS_MOTOR_TaskFn () {
  */
 void UROS_MOTOR_init () {
   /* ToDo: Check if the task has been created correctly */
+  UROS_MOTOR_setup();
+
   xTaskCreate(
       UROS_MOTOR_TaskFn,
       UROS_MOTOR_TASK_NAME,
