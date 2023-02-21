@@ -52,6 +52,7 @@ static rcl_publisher_t UROS_MOTOR_speedPub;
 static rcl_publisher_t UROS_MOTOR_rotationPub;
 static rcl_timer_t UROS_MOTOR_pubTimer;
 
+static TickType_t puRate = 0;
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
@@ -61,10 +62,15 @@ static rcl_timer_t UROS_MOTOR_pubTimer;
  * @param data Pointer to incoming message.
  */
 static void UROS_MOTOR_speedCallback (const void* data) {
+  static TickType_t last = 0;
   const TwistStamped_msg_t* speedData = (TwistStamped_msg_t*)data;
   float speed_x = speedData->twist.linear.x;
   float angle_x = speedData->twist.angular.x;
   /* ToDo: Convert linear to angular position */
+
+
+  puRate = xTaskGetTickCount() - last;
+  last = xTaskGetTickCount();
 
   /* Update controller */
   NOMAD_WHEEL_setPoint(speed_x, angle_x);
@@ -102,6 +108,7 @@ static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_tim
     /* Publish data */
     result = rcl_publish(&UROS_MOTOR_speedPub, &UROS_MOTOR_currentSpeed, NULL);
     result = rcl_publish(&UROS_MOTOR_rotationPub, &UROS_MOTOR_currentRotation, NULL);
+
   }
 
 }
@@ -153,13 +160,14 @@ static void UROS_MOTOR_TaskFn () {
   result = rclc_support_init(&support, 0, NULL, &allocator);
   result = rclc_node_init_default(&node, UROS_MOTOR_NODE_NAME, UROS_MOTOR_NODE_NS, &support);
 
-  result = rclc_subscription_init_default(
+  rmw_
+  result = rclc_subscription_init_best_effort(
       &UROS_MOTOR_speedSub,
       &node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, TwistStamped),
       UROS_MOTOR_SUB_SPEED);
 
-  result = rclc_subscription_init_default(
+  result = rclc_subscription_init_best_effort(
       &UROS_MOTOR_rotationSub,
       &node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, PoseStamped),
@@ -175,7 +183,7 @@ static void UROS_MOTOR_TaskFn () {
       &UROS_MOTOR_rotationPub,
       &node,
       ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, PoseStamped),
-      UROS_MOTOR_PUB_SPEED);
+      UROS_MOTOR_PUB_ROTATION);
 
   result = rclc_timer_init_default(
       &UROS_MOTOR_pubTimer,

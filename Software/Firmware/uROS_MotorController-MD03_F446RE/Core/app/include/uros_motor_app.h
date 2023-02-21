@@ -67,10 +67,10 @@
     DEFINES AND TYPES
 ************************************************************************/
 #define UROS_MOTOR_TASK_NAME      "uROS_motor_task"                     /*<! Task name */
-#define UROS_MOTOR_TASK_STACK     (configMINIMAL_STACK_SIZE) + 1024U    /*<! Task priority*/
+#define UROS_MOTOR_TASK_STACK     (configMINIMAL_STACK_SIZE) + 1520U    /*<! Task priority*/
 #define UROS_MOTOR_TASK_PRIO      (tskIDLE_PRIORITY) + 1U               /*<! Task stack size*/
 
-#define UROS_MOTOR_NODE_NAME      "wheel_controller"
+#define UROS_MOTOR_NODE_NAME      "wheels"
 #define UROS_MOTOR_NODE_NS        ""
 
 #define UROS_MOTOR_SUB_SPEED      "/motor/speed_cmd"        /*<! Speed command topic */
@@ -79,7 +79,7 @@
 #define UROS_MOTOR_PUB_ROTATION   "/motor/rotation_state"   /*<! Rotation state topic */
 #define UROS_MOTOR_PUB_ODOMETRY   "/motor/odometry"         /*<! Odometry state topic (ToDo: impelement)*/
 
-#define UROS_MOTOR_N_INSTANCES    10U   /*<! Total number of instance (pub+sub+tim+...)*/
+#define UROS_MOTOR_N_INSTANCES    6U   /*<! Total number of instance (pub+sub+tim+...)*/
 #define UROS_MOTOR_PUB_PERIOD_MS  30U   /*<! Publication period (milliseconds) */
 #define UROS_MOTOR_SPIN_TIME_MS   1U    /*<! uROS spin time (milliseconds) */
 #define UROS_MOTOR_DELAY_TIME_MS  9U    /*<! uROS task period (milliseconds) */
