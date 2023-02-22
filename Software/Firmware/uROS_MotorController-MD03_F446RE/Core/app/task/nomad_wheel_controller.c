@@ -234,10 +234,12 @@ void NOMAD_WHEEL_saveContext () {
   NOMAD_WHEEL_rotation_enc->cnt = NOMAD_WHEEL_rotation_enc->htim->Instance->CNT;
   NOMAD_WHEEL_wheel_enc->cnt = NOMAD_WHEEL_wheel_enc->htim->Instance->CNT;
 
-  memcpy(&NOMAD_WHEEL_speed_controller, &NOMAD_WHEEL_context.speed_controller, sizeof(PID_controller_t));
-  memcpy(&NOMAD_WHEEL_rotation_controller, &NOMAD_WHEEL_context.rotation_controller, sizeof(PID_controller_t));
-  memcpy(NOMAD_WHEEL_rotation_enc, &NOMAD_WHEEL_context.rotation_encoder, sizeof(Encoder_controller_t));
-  memcpy(NOMAD_WHEEL_wheel_enc, &NOMAD_WHEEL_context.speed_encoder, sizeof(Encoder_controller_t));
+  memcpy(&NOMAD_WHEEL_context.speed_controller, &NOMAD_WHEEL_speed_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_context.rotation_controller, &NOMAD_WHEEL_rotation_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_context.rotation_encoder, NOMAD_WHEEL_rotation_enc, sizeof(Encoder_controller_t));
+  memcpy(&NOMAD_WHEEL_context.speed_encoder,NOMAD_WHEEL_wheel_enc , sizeof(Encoder_controller_t));
+
+
   NOMAD_WHEEL_context.magicNumber = NOMAG_WHEEL_MAGIC;
 }
 
@@ -245,10 +247,12 @@ void NOMAD_WHEEL_saveContext () {
  * @brief Restore context.
  */
 void NOMAD_WHEEL_restoreContext () {
-  memcpy(&NOMAD_WHEEL_context.speed_controller, &NOMAD_WHEEL_speed_controller, sizeof(PID_controller_t));
-  memcpy(&NOMAD_WHEEL_context.rotation_controller, &NOMAD_WHEEL_rotation_controller, sizeof(PID_controller_t));
-  memcpy(&NOMAD_WHEEL_context.rotation_encoder, NOMAD_WHEEL_rotation_enc, sizeof(Encoder_controller_t));
-  memcpy(&NOMAD_WHEEL_context.speed_encoder,NOMAD_WHEEL_wheel_enc , sizeof(Encoder_controller_t));
+
+  memcpy(&NOMAD_WHEEL_speed_controller, &NOMAD_WHEEL_context.speed_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_WHEEL_rotation_controller, &NOMAD_WHEEL_context.rotation_controller, sizeof(PID_controller_t));
+  memcpy(NOMAD_WHEEL_rotation_enc, &NOMAD_WHEEL_context.rotation_encoder, sizeof(Encoder_controller_t));
+  memcpy(NOMAD_WHEEL_wheel_enc, &NOMAD_WHEEL_context.speed_encoder, sizeof(Encoder_controller_t));
+
 
   NOMAD_WHEEL_rotation_enc->htim->Instance->CNT = NOMAD_WHEEL_rotation_enc->cnt;
   NOMAD_WHEEL_wheel_enc->htim->Instance->CNT = NOMAD_WHEEL_wheel_enc->cnt;

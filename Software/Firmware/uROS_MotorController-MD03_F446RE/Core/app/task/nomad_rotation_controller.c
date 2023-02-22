@@ -33,6 +33,18 @@
 ************************************************************************/
 
 #define NOMAD_ROTATION_DT                  (((float)(NOMAD_ROTATION_TASK_PERIOD_MS))/1000.0f)
+#define NOMAG_WHEEL_MAGIC   0xDEADBEEFU
+
+struct NOMAD_ROTATION_context_s {
+  PID_controller_t rotation_controller;
+  Encoder_controller_t rotation_encoder;
+  uint32_t magicNumber;
+};
+
+struct NOMAD_ROTATION_context_s NOMAD_ROTATION_context __attribute__ ((section (".no_init")));
+
+#define NOMAD_ROTATION_IS_VALID_CONTEXT() (NOMAD_ROTATION_context.magicNumber == NOMAG_WHEEL_MAGIC)
+#define NOMAD_ROTATION_INVALIDATE_CONTEXT() (NOMAD_ROTATION_context.magicNumber = 0)
 
 /************************************************************************
     PRIVATE DECLARATIONS
@@ -40,6 +52,7 @@
 
 static bool NOMAD_ROTATION_isEnabled = false;      /*<! Enable flag used to enable/disable the controllers */
 static PID_controller_t NOMAD_ROTATION_controller; /*<! Rotation controller structure */
+static Encoder_controller_t* NOMAD_ROTATION_rotation_enc;
 
 /************************************************************************
     FUNCTIONS
@@ -54,7 +67,7 @@ static void NOMAD_ROTATION_TaskFn() {
   float rotation_output = 0.0;
 
   /* Initialize hardware encoders */
-  ENC_CONTROL_init(
+  NOMAD_ROTATION_rotation_enc = ENC_CONTROL_init(
       NOMAD_ROTATION_ENC,
       NOMAD_ROTATION_CPR,
       NOMAD_ROTATION_REDUCTION);
@@ -66,8 +79,11 @@ static void NOMAD_ROTATION_TaskFn() {
   NOMAD_PWM_start(NOMAD_ROTATION_PWM_CH);
 
   /* Initialize encoder */
-
-  if (!__HAL_RCC_GET_FLAG(RCC_FLAG_SFTRST)){
+  if (NOMAD_ROTATION_IS_VALID_CONTEXT()) {
+    NOMAD_ROTATION_restoreContext();
+    NOMAD_ROTATION_INVALIDATE_CONTEXT();
+  }
+  else {
     ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
   }
 
@@ -138,6 +154,28 @@ void NOMAD_ROTATION_disableControl () {
   NOMAD_ROTATION_isEnabled = false;
 }
 
+
+/**
+ * @brief store the context in ram to restore in case of soft reset.
+ */
+void NOMAD_ROTATION_saveContext () {
+  NOMAD_ROTATION_rotation_enc->cnt = NOMAD_ROTATION_rotation_enc->htim->Instance->CNT;
+
+  memcpy(&NOMAD_ROTATION_context.rotation_controller, &NOMAD_ROTATION_controller, sizeof(PID_controller_t));
+  memcpy(&NOMAD_ROTATION_context.rotation_encoder, NOMAD_ROTATION_rotation_enc, sizeof(Encoder_controller_t));
+
+  NOMAD_ROTATION_context.magicNumber = NOMAG_WHEEL_MAGIC;
+}
+
+/**
+ * @brief Restore context.
+ */
+void NOMAD_ROTATION_restoreContext () {
+  memcpy(&NOMAD_ROTATION_controller, &NOMAD_ROTATION_context.rotation_controller, sizeof(PID_controller_t));
+  memcpy(NOMAD_ROTATION_rotation_enc, &NOMAD_ROTATION_context.rotation_encoder, sizeof(Encoder_controller_t));
+
+  NOMAD_ROTATION_rotation_enc->htim->Instance->CNT = NOMAD_ROTATION_rotation_enc->cnt;
+}
 
 /**
  * @brief Reset the controller. Set the origin.

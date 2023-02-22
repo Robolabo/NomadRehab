@@ -113,4 +113,14 @@ void NOMAD_ROTATION_reset ();
  */
 void NOMAD_ROTATION_Init ();
 
+/**
+ * @brief store the context in ram to restore in case of soft reset.
+ */
+void NOMAD_ROTATION_saveContext ();
+
+/**
+ * @brief Restore context.
+ */
+void NOMAD_ROTATION_restoreContext ();
+
 #endif /* APP_INCLUDE_NOMAD_ROTATION_CONTROLLER_H_ */

@@ -113,6 +113,7 @@ static void UROS_MOTOR_rotationCallback (const void* data) {
  * @param last_call_time Last call time.
  */
 static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_time) {
+  static uint32_t sec = 0;
   rcl_ret_t result;
 
   RCLC_UNUSED(last_call_time);
@@ -122,12 +123,18 @@ static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_tim
 
   if (timer != NULL) {
     /* Get the data */
+    UROS_MOTOR_currentSpeed.header.stamp.sec = sec;
+    UROS_MOTOR_currentRotation.header.stamp.sec = sec;
+    UROS_MOTOR_currentSpeed.header.stamp.nanosec = xTaskGetTickCount();
+    UROS_MOTOR_currentRotation.header.stamp.nanosec = xTaskGetTickCount();
+
     UROS_MOTOR_currentSpeed.twist.angular.x = NOMAD_WHEEL_getRotation();
     UROS_MOTOR_currentSpeed.twist.linear.x = NOMAD_WHEEL_getSpeed();
     UROS_MOTOR_currentRotation.pose.orientation.x = NOMAD_ROTATION_getRotation();
     /* Publish data */
     UROS_MOTOR_CHECK(rcl_publish(&UROS_MOTOR_speedPub, &UROS_MOTOR_currentSpeed, NULL));
     UROS_MOTOR_CHECK(rcl_publish(&UROS_MOTOR_rotationPub, &UROS_MOTOR_currentRotation, NULL));
+    sec++;
 
   }
 
@@ -226,6 +233,7 @@ static void UROS_MOTOR_appInit () {
 
 static void UROS_MOTOR_appFinit () {
   NOMAD_WHEEL_saveContext();
+  NOMAD_ROTATION_saveContext();
   NVIC_SystemReset();
 }
 /**
