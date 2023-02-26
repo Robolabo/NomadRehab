@@ -67,6 +67,8 @@ Encoder_controller_t* ENC_CONTROL_init (
 {
   Encoder_controller_t* instance =  ENC_CONTROL_getEncoderInstance (htim);
 
+  uint32_t period = 0;
+
   /* Check the parameter boundaries */
 
   if ((countPerRevolution == 0) || (reductionFactor <= 0)) {
@@ -92,12 +94,20 @@ Encoder_controller_t* ENC_CONTROL_init (
   instance->countPerRevolution = countPerRevolution;
   instance->reduction = reductionFactor;
   instance->revolutions = 0;
+  instance->scale = 1;
+
+  period = (uint32_t)(countPerRevolution*reductionFactor);
+
+  while (period > 0xFFFFU) {
+    instance->scale *= 10;
+    period /= instance->scale;
+  }
 
 
   /* Set the period to the total count of pulses in a complete revolution */
   /* This way the interrupt will be called every time a full revolution is performed */
 
-  instance->htim->Init.Period = (uint32_t)(countPerRevolution*reductionFactor);
+  instance->htim->Init.Period = period;
   instance->htim->Instance->ARR = instance->htim->Init.Period;
   instance->htim->PeriodElapsedCallback = ENC_CONTROL_periodElapsedCallback;
 
@@ -138,9 +148,9 @@ float ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
   if (instance != NULL) {
     counts = instance->htim->Instance->CNT;
 
-    position = (float)(instance->revolutions);
+    position = (float)(instance->revolutions)/(float)(instance->scale);
     position += ((float)counts/instance->htim->Init.Period);
-    position =  2*M_PI*position;
+    //position =  2*M_PI*position;
   }
 
   return position;

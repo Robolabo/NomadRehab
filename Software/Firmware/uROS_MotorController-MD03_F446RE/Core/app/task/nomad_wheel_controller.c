@@ -69,7 +69,7 @@ Encoder_controller_t* NOMAD_WHEEL_rotation_enc;
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
-
+static float pos_debug = 0.0;
 /**
  * @brief Main control task
  *
@@ -119,6 +119,7 @@ static void NOMAD_WHEEL_TaskFn() {
     /* Get controller inputs */
     rotation_input = ENC_CONTROL_getPostion(NOMAD_WHEEL_ROTATION_ENC);
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
+    pos_debug = position;
 
     /* ToDo: Speed also depends on the wheel radius. Update calculation */
     speed_input = (position - last_position)/(NOMAD_WHEEL_DT);

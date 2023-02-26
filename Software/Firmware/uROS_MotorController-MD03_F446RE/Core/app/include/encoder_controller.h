@@ -48,8 +48,8 @@ typedef struct {
   uint32_t countPerRevolution;    /*<! Encoder resolution */
   float reduction;                /*<! Motor speed reduction factor */
   int32_t revolutions;           /*<! Total number of revolutions */
-  int32_t cnt;
-
+  uint32_t cnt;
+  uint32_t scale;
 } Encoder_controller_t;
 
 

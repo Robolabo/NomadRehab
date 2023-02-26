@@ -148,6 +148,9 @@ static void UROS_MOTOR_setup () {
   NOMAD_WHEEL_Init();
   NOMAD_ROTATION_Init();
 
+  NOMAD_WHEEL_enableControl();
+
+
   rmw_uros_set_custom_transport(
     true,
     (void *) &huart2,
