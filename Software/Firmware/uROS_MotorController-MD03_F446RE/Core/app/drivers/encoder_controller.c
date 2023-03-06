@@ -148,9 +148,9 @@ float ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim) {
   if (instance != NULL) {
     counts = instance->htim->Instance->CNT;
 
-    position = (float)(instance->revolutions)/(float)(instance->scale);
-    position += ((float)counts/instance->htim->Init.Period);
-    //position =  2*M_PI*position;
+    position = (float)(instance->revolutions);
+    position += (float)(counts)/(float)(instance->htim->Init.Period);
+    position =  (2*M_PI*position)/(float)(instance->scale);
   }
 
   return position;

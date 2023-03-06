@@ -34,42 +34,47 @@
     DEFINES AND TYPES
 ************************************************************************/
 
-#define NOMAD_WHEEL_DT                  ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f
-#define NOMAG_WHEEL_MAGIC   0xDEADBEEFU
+#define NOMAD_WHEEL_DT                  ((float)(NOMAD_WHEEL_TASK_PERIOD_MS))/1000.0f   /*<! time between to consecutive measurements */
+#define NOMAG_WHEEL_MAGIC               0xDEADBEEFU                                     /*<! Magic number: no random sequence */
 
+/**
+ * Wheel context structure.
+ * Stores the current state in case of soft-reset.
+ */
 struct NOMAD_WHEEL_context_s {
   PID_controller_t speed_controller;
   PID_controller_t rotation_controller;
   Encoder_controller_t speed_encoder;
   Encoder_controller_t rotation_encoder;
-  uint32_t magicNumber;
+  uint32_t magicNumber; /*<! Delimiter. Used to check if it is valid context */
 };
 
-struct NOMAD_WHEEL_context_s NOMAD_WHEEL_context __attribute__ ((section (".no_init")));
 
-#define NOMAD_WHEEL_IS_VALID_CONTEXT() (NOMAD_WHEEL_context.magicNumber == NOMAG_WHEEL_MAGIC)
-#define NOMAD_WHEEL_INVALIDATE_CONTEXT() (NOMAD_WHEEL_context.magicNumber = 0)
+#define NOMAD_WHEEL_IS_VALID_CONTEXT() (NOMAD_WHEEL_context.magicNumber == NOMAG_WHEEL_MAGIC) /*<! Check if is a valid context by checking the magic number */
+#define NOMAD_WHEEL_INVALIDATE_CONTEXT() (NOMAD_WHEEL_context.magicNumber = 0U)               /*<! Reset the magic number to invalidate the context */
 
 
 /************************************************************************
     DECLARATIONS
 ************************************************************************/
 
-static bool NOMAD_WHEEL_isEnabled = false;                   /*<! Enable flag used to enable/disable the controllers */
+static bool NOMAD_WHEEL_isEnabled = false;                       /*<! Enable flag used to enable/disable the controllers */
 static Base_Controller_t*  NOMAD_WHEEL_speed_controller_ptr;     /*<! Pointer to the speed controller structure */
 static Base_Controller_t*  NOMAD_WHEEL_rotation_controller_ptr;  /*<! Pointer to the rotation controller structure */
 
 
-static PID_controller_t NOMAD_WHEEL_speed_controller;
-static PID_controller_t NOMAD_WHEEL_rotation_controller;
+static PID_controller_t NOMAD_WHEEL_speed_controller;            /*<! PID speed controller */
+static PID_controller_t NOMAD_WHEEL_rotation_controller;         /*<! PID rotation controller */
+static Encoder_controller_t* NOMAD_WHEEL_wheel_enc;              /*<! Speed encoder handle */
+static Encoder_controller_t* NOMAD_WHEEL_rotation_enc;           /*<! Rotation encoder handle */
 
-Encoder_controller_t* NOMAD_WHEEL_wheel_enc;
-Encoder_controller_t* NOMAD_WHEEL_rotation_enc;
+struct NOMAD_WHEEL_context_s NOMAD_WHEEL_context __attribute__ ((section (".no_init")));  /*<! Context. Allocated in no_init section to */
+                                                                                          /*<! avoid overriding in case of soft reset */
+
 
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
-static float pos_debug = 0.0;
 /**
  * @brief Main control task
  *
@@ -81,6 +86,8 @@ static void NOMAD_WHEEL_TaskFn() {
   float speed_output = 0.0;
   float position = 0.0;
   float last_position = 0;
+
+  TickType_t elapsed_ticks = 0;
 
   /* Initialize hardware encoders */
   NOMAD_WHEEL_rotation_enc = ENC_CONTROL_init(
@@ -116,10 +123,10 @@ static void NOMAD_WHEEL_TaskFn() {
   }
 
   while (1) {
+    elapsed_ticks = xTaskGetTickCount();
     /* Get controller inputs */
     rotation_input = ENC_CONTROL_getPostion(NOMAD_WHEEL_ROTATION_ENC);
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
-    pos_debug = position;
 
     /* ToDo: Speed also depends on the wheel radius. Update calculation */
     speed_input = (position - last_position)/(NOMAD_WHEEL_DT);
@@ -139,9 +146,9 @@ static void NOMAD_WHEEL_TaskFn() {
       NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, 0.0);
       NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, 0.0);
     }
-
+    elapsed_ticks = xTaskGetTickCount() - elapsed_ticks;
     /* Wait until next activation */
-    vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS));
+    vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS) - elapsed_ticks);
   }
 }
 
@@ -155,6 +162,14 @@ void NOMAD_WHEEL_setPoint (float speed, float rotation) {
 
   /* ToDO: protect with mutex */
   NOMAD_WHEEL_speed_controller_ptr->params.setpoit = speed;
+
+  /* Rotation angles must be in the range from -M_PI to M_PI */
+  if (rotation < -M_PI) {
+    rotation = -M_PI;
+  }
+  else if (rotation > M_PI) {
+    rotation = M_PI;
+  }
   NOMAD_WHEEL_rotation_controller_ptr->params.setpoit = rotation;
 }
 

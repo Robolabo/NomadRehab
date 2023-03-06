@@ -32,27 +32,32 @@
     PRIVATE DEFINES AND TYPES
 ************************************************************************/
 
-#define NOMAD_ROTATION_DT                  (((float)(NOMAD_ROTATION_TASK_PERIOD_MS))/1000.0f)
-#define NOMAG_WHEEL_MAGIC   0xDEADBEEFU
+#define NOMAD_ROTATION_DT (((float)(NOMAD_ROTATION_TASK_PERIOD_MS))/1000.0f) /*<! time between to consecutive measurements */
+#define NOMAG_WHEEL_MAGIC 0xDEADBEEFU                                        /*<! Magic number: no random sequence */
 
+/**
+ * Wheel context structure.
+ * Stores the current state in case of soft-reset.
+ */
 struct NOMAD_ROTATION_context_s {
   PID_controller_t rotation_controller;
   Encoder_controller_t rotation_encoder;
   uint32_t magicNumber;
 };
 
-struct NOMAD_ROTATION_context_s NOMAD_ROTATION_context __attribute__ ((section (".no_init")));
-
-#define NOMAD_ROTATION_IS_VALID_CONTEXT() (NOMAD_ROTATION_context.magicNumber == NOMAG_WHEEL_MAGIC)
-#define NOMAD_ROTATION_INVALIDATE_CONTEXT() (NOMAD_ROTATION_context.magicNumber = 0)
+#define NOMAD_ROTATION_IS_VALID_CONTEXT() (NOMAD_ROTATION_context.magicNumber == NOMAG_WHEEL_MAGIC) /*<! Check if is a valid context by checking the magic number */
+#define NOMAD_ROTATION_INVALIDATE_CONTEXT() (NOMAD_ROTATION_context.magicNumber = 0)                /*<! Reset the magic number to invalidate the context */
 
 /************************************************************************
     PRIVATE DECLARATIONS
 ************************************************************************/
 
-static bool NOMAD_ROTATION_isEnabled = false;      /*<! Enable flag used to enable/disable the controllers */
-static PID_controller_t NOMAD_ROTATION_controller; /*<! Rotation controller structure */
-static Encoder_controller_t* NOMAD_ROTATION_rotation_enc;
+static bool NOMAD_ROTATION_isEnabled = false;             /*<! Enable flag used to enable/disable the controllers */
+static PID_controller_t NOMAD_ROTATION_controller;        /*<! Rotation controller structure */
+static Encoder_controller_t* NOMAD_ROTATION_rotation_enc; /*<! Associated rotation encoder handle */
+
+struct NOMAD_ROTATION_context_s NOMAD_ROTATION_context __attribute__ ((section (".no_init"))); /*<! Context. Allocated in no_init section to */
+                                                                                               /*<! avoid overriding in case of soft reset */
 
 /************************************************************************
     FUNCTIONS
@@ -65,7 +70,7 @@ static Encoder_controller_t* NOMAD_ROTATION_rotation_enc;
 static void NOMAD_ROTATION_TaskFn() {
   float rotation_input = 0.0;
   float rotation_output = 0.0;
-
+  TickType_t elapsed_ticks = 0;
   /* Initialize hardware encoders */
   NOMAD_ROTATION_rotation_enc = ENC_CONTROL_init(
       NOMAD_ROTATION_ENC,
@@ -87,9 +92,8 @@ static void NOMAD_ROTATION_TaskFn() {
     ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
   }
 
-
-
   while (1) {
+    elapsed_ticks = xTaskGetTickCount();
     /* Get controller inputs */
     rotation_input = ENC_CONTROL_getPostion(NOMAD_ROTATION_ENC);
 
@@ -106,6 +110,8 @@ static void NOMAD_ROTATION_TaskFn() {
       /* This allows to move the motor manually */
       NOMAD_PWM_setDuty(NOMAD_ROTATION_PWM_CH, 0.0);
     }
+
+    elapsed_ticks = xTaskGetTickCount() - elapsed_ticks;
     /* Wait until next activation */
     vTaskDelay(pdMS_TO_TICKS(NOMAD_ROTATION_TASK_PERIOD_MS));
   }

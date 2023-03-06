@@ -56,6 +56,8 @@
 /* Message types */
 #include "geometry_msgs/msg/twist_stamped.h"
 #include "geometry_msgs/msg/pose_stamped.h"
+#include "geometry_msgs/msg/twist.h"
+#include "geometry_msgs/msg/pose.h"
 #include "nav_msgs/msg/odometry.h"
 
 /* Drivers */
@@ -73,14 +75,14 @@
 #define UROS_MOTOR_NODE_NAME      "wheels"
 #define UROS_MOTOR_NODE_NS        ""
 
-#define UROS_MOTOR_SUB_SPEED      "/motor/speed_cmd"        /*<! Speed command topic */
+#define UROS_MOTOR_SUB_SPEED      "/motor/cmd_vel"        /*<! Speed command topic */
 #define UROS_MOTOR_PUB_SPEED      "/motor/speed_state"      /*<! Speed state topic */
 #define UROS_MOTOR_SUB_ROTATION   "/motor/rotation_cmd"     /*<! Rotation command topic */
 #define UROS_MOTOR_PUB_ROTATION   "/motor/rotation_state"   /*<! Rotation state topic */
 #define UROS_MOTOR_PUB_ODOMETRY   "/motor/odometry"         /*<! Odometry state topic (ToDo: impelement)*/
 
 #define UROS_MOTOR_N_INSTANCES    6U   /*<! Total number of instance (pub+sub+tim+...)*/
-#define UROS_MOTOR_PUB_PERIOD_MS  30U   /*<! Publication period (milliseconds) */
+#define UROS_MOTOR_PUB_PERIOD_MS  50U   /*<! Publication period (milliseconds) */
 #define UROS_MOTOR_SPIN_TIME_MS   1U    /*<! uROS spin time (milliseconds) */
 #define UROS_MOTOR_DELAY_TIME_MS  9U    /*<! uROS task period (milliseconds) */
 
