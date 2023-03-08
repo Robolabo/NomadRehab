@@ -262,6 +262,8 @@ static void UROS_MOTOR_appInit () {
 static void UROS_MOTOR_appFinit () {
   NOMAD_WHEEL_saveContext();
   NOMAD_ROTATION_saveContext();
+  NOMAD_ROTATION_disableControl();
+  NOMAD_WHEEL_disableControl();
   NVIC_SystemReset();
 }
 /**

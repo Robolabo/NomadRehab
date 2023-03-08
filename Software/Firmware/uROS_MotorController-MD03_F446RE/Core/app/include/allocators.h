@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "FreeRTOS.h"
+#include "task.h"
 
 extern int absoluteUsedMemory;
 extern int usedMemory;

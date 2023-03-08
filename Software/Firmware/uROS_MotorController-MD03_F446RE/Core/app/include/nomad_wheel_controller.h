@@ -64,7 +64,7 @@
 #define NOMAD_WHEEL_ROTATION_ENC        &htim3              /*<! Timer handle associated to the movement motor */
 #define NOMAD_WHEEL_ROTATION_PWM_CH     NOMAD_PWM_CHANNEL_2 /*<! PWM channel associated to the movement motor */
 #define NOMAD_WHEEL_ROTATION_CPR        500U                 /*<! Count per revolution */
-#define NOMAD_WHEEL_ROTATION_REDUCTION  1512.0f               /*<! Motor reduction factor */
+#define NOMAD_WHEEL_ROTATION_REDUCTION  10947.0f               /*<! Motor reduction factor */
 
 
 #define NOMAD_WHEEL_ROTATION_KP         50.0f   /*<! Proportional constant */
@@ -72,7 +72,7 @@
 #define NOMAD_WHEEL_ROTATION_KI         0.0f    /*<! Integral constant */
 #define NOMAD_WHEEL_ROTATION_LIMIT      100.0f  /*<! Controller max output */
 
-#define NOMAD_WHEEL_WHEEL_KP            50.0f   /*<! Proportional constant */
+#define NOMAD_WHEEL_WHEEL_KP            10.0f   /*<! Proportional constant */
 #define NOMAD_WHEEL_WHEEL_KD            0.0f    /*<! Derivative constant */
 #define NOMAD_WHEEL_WHEEL_KI            0.0f    /*<! Integral constant */
 #define NOMAD_WHEEL_WHEEL_LIMIT         100.0f  /*<! Controller max output */

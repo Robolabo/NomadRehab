@@ -215,6 +215,8 @@ void NOMAD_WHEEL_enableControl () {
  */
 void NOMAD_WHEEL_disableControl () {
   NOMAD_WHEEL_isEnabled = false;
+  NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, 0.0);
+  NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, 0.0);
 }
 
 /**

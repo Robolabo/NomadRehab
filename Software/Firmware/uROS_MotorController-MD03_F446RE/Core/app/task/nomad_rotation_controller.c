@@ -158,6 +158,7 @@ void NOMAD_ROTATION_enableControl () {
  */
 void NOMAD_ROTATION_disableControl () {
   NOMAD_ROTATION_isEnabled = false;
+  NOMAD_PWM_setDuty(NOMAD_ROTATION_PWM_CH, 0.0);
 }
 
 
