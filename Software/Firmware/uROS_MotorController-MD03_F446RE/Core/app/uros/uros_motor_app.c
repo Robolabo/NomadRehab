@@ -33,7 +33,7 @@
     PRIVATE DEFINES AND TYPES
 ************************************************************************/
 
-#define UROS_MOTOR_STAMPED_DATA 0
+
 #if defined(UROS_MOTOR_STAMPED_DATA) && (UROS_MOTOR_STAMPED_DATA == 1)
 typedef geometry_msgs__msg__TwistStamped Twist_msg_t;
 typedef geometry_msgs__msg__PoseStamped Pose_msg_t;
@@ -57,6 +57,7 @@ typedef nav_msgs__msg__Odometry Odometry_msg_t;
 static Twist_msg_t UROS_MOTOR_newSpeed;
 static Twist_msg_t UROS_MOTOR_currentSpeed;
 
+static Odometry_msg_t UROS_MOTOR_wheel_odometry;
 
 static Pose_msg_t UROS_MOTOR_newRotation;
 static Pose_msg_t UROS_MOTOR_currentRotation;
@@ -101,13 +102,13 @@ static void UROS_MOTOR_speedCallback (const void* data) {
   float speed_x = speedData->twist.linear.x;
   float angle_x = speedData->twist.angular.x;
 #else
-  float speed_x = speedData->linear.x;
-  float angle_x = speedData->angular.z;
+  float velocity = sqrt(pow(speedData->linear.x, 2) + pow(speedData->linear.y, 2));
+  float theta = atan2(speedData->linear.y, speedData->linear.x);
 #endif
   /* ToDo: Convert linear to angular position */
 
   /* Update controller */
-  NOMAD_WHEEL_setPoint(speed_x, angle_x);
+  NOMAD_WHEEL_setPoint(velocity, theta);
 }
 
 /**
@@ -134,10 +135,13 @@ static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_tim
   static uint32_t sec = 0;
   rcl_ret_t result;
 
+  NOMAD_WHEEL_Odometry_t odometry;
+
   RCLC_UNUSED(last_call_time);
   RCLC_UNUSED(result);
   memset(&UROS_MOTOR_currentSpeed, 0, sizeof(Twist_msg_t));
   memset(&UROS_MOTOR_currentRotation, 0, sizeof(Pose_msg_t));
+  memset(&UROS_MOTOR_wheel_odometry, 0, sizeof(Odometry_msg_t));
 
   if (timer != NULL) {
     /* Get the data */
@@ -155,6 +159,14 @@ static void UROS_MOTOR_timerCallback (rcl_timer_t * timer, int64_t last_call_tim
     UROS_MOTOR_currentSpeed.linear.x = NOMAD_WHEEL_getSpeed();
     UROS_MOTOR_currentRotation.orientation.z = NOMAD_ROTATION_getRotation();
 #endif
+
+    NOMAD_WHEEL_getOdometry(&odometry);
+
+    UROS_MOTOR_wheel_odometry.pose.pose.position.x = odometry.x;
+    UROS_MOTOR_wheel_odometry.pose.pose.position.y = odometry.y;
+    UROS_MOTOR_wheel_odometry.twist.twist.linear.x = odometry.v_x;
+    UROS_MOTOR_wheel_odometry.twist.twist.linear.x = odometry.v_y;
+    UROS_MOTOR_wheel_odometry.twist.twist.angular.z = odometry.v_th;
 
     /* Publish data */
     UROS_MOTOR_CHECK(rcl_publish(&UROS_MOTOR_speedPub, &UROS_MOTOR_currentSpeed, NULL));

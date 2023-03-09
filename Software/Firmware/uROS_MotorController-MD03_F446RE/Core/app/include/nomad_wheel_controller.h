@@ -42,6 +42,7 @@
 #include "encoder_controller.h"
 #include "pid_controller.h"
 
+
 /************************************************************************
     DEFINES AND TYPES
 ************************************************************************/
@@ -76,6 +77,20 @@
 #define NOMAD_WHEEL_WHEEL_KD            0.0f    /*<! Derivative constant */
 #define NOMAD_WHEEL_WHEEL_KI            0.0f    /*<! Integral constant */
 #define NOMAD_WHEEL_WHEEL_LIMIT         100.0f  /*<! Controller max output */
+#define WHEEL_RADIUS_M                  0.05f   /*<! Wheel radius */
+
+
+/**
+ * @brief Odometry structure.
+ */
+typedef struct{
+ float x;     /*<! X-axis position */
+ float y;     /*<! Y-axis position */
+ float v_x;   /*<! X-axis linear speed */
+ float v_y;   /*<! Y-axis linear speed */
+ float v_th;  /*<! Z-axis angular speed */
+} NOMAD_WHEEL_Odometry_t;
+
 
 /************************************************************************
     FUNCTIONS
@@ -102,6 +117,12 @@ float NOMAD_WHEEL_getSpeed ();
  * @return wheel angle in radians.
  */
 float NOMAD_WHEEL_getRotation ();
+
+/**
+ * @brief Return calculated odometry from encoders.
+ * @param odom Pointer to odometry allocation.
+ */
+void NOMAD_WHEEL_getOdometry(NOMAD_WHEEL_Odometry_t* odom);
 
 /**
  * @brief Check if the control is enabled.

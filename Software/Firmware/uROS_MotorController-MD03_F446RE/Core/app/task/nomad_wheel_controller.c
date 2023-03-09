@@ -41,11 +41,13 @@
  * Wheel context structure.
  * Stores the current state in case of soft-reset.
  */
+
 struct NOMAD_WHEEL_context_s {
   PID_controller_t speed_controller;
   PID_controller_t rotation_controller;
   Encoder_controller_t speed_encoder;
   Encoder_controller_t rotation_encoder;
+  NOMAD_WHEEL_Odometry_t odometry;
   uint32_t magicNumber; /*<! Delimiter. Used to check if it is valid context */
 };
 
@@ -68,13 +70,15 @@ static PID_controller_t NOMAD_WHEEL_rotation_controller;         /*<! PID rotati
 static Encoder_controller_t* NOMAD_WHEEL_wheel_enc;              /*<! Speed encoder handle */
 static Encoder_controller_t* NOMAD_WHEEL_rotation_enc;           /*<! Rotation encoder handle */
 
+/* ToDo: use this instead the previous definitions? */
 struct NOMAD_WHEEL_context_s NOMAD_WHEEL_context __attribute__ ((section (".no_init")));  /*<! Context. Allocated in no_init section to */
                                                                                           /*<! avoid overriding in case of soft reset */
-
+static NOMAD_WHEEL_Odometry_t NOMAD_WHEEL_odometry;
 
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
+
 /**
  * @brief Main control task
  *
@@ -85,7 +89,8 @@ static void NOMAD_WHEEL_TaskFn() {
   float speed_input = 0.0;
   float speed_output = 0.0;
   float position = 0.0;
-  float last_position = 0;
+  float last_position = 0.0;
+  float last_rotation = 0.0;
 
   TickType_t elapsed_ticks = 0;
 
@@ -128,9 +133,15 @@ static void NOMAD_WHEEL_TaskFn() {
     rotation_input = ENC_CONTROL_getPostion(NOMAD_WHEEL_ROTATION_ENC);
     position = ENC_CONTROL_getPostion(NOMAD_WHEEL_WHEEL_ENC);
 
-    /* ToDo: Speed also depends on the wheel radius. Update calculation */
-    speed_input = (position - last_position)/(NOMAD_WHEEL_DT);
-    last_position = position;
+    speed_input = (position - last_position)*(WHEEL_RADIUS_M)/(NOMAD_WHEEL_DT);
+
+    /* Odometry calculations */
+    NOMAD_WHEEL_odometry.v_x = speed_input*cos(rotation_input);
+    NOMAD_WHEEL_odometry.v_x = speed_input*sin(rotation_input);
+    NOMAD_WHEEL_odometry.v_th = (rotation_input - last_rotation)/(NOMAD_WHEEL_DT);
+    NOMAD_WHEEL_odometry.x += (NOMAD_WHEEL_odometry.v_x)*(NOMAD_WHEEL_DT);
+    NOMAD_WHEEL_odometry.y += (NOMAD_WHEEL_odometry.v_y)*(NOMAD_WHEEL_DT);
+
 
     /* Calculate control signals */
     speed_output = NOMAD_WHEEL_speed_controller_ptr->functions.execute(NOMAD_WHEEL_speed_controller_ptr, speed_input);
@@ -146,6 +157,10 @@ static void NOMAD_WHEEL_TaskFn() {
       NOMAD_PWM_setDuty(NOMAD_WHEEL_WHEEL_PWM_CH, 0.0);
       NOMAD_PWM_setDuty(NOMAD_WHEEL_ROTATION_PWM_CH, 0.0);
     }
+
+    last_position = position;
+    last_rotation = rotation_input;
+
     elapsed_ticks = xTaskGetTickCount() - elapsed_ticks;
     /* Wait until next activation */
     vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS) - elapsed_ticks);
@@ -192,6 +207,16 @@ float NOMAD_WHEEL_getRotation () {
   return NOMAD_WHEEL_rotation_controller_ptr->params.last_input;
 }
 
+
+/**
+ * @brief Return calculated odometry from encoders.
+ * @param odom Pointer to odometry allocation.
+ */
+void NOMAD_WHEEL_getOdometry(NOMAD_WHEEL_Odometry_t* odom) {
+  if (odom != NULL) {
+    memcpy(&odom, &NOMAD_WHEEL_odometry, sizeof(NOMAD_WHEEL_Odometry_t));
+  }
+}
 /**
  * @brief Check if the control is enabled.
  *

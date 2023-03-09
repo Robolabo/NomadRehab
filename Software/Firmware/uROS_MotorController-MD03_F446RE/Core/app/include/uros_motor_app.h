@@ -86,6 +86,9 @@
 #define UROS_MOTOR_SPIN_TIME_MS   1U    /*<! uROS spin time (milliseconds) */
 #define UROS_MOTOR_DELAY_TIME_MS  9U    /*<! uROS task period (milliseconds) */
 
+
+#define UROS_MOTOR_STAMPED_DATA   0  /* Use stamped messages */
+
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
