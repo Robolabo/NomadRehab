@@ -12,8 +12,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-#define RX_QUEUE_SIZE 1024U
-#define TX_QUEUE_SIZE 1024U
+#define RX_QUEUE_SIZE 2048U
+#define TX_QUEUE_SIZE 2048U
 
 static uint8_t in_byte = 0;
 static uint8_t out_byte = 0;
@@ -27,7 +27,7 @@ bool transport_serial_open(struct uxrCustomTransport * transport) {
 	rx_queue = xQueueCreate(RX_QUEUE_SIZE, sizeof(uint8_t));
 	tx_queue = xQueueCreate(TX_QUEUE_SIZE, sizeof(uint8_t));
 
-	HAL_UART_Receive_IT(&huart2, &in_byte, 1);
+	HAL_UART_Receive_IT(&huart3, &in_byte, 1);
     return true;
 }
 
@@ -40,8 +40,8 @@ size_t transport_serial_write(struct uxrCustomTransport* transport, const uint8_
 
 	size_t index = 0;
 
-	if (huart2.gState == HAL_UART_STATE_READY) {
-		HAL_UART_Transmit_IT(&huart2, &buf[index], 1U);
+	if (huart3.gState == HAL_UART_STATE_READY) {
+		HAL_UART_Transmit_IT(&huart3, &buf[index], 1U);
 		index++;
 	}
 

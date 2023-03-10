@@ -30,6 +30,7 @@
     INCLUDES
 ************************************************************************/
 #include <string.h>
+#include <stdbool.h>>
 
 /* micro-ROS */
 #include "rcl/rcl.h"
@@ -75,17 +76,17 @@
 #define UROS_MOTOR_NODE_NAME      "wheels"
 #define UROS_MOTOR_NODE_NS        ""
 
-#define UROS_MOTOR_SUB_SPEED      "/motor/cmd_vel"        /*<! Speed command topic */
-#define UROS_MOTOR_PUB_SPEED      "/motor/speed_state"      /*<! Speed state topic */
-#define UROS_MOTOR_SUB_ROTATION   "/motor/rotation_cmd"     /*<! Rotation command topic */
-#define UROS_MOTOR_PUB_ROTATION   "/motor/rotation_state"   /*<! Rotation state topic */
-#define UROS_MOTOR_PUB_ODOMETRY   "/motor/odometry"         /*<! Odometry state topic (ToDo: impelement)*/
+#define UROS_MOTOR_SUB_SPEED      "/wheel/cmd_vel"  /*<! Speed command topic */
+#define UROS_MOTOR_SUB_ROTATION   "/base/cmd_pos"   /*<! Rotation command topic */
+#define UROS_MOTOR_PUB_ROTATION   "/base/odometry"  /*<! Rotation state topic */
+#define UROS_MOTOR_PUB_ODOMETRY   "/wheel/odometry" /*<! Odometry state topic */
 
 #define UROS_MOTOR_N_INSTANCES    6U   /*<! Total number of instance (pub+sub+tim+...)*/
-#define UROS_MOTOR_PUB_PERIOD_MS  50U   /*<! Publication period (milliseconds) */
+#define UROS_MOTOR_PUB_PERIOD_MS  30U   /*<! Publication period (milliseconds) */
 #define UROS_MOTOR_SPIN_TIME_MS   1U    /*<! uROS spin time (milliseconds) */
 #define UROS_MOTOR_DELAY_TIME_MS  9U    /*<! uROS task period (milliseconds) */
 
+#define UROS_MOTOR_MAX_ERROR  5U  /*<! Max number of error before soft-reset */
 
 #define UROS_MOTOR_STAMPED_DATA   0  /* Use stamped messages */
 

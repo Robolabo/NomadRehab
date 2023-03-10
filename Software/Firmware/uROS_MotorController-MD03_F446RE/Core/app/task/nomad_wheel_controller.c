@@ -55,6 +55,9 @@ struct NOMAD_WHEEL_context_s {
 #define NOMAD_WHEEL_IS_VALID_CONTEXT() (NOMAD_WHEEL_context.magicNumber == NOMAG_WHEEL_MAGIC) /*<! Check if is a valid context by checking the magic number */
 #define NOMAD_WHEEL_INVALIDATE_CONTEXT() (NOMAD_WHEEL_context.magicNumber = 0U)               /*<! Reset the magic number to invalidate the context */
 
+/* Debug purpose */
+static TickType_t max_control_ticks = 0;
+#define MAX_TICKS(tick) max_control_ticks = (max_control_ticks < (tick) ? (tick) : max_control_ticks)
 
 /************************************************************************
     DECLARATIONS
@@ -137,7 +140,7 @@ static void NOMAD_WHEEL_TaskFn() {
 
     /* Odometry calculations */
     NOMAD_WHEEL_odometry.v_x = speed_input*cos(rotation_input);
-    NOMAD_WHEEL_odometry.v_x = speed_input*sin(rotation_input);
+    NOMAD_WHEEL_odometry.v_y = speed_input*sin(rotation_input);
     NOMAD_WHEEL_odometry.v_th = (rotation_input - last_rotation)/(NOMAD_WHEEL_DT);
     NOMAD_WHEEL_odometry.x += (NOMAD_WHEEL_odometry.v_x)*(NOMAD_WHEEL_DT);
     NOMAD_WHEEL_odometry.y += (NOMAD_WHEEL_odometry.v_y)*(NOMAD_WHEEL_DT);
@@ -162,6 +165,7 @@ static void NOMAD_WHEEL_TaskFn() {
     last_rotation = rotation_input;
 
     elapsed_ticks = xTaskGetTickCount() - elapsed_ticks;
+    MAX_TICKS(elapsed_ticks);
     /* Wait until next activation */
     vTaskDelay(pdMS_TO_TICKS(NOMAD_WHEEL_TASK_PERIOD_MS) - elapsed_ticks);
   }
@@ -214,7 +218,7 @@ float NOMAD_WHEEL_getRotation () {
  */
 void NOMAD_WHEEL_getOdometry(NOMAD_WHEEL_Odometry_t* odom) {
   if (odom != NULL) {
-    memcpy(&odom, &NOMAD_WHEEL_odometry, sizeof(NOMAD_WHEEL_Odometry_t));
+    memcpy(odom, &NOMAD_WHEEL_odometry, sizeof(NOMAD_WHEEL_Odometry_t));
   }
 }
 /**
