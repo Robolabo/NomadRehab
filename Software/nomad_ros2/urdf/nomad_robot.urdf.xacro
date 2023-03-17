@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nomad_robot">
+  <xacro:include filename="materials.xacro"/>
+
+  <xacro:property name="x" value="0"/>
+  <xacro:property name="y" value="0"/>
+  <xacro:property name="z" value="0"/>
+  <xacro:property name="radius" value="0.46"/>
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="base_len" value="0.2"/>
+  <xacro:property name="body_len" value="0.6"/>
+  <xacro:property name="ir_len" value="0.1"/>
+  <xacro:property name="sonar_len" value="0.1"/>
+
+
+  <xacro:include filename="base.xacro"/>
+  <xacro:gen_base x="${x}" y="${y}" z="${z}" radius="${radius}" wheel_radius="${wheel_radius}" lenght="${base_len}"/>
+
+  <xacro:include filename="body.xacro"/>
+  <xacro:gen_body x="${x}" y="${y}" z="${z+2*wheel_radius+base_len}" radius="${radius}" lenght="${body_len}" ir_len="${ir_len}" sonar_len="${sonar_len}"/>
+
+</robot>

@@ -1,0 +1,27 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="circular_sensor.xacro"/>
+  <xacro:property name="elements" value="10"/>
+  <xacro:property name="base_name" value="bumper"/>
+
+  <xacro:macro name="gen_bumper" params="x:=0 y:=0 z:=0 radius:=0.225 lenght:=0.025">
+    <xacro:sensor_base base_name="${base_name}_up" x="${x}" y="${y}" z="${z+0.05}" radius="${radius}" lenght="${lenght} elements:=${elements}" s_material="blue" b_material="red">
+      <geometry_sensor>
+          <sphere radius="0.001"/>
+      </geometry_sensor>
+      <geometry_base>
+        <cylinder radius="${radius}" length="${lenght}"/>
+      </geometry_base>
+    </xacro:sensor_base>
+
+    <xacro:sensor_base base_name="${base_name}_down" x="${x}" y="${y}" z="${z-0.05}" radius="${radius}" lenght="${lenght} elements:=${elements}" s_material="blue" b_material="red">
+      <geometry_sensor>
+          <sphere radius="0.001"/>
+      </geometry_sensor>
+      <geometry_base>
+        <cylinder radius="${radius}" length="${lenght}"/>
+      </geometry_base>
+    </xacro:sensor_base>
+    
+  </xacro:macro>
+
+</robot>
