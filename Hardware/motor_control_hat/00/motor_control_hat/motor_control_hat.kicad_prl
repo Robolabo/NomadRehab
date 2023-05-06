@@ -1,12 +1,14 @@
 {
   "board": {
-    "active_layer": 1,
+    "active_layer": 36,
     "active_layer_preset": "",
     "auto_track_width": true,
+    "hidden_netclasses": [],
     "hidden_nets": [],
     "high_contrast_mode": 0,
     "net_color_mode": 1,
     "opacity": {
+      "images": 0.6,
       "pads": 0.4699999988079071,
       "tracks": 1.0,
       "vias": 1.0,
@@ -56,12 +58,11 @@
       29,
       30,
       32,
-      33,
       34,
       35,
       36
     ],
-    "visible_layers": "fffffff_fffffff9",
+    "visible_layers": "fff1b23_7ffffff9",
     "zone_display_mode": 0
   },
   "meta": {
