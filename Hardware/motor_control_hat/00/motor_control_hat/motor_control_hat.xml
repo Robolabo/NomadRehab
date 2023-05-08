@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>C:\Workspace\repositories\NomadRehab\Hardware\motor_control_hat\00\motor_control_hat\motor_control_hat.kicad_sch</source>
-    <date>05/05/2023 11:07:13</date>
+    <date>07/05/2023 22:13:16</date>
     <tool>Eeschema 7.0.2</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -40,6 +40,7 @@
       <property name="Package" value="0805"/>
       <property name="Tolerance" value="20%"/>
       <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Unpolarized capacitor"/>
@@ -63,6 +64,7 @@
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="20%"/>
       <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Unpolarized capacitor"/>
@@ -86,6 +88,7 @@
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="20%"/>
       <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Unpolarized capacitor"/>
@@ -109,6 +112,7 @@
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="10%"/>
       <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Unpolarized capacitor"/>
@@ -133,6 +137,7 @@
       <property name="LCSC" value="C342299"/>
       <property name="PN" value="C5750X5R1A686MT000N"/>
       <property name="Tolerance" value="20%"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Unpolarized capacitor"/>
@@ -156,6 +161,7 @@
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="-"/>
       <property name="Voltage" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Light emitting diode"/>
@@ -177,6 +183,7 @@
       <property name="PN" value="NCD0603G1"/>
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Light emitting diode"/>
@@ -199,6 +206,7 @@
       <property name="PN" value="B340A-13-F"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Schottky diode"/>
@@ -223,6 +231,7 @@
       <property name="Current" value="3A"/>
       <property name="LCSC" value="C192303"/>
       <property name="Package" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Inductor"/>
@@ -244,67 +253,11 @@
       <property name="PN" value="MX2EDGR-5.08-GN01-02P-Cu-A"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>17b9fa62-f0da-4699-8c00-8061d0ed564b</tstamps>
-    </comp>
-    <comp ref="P2">
-      <value>TB_1x2_5.08mm_RA</value>
-      <footprint>PluggableTerminalBLock:MX2EDGR-5.08-GN01-02P-Cu-A</footprint>
-      <fields>
-        <field name="LCSC">C5187973</field>
-        <field name="PN">MX2EDGR-5.08-GN01-02P-Cu-A</field>
-        <field name="Package">-</field>
-        <field name="Tolerance">-</field>
-      </fields>
-      <libsource lib="PluggableTerminalBlock" part="TB_1x2_5.08mm_RA" description=""/>
-      <property name="LCSC" value="C5187973"/>
-      <property name="PN" value="MX2EDGR-5.08-GN01-02P-Cu-A"/>
-      <property name="Package" value="-"/>
-      <property name="Tolerance" value="-"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>ec000fb2-1ea5-4853-9c95-9bd3a9c90c49</tstamps>
-    </comp>
-    <comp ref="P3">
-      <value>TB_1x2_5.08mm_RA</value>
-      <footprint>PluggableTerminalBLock:MX2EDGR-5.08-GN01-02P-Cu-A</footprint>
-      <fields>
-        <field name="LCSC">C5187973</field>
-        <field name="PN">MX2EDGR-5.08-GN01-02P-Cu-A</field>
-        <field name="Package">-</field>
-        <field name="Tolerance">-</field>
-      </fields>
-      <libsource lib="PluggableTerminalBlock" part="TB_1x2_5.08mm_RA" description=""/>
-      <property name="LCSC" value="C5187973"/>
-      <property name="PN" value="MX2EDGR-5.08-GN01-02P-Cu-A"/>
-      <property name="Package" value="-"/>
-      <property name="Tolerance" value="-"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>e62e91aa-ed2e-4316-90af-c7030a265684</tstamps>
-    </comp>
-    <comp ref="P4">
-      <value>TB_1x2_5.08mm_RA</value>
-      <footprint>PluggableTerminalBLock:MX2EDGR-5.08-GN01-02P-Cu-A</footprint>
-      <fields>
-        <field name="LCSC">C5187973</field>
-        <field name="PN">MX2EDGR-5.08-GN01-02P-Cu-A</field>
-        <field name="Package">-</field>
-        <field name="Tolerance">-</field>
-      </fields>
-      <libsource lib="PluggableTerminalBlock" part="TB_1x2_5.08mm_RA" description=""/>
-      <property name="LCSC" value="C5187973"/>
-      <property name="PN" value="MX2EDGR-5.08-GN01-02P-Cu-A"/>
-      <property name="Package" value="-"/>
-      <property name="Tolerance" value="-"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>18093b5b-277d-411d-9466-9d1b83ee9074</tstamps>
     </comp>
     <comp ref="P5">
       <value>X9254WR-04-N0SN</value>
@@ -320,6 +273,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -341,6 +295,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -362,6 +317,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -383,6 +339,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -404,6 +361,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -425,6 +383,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -446,6 +405,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -467,6 +427,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -488,6 +449,7 @@
       <property name="PN" value="X9254WR-04-N0SN"/>
       <property name="Package" value="-"/>
       <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Connector header 2.54mm 4w"/>
@@ -509,6 +471,7 @@
       <property name="PN" value="RC0603FR-0745K3L"/>
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Resistor"/>
@@ -530,6 +493,7 @@
       <property name="PN" value="RC0603FR-074K7L"/>
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Resistor"/>
@@ -551,6 +515,7 @@
       <property name="PN" value="RC0603FR-071KL"/>
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Resistor"/>
@@ -572,6 +537,7 @@
       <property name="Package" value="0603"/>
       <property name="LCSC" value="C114633"/>
       <property name="PN" value="RC0603FR-0768KL"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Resistor"/>
@@ -593,6 +559,7 @@
       <property name="PN" value="RC0603FR-0712KL"/>
       <property name="Package" value="0603"/>
       <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <property name="ki_description" value="Resistor"/>
@@ -600,43 +567,12 @@
       <sheetpath names="/" tstamps="/"/>
       <tstamps>f9803006-87b5-4f48-8c82-28d8e9050861</tstamps>
     </comp>
-    <comp ref="TP1">
-      <value>+24V</value>
-      <footprint>TestPoint:TestPoint_Pad_D1.0mm</footprint>
-      <libsource lib="Connector" part="TestPoint" description="test point"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <property name="ki_description" value="test point"/>
-      <property name="ki_keywords" value="test point tp"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>7ddd943a-ea73-44dc-98e0-ea5fdda2b32e</tstamps>
-    </comp>
-    <comp ref="TP4">
-      <value>+5V_TP</value>
-      <footprint>TestPoint:TestPoint_Pad_D1.0mm</footprint>
-      <libsource lib="Connector" part="TestPoint" description="test point"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <property name="ki_description" value="test point"/>
-      <property name="ki_keywords" value="test point tp"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>19a76f41-81d1-4b04-bd65-40e69bd2e746</tstamps>
-    </comp>
-    <comp ref="TP17">
-      <value>+5V</value>
-      <footprint>TestPoint:TestPoint_Pad_D1.0mm</footprint>
-      <libsource lib="Connector" part="TestPoint" description="test point"/>
-      <property name="Sheetname" value=""/>
-      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
-      <property name="ki_description" value="test point"/>
-      <property name="ki_keywords" value="test point tp"/>
-      <sheetpath names="/" tstamps="/"/>
-      <tstamps>35d94ad1-96f8-47f1-b11e-b2a4c4e758fb</tstamps>
-    </comp>
     <comp ref="U1">
       <value>NUCLEO-F446RE</value>
       <footprint>modules:MODULE_NUCLEO-F446RE</footprint>
       <fields>
+        <field name="JLCPCB BOM">0</field>
+        <field name="LCSC">-</field>
         <field name="MANUFACTURER">STMicroelectronics</field>
         <field name="PARTREV">13</field>
         <field name="STANDARD">Manufacturer Recommendations</field>
@@ -646,10 +582,12 @@
       <property name="MAXIMUM_PACKAGE_HEIGHT" value=""/>
       <property name="PARTREV" value="13"/>
       <property name="STANDARD" value="Manufacturer Recommendations"/>
+      <property name="LCSC" value="-"/>
+      <property name="JLCPCB BOM" value="0"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>80ca71ce-91c8-4994-bda6-125638756948 f5a20826-5671-4db5-bbff-a6c2dbfc0753 62601b7e-8e65-4936-bdb8-17d3640dad6e 3bce7035-6542-4514-9bf9-e3604cc0a724 2b7a0936-8e6a-449a-8b41-3ad4af333070 13c3f4da-9c4e-4557-a9ba-290b834e1f34</tstamps>
+      <tstamps>62601b7e-8e65-4936-bdb8-17d3640dad6e 3bce7035-6542-4514-9bf9-e3604cc0a724 2b7a0936-8e6a-449a-8b41-3ad4af333070 f5a20826-5671-4db5-bbff-a6c2dbfc0753 80ca71ce-91c8-4994-bda6-125638756948 13c3f4da-9c4e-4557-a9ba-290b834e1f34</tstamps>
     </comp>
     <comp ref="U2">
       <value>LMR16030SDDAR</value>
@@ -662,6 +600,7 @@
       <libsource lib="SwitchingRegulators" part="LMR16030SDDAR" description=""/>
       <property name="LCSC" value="C136648"/>
       <property name="PN" value="LMR16030SDDAR"/>
+      <property name="JLCPCB BOM" value=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -935,8 +874,20 @@
     <library logical="Connector">
       <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Connector.kicad_sym</uri>
     </library>
+    <library logical="CustomConnectors">
+      <uri>C:\Workspace\KiCad\lib\symbols\CustomConnectors.kicad_sym</uri>
+    </library>
+    <library logical="CustomModules">
+      <uri>C:\Workspace\KiCad\lib\symbols\CustomModules.kicad_sym</uri>
+    </library>
     <library logical="Device">
       <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Device.kicad_sym</uri>
+    </library>
+    <library logical="PluggableTerminalBlock">
+      <uri>C:\Workspace\KiCad\lib\symbols\PluggableTerminalBlock.kicad_sym</uri>
+    </library>
+    <library logical="SwitchingRegulators">
+      <uri>C:\Workspace\KiCad\lib\symbols\SwitchingRegulators.kicad_sym</uri>
     </library>
   </libraries>
   <nets>
@@ -955,17 +906,12 @@
       <node ref="P9" pin="1" pinfunction="1" pintype="passive"/>
       <node ref="R3" pin="1" pintype="passive"/>
       <node ref="R4" pin="1" pintype="passive"/>
-      <node ref="TP17" pin="1" pinfunction="1" pintype="passive"/>
       <node ref="U1" pin="CN7_6" pinfunction="E5V" pintype="power_in"/>
     </net>
     <net code="2" name="+24V">
       <node ref="C1" pin="1" pintype="passive"/>
       <node ref="P1" pin="1" pinfunction="1" pintype="passive"/>
-      <node ref="P2" pin="1" pinfunction="1" pintype="passive"/>
-      <node ref="P3" pin="1" pinfunction="1" pintype="passive"/>
-      <node ref="P4" pin="1" pinfunction="1" pintype="passive"/>
       <node ref="R2" pin="1" pintype="passive"/>
-      <node ref="TP1" pin="1" pinfunction="1" pintype="passive"/>
       <node ref="U2" pin="2" pinfunction="VIN" pintype="power_in"/>
       <node ref="U2" pin="3" pinfunction="EN" pintype="passive"/>
     </net>
@@ -1045,9 +991,6 @@
       <node ref="P11" pin="4" pinfunction="4" pintype="passive"/>
       <node ref="P12" pin="4" pinfunction="4" pintype="passive"/>
       <node ref="P13" pin="4" pinfunction="4" pintype="passive"/>
-      <node ref="P2" pin="2" pinfunction="2" pintype="passive"/>
-      <node ref="P3" pin="2" pinfunction="2" pintype="passive"/>
-      <node ref="P4" pin="2" pinfunction="2" pintype="passive"/>
       <node ref="P5" pin="2" pinfunction="2" pintype="passive"/>
       <node ref="P6" pin="2" pinfunction="2" pintype="passive"/>
       <node ref="P7" pin="4" pinfunction="4" pintype="passive"/>
@@ -1055,7 +998,6 @@
       <node ref="P9" pin="4" pinfunction="4" pintype="passive"/>
       <node ref="R1" pin="2" pintype="passive"/>
       <node ref="R5" pin="2" pintype="passive"/>
-      <node ref="TP4" pin="1" pinfunction="1" pintype="passive"/>
       <node ref="U1" pin="CN10_20" pinfunction="CN10_GND" pintype="power_in"/>
       <node ref="U1" pin="CN10_32" pinfunction="AGND" pintype="power_in"/>
       <node ref="U1" pin="CN10_9" pinfunction="CN10_GND" pintype="power_in"/>
@@ -1180,7 +1122,7 @@
       <node ref="U1" pin="CN7_5" pinfunction="VDD" pintype="power_in+no_connect"/>
     </net>
     <net code="53" name="unconnected-(U1B-AVDD-PadCN10_7)">
-      <node ref="U1" pin="CN10_7" pinfunction="AVDD" pintype="power_in"/>
+      <node ref="U1" pin="CN10_7" pinfunction="AVDD" pintype="power_in+no_connect"/>
     </net>
     <net code="54" name="unconnected-(U1B-PA2-PadCN10_35)">
       <node ref="U1" pin="CN10_35" pinfunction="PA2" pintype="bidirectional+no_connect"/>
@@ -1237,7 +1179,7 @@
       <node ref="U1" pin="CN10_1" pinfunction="PC9" pintype="bidirectional+no_connect"/>
     </net>
     <net code="72" name="unconnected-(U1B-U5V-PadCN10_8)">
-      <node ref="U1" pin="CN10_8" pinfunction="U5V" pintype="power_in"/>
+      <node ref="U1" pin="CN10_8" pinfunction="U5V" pintype="power_in+no_connect"/>
     </net>
     <net code="73" name="unconnected-(U1C-CN6_+3V3-PadCN6_4)">
       <node ref="U1" pin="CN6_4" pinfunction="CN6_+3V3" pintype="power_in+no_connect"/>
@@ -1264,7 +1206,7 @@
       <node ref="U1" pin="CN9_3" pinfunction="D2" pintype="bidirectional+no_connect"/>
     </net>
     <net code="81" name="unconnected-(U1D-D3-PadCN9_4)">
-      <node ref="U1" pin="CN9_4" pinfunction="D3" pintype="bidirectional"/>
+      <node ref="U1" pin="CN9_4" pinfunction="D3" pintype="bidirectional+no_connect"/>
     </net>
     <net code="82" name="unconnected-(U1D-D4-PadCN9_5)">
       <node ref="U1" pin="CN9_5" pinfunction="D4" pintype="bidirectional+no_connect"/>

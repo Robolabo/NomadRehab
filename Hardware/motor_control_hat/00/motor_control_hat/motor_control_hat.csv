@@ -1,0 +1,18 @@
+Comment,Designator,Footprint,LCSC Part #
+4.7uF Unpolarized capacitor,C1,C_0805_2012Metric,C98192
+15nF Unpolarized capacitor,C2,C_0603_1608Metric,C107076
+100nF Unpolarized capacitor,C3,C_0603_1608Metric,C14663
+390pF Unpolarized capacitor,C4,C_0603_1608Metric,C107089
+68uF Unpolarized capacitor,C5,C_2220_5650Metric,C342299
+RED Light emitting diode,D1,LED_0603_1608Metric,C84263
+GREEN Light emitting diode,D2,LED_0603_1608Metric,C84267
+B340A-13-F Schottky diode,D3,D_SMA,C85098
+6.8uH Inductor,L1,L_Taiyo-Yuden_NR-60xx,C192303
+TB_1x2_5.08mm_RA ,P1,MX2EDGR-5.08-GN01-02P-Cu-A,C5187973
+X9254WR-04-N0SN Connector header 2.54mm 4w,"P5,P6,P7,P8,P9,P10,P11,P12,P13",X9254WR-04-N0SN,C706941
+45K3 Resistor,R1,R_0603_1608Metric,C245971
+4K7 Resistor,R2,R_0603_1608Metric,C99782
+1K Resistor,R3,R_0603_1608Metric,C22548
+68K Resistor,R4,R_0603_1608Metric,C114633
+12K Resistor,R5,R_0603_1608Metric,C114659
+LMR16030SDDAR ,U2,VREG_LM5017MR_NOPB,C136648
