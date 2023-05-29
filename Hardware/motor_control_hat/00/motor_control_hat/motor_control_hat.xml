@@ -1,0 +1,1269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>C:\Workspace\repositories\NomadRehab\Hardware\motor_control_hat\00\motor_control_hat\motor_control_hat.kicad_sch</source>
+    <date>07/05/2023 22:13:16</date>
+    <tool>Eeschema 7.0.2</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>motor_control_hat.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>4.7uF</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <fields>
+        <field name="LCSC">C98192</field>
+        <field name="PN">CL21A475KBQNNNE</field>
+        <field name="Package">0805</field>
+        <field name="Tolerance">20%</field>
+        <field name="Voltage">50V</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="LCSC" value="C98192"/>
+      <property name="PN" value="CL21A475KBQNNNE"/>
+      <property name="Package" value="0805"/>
+      <property name="Tolerance" value="20%"/>
+      <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>14c40a78-efb3-44ff-bc04-bf33514b01a6</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>15nF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C107076</field>
+        <field name="PN">CC0603KRX7R9BB153</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">20%</field>
+        <field name="Voltage">50V</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="LCSC" value="C107076"/>
+      <property name="PN" value="CC0603KRX7R9BB153"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="20%"/>
+      <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0929893d-cb1d-46cd-8b71-a2d8911efafb</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C14663</field>
+        <field name="PN">CC0603KRX7R9BB104</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">20%</field>
+        <field name="Voltage">50V</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="LCSC" value="C14663"/>
+      <property name="PN" value="CC0603KRX7R9BB104"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="20%"/>
+      <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ee29e1f2-6d76-4e8a-ac51-0c0502e40296</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>390pF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C107089</field>
+        <field name="PN">CC0603KRX7R9BB391</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">10%</field>
+        <field name="Voltage">50V</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="LCSC" value="C107089"/>
+      <property name="PN" value="CC0603KRX7R9BB391"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="10%"/>
+      <property name="Voltage" value="50V"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ec0cf062-e301-4836-ba26-0f7ec8d330fc</tstamps>
+    </comp>
+    <comp ref="C5">
+      <value>68uF</value>
+      <footprint>Capacitor_SMD:C_2220_5650Metric</footprint>
+      <datasheet>https://www.lcsc.com/products/Capacitors_312.html</datasheet>
+      <fields>
+        <field name="LCSC">C342299</field>
+        <field name="PN">C5750X5R1A686MT000N</field>
+        <field name="Package">2220</field>
+        <field name="Tolerance">20%</field>
+        <field name="Voltage">10V</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Voltage" value="10V"/>
+      <property name="Package" value="2220"/>
+      <property name="LCSC" value="C342299"/>
+      <property name="PN" value="C5750X5R1A686MT000N"/>
+      <property name="Tolerance" value="20%"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>12d6a41c-9e72-43e2-b051-34c17de778b6</tstamps>
+    </comp>
+    <comp ref="D1">
+      <value>RED</value>
+      <footprint>LED_SMD:LED_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C84263</field>
+        <field name="PN">NCD0603R1</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">-</field>
+        <field name="Voltage">-</field>
+      </fields>
+      <libsource lib="Device" part="LED" description="Light emitting diode"/>
+      <property name="LCSC" value="C84263"/>
+      <property name="PN" value="NCD0603R1"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="-"/>
+      <property name="Voltage" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Light emitting diode"/>
+      <property name="ki_keywords" value="LED diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9a492e1c-5255-47bd-9f37-5975bd79f632</tstamps>
+    </comp>
+    <comp ref="D2">
+      <value>GREEN</value>
+      <footprint>LED_SMD:LED_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C84267</field>
+        <field name="PN">NCD0603G1</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="Device" part="LED" description="Light emitting diode"/>
+      <property name="LCSC" value="C84267"/>
+      <property name="PN" value="NCD0603G1"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Light emitting diode"/>
+      <property name="ki_keywords" value="LED diode"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8b83c5e0-9a43-4c3c-8154-27a62767f353</tstamps>
+    </comp>
+    <comp ref="D3">
+      <value>B340A-13-F</value>
+      <footprint>Diode_SMD:D_SMA</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1810251611_Diodes-Incorporated-B340A-13-F_C85098.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C85098</field>
+        <field name="PN">B340A-13-F</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="Device" part="D_Schottky" description="Schottky diode"/>
+      <property name="LCSC" value="C85098"/>
+      <property name="PN" value="B340A-13-F"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Schottky diode"/>
+      <property name="ki_keywords" value="diode Schottky"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c2c30b0b-b403-4130-8ec8-42d6fa503e33</tstamps>
+    </comp>
+    <comp ref="L1">
+      <value>6.8uH</value>
+      <footprint>Inductor_SMD:L_Taiyo-Yuden_NR-60xx</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1810302309_Taiyo-Yuden-NRS6045T6R8MMGK_C192303.pdf</datasheet>
+      <fields>
+        <field name="Current">3A</field>
+        <field name="Isat">3.6A</field>
+        <field name="LCSC">C192303</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">20%</field>
+      </fields>
+      <libsource lib="Device" part="L" description="Inductor"/>
+      <property name="Tolerance" value="20%"/>
+      <property name="Isat" value="3.6A"/>
+      <property name="Current" value="3A"/>
+      <property name="LCSC" value="C192303"/>
+      <property name="Package" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Inductor"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f813d1ab-cfc1-4a68-9b50-e5fa3b89bc62</tstamps>
+    </comp>
+    <comp ref="P1">
+      <value>TB_1x2_5.08mm_RA</value>
+      <footprint>PluggableTerminalBLock:MX2EDGR-5.08-GN01-02P-Cu-A</footprint>
+      <fields>
+        <field name="LCSC">C5187973</field>
+        <field name="PN">MX2EDGR-5.08-GN01-02P-Cu-A</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="PluggableTerminalBlock" part="TB_1x2_5.08mm_RA" description=""/>
+      <property name="LCSC" value="C5187973"/>
+      <property name="PN" value="MX2EDGR-5.08-GN01-02P-Cu-A"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>17b9fa62-f0da-4699-8c00-8061d0ed564b</tstamps>
+    </comp>
+    <comp ref="P5">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2cbcf8f2-31ff-48c0-af01-7784e866842c</tstamps>
+    </comp>
+    <comp ref="P6">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5aae994d-8caf-46ba-b8ea-15a5815a6021</tstamps>
+    </comp>
+    <comp ref="P7">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3d2ad864-47d9-44d8-b712-e91dab5de257</tstamps>
+    </comp>
+    <comp ref="P8">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4ac0b1cc-af3c-4b64-a8e4-18bcf13042dd</tstamps>
+    </comp>
+    <comp ref="P9">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7005e67b-c5e2-4cf4-817d-7bcc7b7cba83</tstamps>
+    </comp>
+    <comp ref="P10">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>713fa161-a028-40c2-814c-f3c373f1b428</tstamps>
+    </comp>
+    <comp ref="P11">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>97754923-c53d-4d57-ace8-baa25c1e139a</tstamps>
+    </comp>
+    <comp ref="P12">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8bc48ab1-40c1-4753-980f-b3febfd14dc3</tstamps>
+    </comp>
+    <comp ref="P13">
+      <value>X9254WR-04-N0SN</value>
+      <footprint>CustomConnectors:X9254WR-04-N0SN</footprint>
+      <fields>
+        <field name="LCSC">C706941</field>
+        <field name="PN">X9254WR-04-N0SN</field>
+        <field name="Package">-</field>
+        <field name="Tolerance">-</field>
+      </fields>
+      <libsource lib="CustomConnectors" part="X9254WR-04-N0SN" description="Connector header 2.54mm 4w"/>
+      <property name="LCSC" value="C706941"/>
+      <property name="PN" value="X9254WR-04-N0SN"/>
+      <property name="Package" value="-"/>
+      <property name="Tolerance" value="-"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Connector header 2.54mm 4w"/>
+      <property name="ki_keywords" value="header, 2.54, 4w. 4p"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e02e7e07-5670-45ad-af02-80fede1bf42b</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>45K3</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C245971</field>
+        <field name="PN">RC0603FR-0745K3L</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="LCSC" value="C245971"/>
+      <property name="PN" value="RC0603FR-0745K3L"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>36b80bfc-26ac-4189-9e00-9653b0f3b314</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>4K7</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C99782</field>
+        <field name="PN">RC0603FR-074K7L</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="LCSC" value="C99782"/>
+      <property name="PN" value="RC0603FR-074K7L"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>91a88402-2fb6-4661-b253-c821941663f6</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>1K</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C22548</field>
+        <field name="PN">RC0603FR-071KL</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="LCSC" value="C22548"/>
+      <property name="PN" value="RC0603FR-071KL"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>83862832-553d-48e3-a974-644ed76df326</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>68K</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C114633</field>
+        <field name="PN">RC0603FR-0768KL</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="Package" value="0603"/>
+      <property name="LCSC" value="C114633"/>
+      <property name="PN" value="RC0603FR-0768KL"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>70ef52ea-d3bc-4985-93df-3b8dda9ce753</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>12K</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <fields>
+        <field name="LCSC">C114659</field>
+        <field name="PN">RC0603FR-0712KL</field>
+        <field name="Package">0603</field>
+        <field name="Tolerance">1%</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="LCSC" value="C114659"/>
+      <property name="PN" value="RC0603FR-0712KL"/>
+      <property name="Package" value="0603"/>
+      <property name="Tolerance" value="1%"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f9803006-87b5-4f48-8c82-28d8e9050861</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>NUCLEO-F446RE</value>
+      <footprint>modules:MODULE_NUCLEO-F446RE</footprint>
+      <fields>
+        <field name="JLCPCB BOM">0</field>
+        <field name="LCSC">-</field>
+        <field name="MANUFACTURER">STMicroelectronics</field>
+        <field name="PARTREV">13</field>
+        <field name="STANDARD">Manufacturer Recommendations</field>
+      </fields>
+      <libsource lib="CustomModules" part="NUCLEO-F446RE" description=""/>
+      <property name="MANUFACTURER" value="STMicroelectronics"/>
+      <property name="MAXIMUM_PACKAGE_HEIGHT" value=""/>
+      <property name="PARTREV" value="13"/>
+      <property name="STANDARD" value="Manufacturer Recommendations"/>
+      <property name="LCSC" value="-"/>
+      <property name="JLCPCB BOM" value="0"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>62601b7e-8e65-4936-bdb8-17d3640dad6e 3bce7035-6542-4514-9bf9-e3604cc0a724 2b7a0936-8e6a-449a-8b41-3ad4af333070 f5a20826-5671-4db5-bbff-a6c2dbfc0753 80ca71ce-91c8-4994-bda6-125638756948 13c3f4da-9c4e-4557-a9ba-290b834e1f34</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>LMR16030SDDAR</value>
+      <footprint>SwitchingRegulators:VREG_LM5017MR_NOPB</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/1912111437_Texas-Instruments-LMR16030SDDAR_C136648.pdf</datasheet>
+      <fields>
+        <field name="LCSC">C136648</field>
+        <field name="PN">LMR16030SDDAR</field>
+      </fields>
+      <libsource lib="SwitchingRegulators" part="LMR16030SDDAR" description=""/>
+      <property name="LCSC" value="C136648"/>
+      <property name="PN" value="LMR16030SDDAR"/>
+      <property name="JLCPCB BOM" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="motor_control_hat.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0dff5e0b-14f6-4b0e-858d-4598f886dd05</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="TestPoint">
+      <description>test point</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Pin*</fp>
+        <fp>Test*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TestPoint</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CustomConnectors" part="X9254WR-04-N0SN">
+      <description>Connector header 2.54mm 4w</description>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">X9254WR-04-N0SN</field>
+        <field name="Footprint">CustomConnectors:X9254WR-04-N0SN</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+        <pin num="3" name="3" type="passive"/>
+        <pin num="4" name="4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CustomModules" part="NUCLEO-F446RE">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">NUCLEO-F446RE</field>
+        <field name="Footprint">modules:MODULE_NUCLEO-F446RE</field>
+        <field name="MANUFACTURER">STMicroelectronics</field>
+        <field name="PARTREV">13</field>
+        <field name="STANDARD">Manufacturer Recommendations</field>
+      </fields>
+      <pins>
+        <pin num="CN5_1" name="D8" type="bidirectional"/>
+        <pin num="CN5_2" name="D9" type="bidirectional"/>
+        <pin num="CN5_3" name="D10" type="bidirectional"/>
+        <pin num="CN5_4" name="D11" type="bidirectional"/>
+        <pin num="CN5_5" name="D12" type="bidirectional"/>
+        <pin num="CN5_6" name="D13" type="bidirectional"/>
+        <pin num="CN5_7" name="CN5_GND" type="power_in"/>
+        <pin num="CN5_8" name="AREF" type="power_in"/>
+        <pin num="CN5_9" name="D14" type="bidirectional"/>
+        <pin num="CN5_10" name="D15" type="bidirectional"/>
+        <pin num="CN6_2" name="CN6_IOREF" type="bidirectional"/>
+        <pin num="CN6_3" name="CN6_RESET" type="bidirectional"/>
+        <pin num="CN6_4" name="CN6_+3V3" type="power_in"/>
+        <pin num="CN6_5" name="CN6_+5V" type="power_in"/>
+        <pin num="CN6_6" name="CN6_GND" type="power_in"/>
+        <pin num="CN6_7" name="CN6_GND" type="power_in"/>
+        <pin num="CN6_8" name="CN6_VIN" type="power_in"/>
+        <pin num="CN7_1" name="PC10" type="bidirectional"/>
+        <pin num="CN7_2" name="PC11" type="bidirectional"/>
+        <pin num="CN7_3" name="PC12" type="bidirectional"/>
+        <pin num="CN7_4" name="PD2" type="bidirectional"/>
+        <pin num="CN7_5" name="VDD" type="power_in"/>
+        <pin num="CN7_6" name="E5V" type="power_in"/>
+        <pin num="CN7_7" name="BOOT0" type="bidirectional"/>
+        <pin num="CN7_8" name="CN7_GND" type="power_in"/>
+        <pin num="CN7_12" name="CN7_IOREF" type="bidirectional"/>
+        <pin num="CN7_13" name="PA13" type="bidirectional"/>
+        <pin num="CN7_14" name="CN7_RESET" type="bidirectional"/>
+        <pin num="CN7_15" name="PA14" type="bidirectional"/>
+        <pin num="CN7_16" name="CN7_+3V3" type="power_in"/>
+        <pin num="CN7_17" name="PA15" type="bidirectional"/>
+        <pin num="CN7_18" name="CN7_+5V" type="power_in"/>
+        <pin num="CN7_19" name="CN7_GND" type="power_in"/>
+        <pin num="CN7_20" name="CN7_GND" type="power_in"/>
+        <pin num="CN7_21" name="PB7" type="bidirectional"/>
+        <pin num="CN7_22" name="CN7_GND" type="power_in"/>
+        <pin num="CN7_23" name="PC13" type="bidirectional"/>
+        <pin num="CN7_24" name="CN7_VIN" type="power_in"/>
+        <pin num="CN7_25" name="PC14" type="bidirectional"/>
+        <pin num="CN7_27" name="PC15" type="bidirectional"/>
+        <pin num="CN7_28" name="PA0" type="bidirectional"/>
+        <pin num="CN7_29" name="PH0" type="bidirectional"/>
+        <pin num="CN7_30" name="PA1" type="bidirectional"/>
+        <pin num="CN7_31" name="PH1" type="bidirectional"/>
+        <pin num="CN7_32" name="PA4" type="bidirectional"/>
+        <pin num="CN7_33" name="VBAT" type="power_in"/>
+        <pin num="CN7_34" name="PB0" type="bidirectional"/>
+        <pin num="CN7_35" name="PC2" type="bidirectional"/>
+        <pin num="CN7_36" name="PC1/PB9" type="bidirectional"/>
+        <pin num="CN7_37" name="PC3" type="bidirectional"/>
+        <pin num="CN7_38" name="PC0/PB8" type="bidirectional"/>
+        <pin num="CN8_1" name="A0" type="input"/>
+        <pin num="CN8_2" name="A1" type="input"/>
+        <pin num="CN8_3" name="A2" type="input"/>
+        <pin num="CN8_4" name="A3" type="input"/>
+        <pin num="CN8_5" name="A4" type="input"/>
+        <pin num="CN8_6" name="A5" type="input"/>
+        <pin num="CN9_1" name="D0" type="input"/>
+        <pin num="CN9_2" name="D1" type="output"/>
+        <pin num="CN9_3" name="D2" type="bidirectional"/>
+        <pin num="CN9_4" name="D3" type="bidirectional"/>
+        <pin num="CN9_5" name="D4" type="bidirectional"/>
+        <pin num="CN9_6" name="D5" type="bidirectional"/>
+        <pin num="CN9_7" name="D6" type="bidirectional"/>
+        <pin num="CN9_8" name="D7" type="bidirectional"/>
+        <pin num="CN10_1" name="PC9" type="bidirectional"/>
+        <pin num="CN10_2" name="PC8" type="bidirectional"/>
+        <pin num="CN10_3" name="PB8" type="bidirectional"/>
+        <pin num="CN10_4" name="PC6" type="bidirectional"/>
+        <pin num="CN10_5" name="PB9" type="bidirectional"/>
+        <pin num="CN10_6" name="PC5" type="bidirectional"/>
+        <pin num="CN10_7" name="AVDD" type="power_in"/>
+        <pin num="CN10_8" name="U5V" type="power_in"/>
+        <pin num="CN10_9" name="CN10_GND" type="power_in"/>
+        <pin num="CN10_11" name="PA5" type="bidirectional"/>
+        <pin num="CN10_12" name="PA12" type="bidirectional"/>
+        <pin num="CN10_13" name="PA6" type="bidirectional"/>
+        <pin num="CN10_14" name="PA11" type="bidirectional"/>
+        <pin num="CN10_15" name="PA7" type="bidirectional"/>
+        <pin num="CN10_16" name="PB12" type="bidirectional"/>
+        <pin num="CN10_17" name="PB6" type="bidirectional"/>
+        <pin num="CN10_19" name="PC7" type="bidirectional"/>
+        <pin num="CN10_20" name="CN10_GND" type="power_in"/>
+        <pin num="CN10_21" name="PA9" type="bidirectional"/>
+        <pin num="CN10_22" name="PB2" type="bidirectional"/>
+        <pin num="CN10_23" name="PA8" type="bidirectional"/>
+        <pin num="CN10_24" name="PB1" type="bidirectional"/>
+        <pin num="CN10_25" name="PB10" type="bidirectional"/>
+        <pin num="CN10_26" name="PB15" type="bidirectional"/>
+        <pin num="CN10_27" name="PB4" type="bidirectional"/>
+        <pin num="CN10_28" name="PB14" type="bidirectional"/>
+        <pin num="CN10_29" name="PB5" type="bidirectional"/>
+        <pin num="CN10_30" name="PB13" type="bidirectional"/>
+        <pin num="CN10_31" name="PB3" type="bidirectional"/>
+        <pin num="CN10_32" name="AGND" type="power_in"/>
+        <pin num="CN10_33" name="PA10" type="bidirectional"/>
+        <pin num="CN10_34" name="PC4" type="bidirectional"/>
+        <pin num="CN10_35" name="PA2" type="bidirectional"/>
+        <pin num="CN10_37" name="PA3" type="bidirectional"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="D_Schottky">
+      <description>Schottky diode</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TO-???*</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>D_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D_Schottky</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="L">
+      <description>Inductor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="LED">
+      <description>Light emitting diode</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>LED*</fp>
+        <fp>LED_SMD:*</fp>
+        <fp>LED_THT:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PluggableTerminalBlock" part="TB_1x2_5.08mm_RA">
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">TB_1x2_5.08mm_RA</field>
+        <field name="Footprint">PluggableTerminalBLock:MX2EDGR-5.08-GN01-02P-Cu-A</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="SwitchingRegulators" part="LMR16030SDDAR">
+      <docs>https://datasheet.lcsc.com/lcsc/1912111437_Texas-Instruments-LMR16030SDDAR_C136648.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LMR16030SDDAR</field>
+        <field name="Footprint">SwitchingRegulators:VREG_LM5017MR_NOPB</field>
+        <field name="Datasheet">https://datasheet.lcsc.com/lcsc/1912111437_Texas-Instruments-LMR16030SDDAR_C136648.pdf</field>
+        <field name="LCSC">C136648</field>
+      </fields>
+      <pins>
+        <pin num="1" name="BOOT" type="power_in"/>
+        <pin num="2" name="VIN" type="power_in"/>
+        <pin num="3" name="EN" type="passive"/>
+        <pin num="4" name="SYNC" type="passive"/>
+        <pin num="5" name="FB" type="passive"/>
+        <pin num="6" name="SS" type="passive"/>
+        <pin num="7" name="GND" type="passive"/>
+        <pin num="8" name="SW" type="power_out"/>
+        <pin num="9" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Connector.kicad_sym</uri>
+    </library>
+    <library logical="CustomConnectors">
+      <uri>C:\Workspace\KiCad\lib\symbols\CustomConnectors.kicad_sym</uri>
+    </library>
+    <library logical="CustomModules">
+      <uri>C:\Workspace\KiCad\lib\symbols\CustomModules.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Device.kicad_sym</uri>
+    </library>
+    <library logical="PluggableTerminalBlock">
+      <uri>C:\Workspace\KiCad\lib\symbols\PluggableTerminalBlock.kicad_sym</uri>
+    </library>
+    <library logical="SwitchingRegulators">
+      <uri>C:\Workspace\KiCad\lib\symbols\SwitchingRegulators.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+5V">
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="L1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="P10" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P11" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P12" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P13" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P5" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P6" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P7" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P8" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="P9" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="U1" pin="CN7_6" pinfunction="E5V" pintype="power_in"/>
+    </net>
+    <net code="2" name="+24V">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="P1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="VIN" pintype="power_in"/>
+      <node ref="U2" pin="3" pinfunction="EN" pintype="passive"/>
+    </net>
+    <net code="3" name="/ENC1_PHA">
+      <node ref="P8" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN7_28" pinfunction="PA0" pintype="bidirectional"/>
+    </net>
+    <net code="4" name="/ENC1_PHB">
+      <node ref="P8" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN7_30" pinfunction="PA1" pintype="bidirectional"/>
+    </net>
+    <net code="5" name="/ENC2_PHA">
+      <node ref="P9" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_13" pinfunction="PA6" pintype="bidirectional"/>
+    </net>
+    <net code="6" name="/ENC2_PHB">
+      <node ref="P9" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_15" pinfunction="PA7" pintype="bidirectional"/>
+    </net>
+    <net code="7" name="/ENC3_PHA">
+      <node ref="P10" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_17" pinfunction="PB6" pintype="bidirectional"/>
+    </net>
+    <net code="8" name="/ENC3_PHB">
+      <node ref="P10" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN7_21" pinfunction="PB7" pintype="bidirectional"/>
+    </net>
+    <net code="9" name="/OC_IN_1">
+      <node ref="P5" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_26" pinfunction="PB15" pintype="bidirectional"/>
+    </net>
+    <net code="10" name="/OC_IN_2">
+      <node ref="P6" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_28" pinfunction="PB14" pintype="bidirectional"/>
+    </net>
+    <net code="11" name="/PWM_CH_1">
+      <node ref="P11" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_23" pinfunction="PA8" pintype="bidirectional"/>
+    </net>
+    <net code="12" name="/PWM_CH_2">
+      <node ref="P12" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_21" pinfunction="PA9" pintype="bidirectional"/>
+    </net>
+    <net code="13" name="/PWM_CH_3">
+      <node ref="P13" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN10_33" pinfunction="PA10" pintype="bidirectional"/>
+    </net>
+    <net code="14" name="/PWM_DIR_1">
+      <node ref="P11" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_24" pinfunction="PB1" pintype="bidirectional"/>
+    </net>
+    <net code="15" name="/PWM_DIR_2">
+      <node ref="P12" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_22" pinfunction="PB2" pintype="bidirectional"/>
+    </net>
+    <net code="16" name="/PWM_DIR_3">
+      <node ref="P13" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_34" pinfunction="PC4" pintype="bidirectional"/>
+    </net>
+    <net code="17" name="/USART3_RX">
+      <node ref="P7" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="CN7_2" pinfunction="PC11" pintype="bidirectional"/>
+    </net>
+    <net code="18" name="/USART3_TX">
+      <node ref="P7" pin="3" pinfunction="3" pintype="passive"/>
+      <node ref="U1" pin="CN7_1" pinfunction="PC10" pintype="bidirectional"/>
+    </net>
+    <net code="19" name="GND">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="K" pintype="passive"/>
+      <node ref="D2" pin="1" pinfunction="K" pintype="passive"/>
+      <node ref="D3" pin="2" pinfunction="A" pintype="passive"/>
+      <node ref="P1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="P10" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P11" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P12" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P13" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P5" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="P6" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="P7" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P8" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="P9" pin="4" pinfunction="4" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R5" pin="2" pintype="passive"/>
+      <node ref="U1" pin="CN10_20" pinfunction="CN10_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN10_32" pinfunction="AGND" pintype="power_in"/>
+      <node ref="U1" pin="CN10_9" pinfunction="CN10_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN5_7" pinfunction="CN5_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN6_6" pinfunction="CN6_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN6_7" pinfunction="CN6_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN7_19" pinfunction="CN7_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN7_20" pinfunction="CN7_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN7_22" pinfunction="CN7_GND" pintype="power_in"/>
+      <node ref="U1" pin="CN7_8" pinfunction="CN7_GND" pintype="power_in"/>
+      <node ref="U2" pin="7" pinfunction="GND" pintype="passive"/>
+      <node ref="U2" pin="9" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="20" name="Net-(D1-A)">
+      <node ref="D1" pin="2" pinfunction="A" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+    </net>
+    <net code="21" name="Net-(D2-A)">
+      <node ref="D2" pin="2" pinfunction="A" pintype="passive"/>
+      <node ref="R3" pin="2" pintype="passive"/>
+    </net>
+    <net code="22" name="Net-(D3-K)">
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="D3" pin="1" pinfunction="K" pintype="passive"/>
+      <node ref="L1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="8" pinfunction="SW" pintype="power_out"/>
+    </net>
+    <net code="23" name="Net-(U2-BOOT)">
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="BOOT" pintype="power_in"/>
+    </net>
+    <net code="24" name="Net-(U2-FB)">
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="FB" pintype="passive"/>
+    </net>
+    <net code="25" name="Net-(U2-SS)">
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="U2" pin="6" pinfunction="SS" pintype="passive"/>
+    </net>
+    <net code="26" name="Net-(U2-SYNC)">
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="SYNC" pintype="passive"/>
+    </net>
+    <net code="27" name="unconnected-(P5-Pad4)">
+      <node ref="P5" pin="4" pinfunction="4" pintype="passive+no_connect"/>
+    </net>
+    <net code="28" name="unconnected-(P6-Pad4)">
+      <node ref="P6" pin="4" pinfunction="4" pintype="passive+no_connect"/>
+    </net>
+    <net code="29" name="unconnected-(U1A-BOOT0-PadCN7_7)">
+      <node ref="U1" pin="CN7_7" pinfunction="BOOT0" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="30" name="unconnected-(U1A-CN7_+3V3-PadCN7_16)">
+      <node ref="U1" pin="CN7_16" pinfunction="CN7_+3V3" pintype="power_in+no_connect"/>
+    </net>
+    <net code="31" name="unconnected-(U1A-CN7_+5V-PadCN7_18)">
+      <node ref="U1" pin="CN7_18" pinfunction="CN7_+5V" pintype="power_in+no_connect"/>
+    </net>
+    <net code="32" name="unconnected-(U1A-CN7_IOREF-PadCN7_12)">
+      <node ref="U1" pin="CN7_12" pinfunction="CN7_IOREF" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="33" name="unconnected-(U1A-CN7_RESET-PadCN7_14)">
+      <node ref="U1" pin="CN7_14" pinfunction="CN7_RESET" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="34" name="unconnected-(U1A-CN7_VIN-PadCN7_24)">
+      <node ref="U1" pin="CN7_24" pinfunction="CN7_VIN" pintype="power_in+no_connect"/>
+    </net>
+    <net code="35" name="unconnected-(U1A-PA4-PadCN7_32)">
+      <node ref="U1" pin="CN7_32" pinfunction="PA4" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="36" name="unconnected-(U1A-PA13-PadCN7_13)">
+      <node ref="U1" pin="CN7_13" pinfunction="PA13" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="37" name="unconnected-(U1A-PA14-PadCN7_15)">
+      <node ref="U1" pin="CN7_15" pinfunction="PA14" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="38" name="unconnected-(U1A-PA15-PadCN7_17)">
+      <node ref="U1" pin="CN7_17" pinfunction="PA15" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="39" name="unconnected-(U1A-PB0-PadCN7_34)">
+      <node ref="U1" pin="CN7_34" pinfunction="PB0" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="40" name="unconnected-(U1A-PC0{slash}PB8-PadCN7_38)">
+      <node ref="U1" pin="CN7_38" pinfunction="PC0/PB8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="41" name="unconnected-(U1A-PC1{slash}PB9-PadCN7_36)">
+      <node ref="U1" pin="CN7_36" pinfunction="PC1/PB9" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="42" name="unconnected-(U1A-PC2-PadCN7_35)">
+      <node ref="U1" pin="CN7_35" pinfunction="PC2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="43" name="unconnected-(U1A-PC3-PadCN7_37)">
+      <node ref="U1" pin="CN7_37" pinfunction="PC3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="44" name="unconnected-(U1A-PC12-PadCN7_3)">
+      <node ref="U1" pin="CN7_3" pinfunction="PC12" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="45" name="unconnected-(U1A-PC13-PadCN7_23)">
+      <node ref="U1" pin="CN7_23" pinfunction="PC13" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="46" name="unconnected-(U1A-PC14-PadCN7_25)">
+      <node ref="U1" pin="CN7_25" pinfunction="PC14" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="47" name="unconnected-(U1A-PC15-PadCN7_27)">
+      <node ref="U1" pin="CN7_27" pinfunction="PC15" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="48" name="unconnected-(U1A-PD2-PadCN7_4)">
+      <node ref="U1" pin="CN7_4" pinfunction="PD2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="49" name="unconnected-(U1A-PH0-PadCN7_29)">
+      <node ref="U1" pin="CN7_29" pinfunction="PH0" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="50" name="unconnected-(U1A-PH1-PadCN7_31)">
+      <node ref="U1" pin="CN7_31" pinfunction="PH1" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="51" name="unconnected-(U1A-VBAT-PadCN7_33)">
+      <node ref="U1" pin="CN7_33" pinfunction="VBAT" pintype="power_in+no_connect"/>
+    </net>
+    <net code="52" name="unconnected-(U1A-VDD-PadCN7_5)">
+      <node ref="U1" pin="CN7_5" pinfunction="VDD" pintype="power_in+no_connect"/>
+    </net>
+    <net code="53" name="unconnected-(U1B-AVDD-PadCN10_7)">
+      <node ref="U1" pin="CN10_7" pinfunction="AVDD" pintype="power_in+no_connect"/>
+    </net>
+    <net code="54" name="unconnected-(U1B-PA2-PadCN10_35)">
+      <node ref="U1" pin="CN10_35" pinfunction="PA2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="55" name="unconnected-(U1B-PA3-PadCN10_37)">
+      <node ref="U1" pin="CN10_37" pinfunction="PA3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="56" name="unconnected-(U1B-PA5-PadCN10_11)">
+      <node ref="U1" pin="CN10_11" pinfunction="PA5" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="57" name="unconnected-(U1B-PA11-PadCN10_14)">
+      <node ref="U1" pin="CN10_14" pinfunction="PA11" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="58" name="unconnected-(U1B-PA12-PadCN10_12)">
+      <node ref="U1" pin="CN10_12" pinfunction="PA12" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="59" name="unconnected-(U1B-PB3-PadCN10_31)">
+      <node ref="U1" pin="CN10_31" pinfunction="PB3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="60" name="unconnected-(U1B-PB4-PadCN10_27)">
+      <node ref="U1" pin="CN10_27" pinfunction="PB4" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="61" name="unconnected-(U1B-PB5-PadCN10_29)">
+      <node ref="U1" pin="CN10_29" pinfunction="PB5" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="62" name="unconnected-(U1B-PB8-PadCN10_3)">
+      <node ref="U1" pin="CN10_3" pinfunction="PB8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="63" name="unconnected-(U1B-PB9-PadCN10_5)">
+      <node ref="U1" pin="CN10_5" pinfunction="PB9" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="64" name="unconnected-(U1B-PB10-PadCN10_25)">
+      <node ref="U1" pin="CN10_25" pinfunction="PB10" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="65" name="unconnected-(U1B-PB12-PadCN10_16)">
+      <node ref="U1" pin="CN10_16" pinfunction="PB12" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="66" name="unconnected-(U1B-PB13-PadCN10_30)">
+      <node ref="U1" pin="CN10_30" pinfunction="PB13" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="67" name="unconnected-(U1B-PC5-PadCN10_6)">
+      <node ref="U1" pin="CN10_6" pinfunction="PC5" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="68" name="unconnected-(U1B-PC6-PadCN10_4)">
+      <node ref="U1" pin="CN10_4" pinfunction="PC6" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="69" name="unconnected-(U1B-PC7-PadCN10_19)">
+      <node ref="U1" pin="CN10_19" pinfunction="PC7" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="70" name="unconnected-(U1B-PC8-PadCN10_2)">
+      <node ref="U1" pin="CN10_2" pinfunction="PC8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="71" name="unconnected-(U1B-PC9-PadCN10_1)">
+      <node ref="U1" pin="CN10_1" pinfunction="PC9" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="72" name="unconnected-(U1B-U5V-PadCN10_8)">
+      <node ref="U1" pin="CN10_8" pinfunction="U5V" pintype="power_in+no_connect"/>
+    </net>
+    <net code="73" name="unconnected-(U1C-CN6_+3V3-PadCN6_4)">
+      <node ref="U1" pin="CN6_4" pinfunction="CN6_+3V3" pintype="power_in+no_connect"/>
+    </net>
+    <net code="74" name="unconnected-(U1C-CN6_+5V-PadCN6_5)">
+      <node ref="U1" pin="CN6_5" pinfunction="CN6_+5V" pintype="power_in+no_connect"/>
+    </net>
+    <net code="75" name="unconnected-(U1C-CN6_IOREF-PadCN6_2)">
+      <node ref="U1" pin="CN6_2" pinfunction="CN6_IOREF" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="76" name="unconnected-(U1C-CN6_RESET-PadCN6_3)">
+      <node ref="U1" pin="CN6_3" pinfunction="CN6_RESET" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="77" name="unconnected-(U1C-CN6_VIN-PadCN6_8)">
+      <node ref="U1" pin="CN6_8" pinfunction="CN6_VIN" pintype="power_in+no_connect"/>
+    </net>
+    <net code="78" name="unconnected-(U1D-D0-PadCN9_1)">
+      <node ref="U1" pin="CN9_1" pinfunction="D0" pintype="input+no_connect"/>
+    </net>
+    <net code="79" name="unconnected-(U1D-D1-PadCN9_2)">
+      <node ref="U1" pin="CN9_2" pinfunction="D1" pintype="output+no_connect"/>
+    </net>
+    <net code="80" name="unconnected-(U1D-D2-PadCN9_3)">
+      <node ref="U1" pin="CN9_3" pinfunction="D2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="81" name="unconnected-(U1D-D3-PadCN9_4)">
+      <node ref="U1" pin="CN9_4" pinfunction="D3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="82" name="unconnected-(U1D-D4-PadCN9_5)">
+      <node ref="U1" pin="CN9_5" pinfunction="D4" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="83" name="unconnected-(U1D-D5-PadCN9_6)">
+      <node ref="U1" pin="CN9_6" pinfunction="D5" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="84" name="unconnected-(U1D-D6-PadCN9_7)">
+      <node ref="U1" pin="CN9_7" pinfunction="D6" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="85" name="unconnected-(U1D-D7-PadCN9_8)">
+      <node ref="U1" pin="CN9_8" pinfunction="D7" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="86" name="unconnected-(U1E-A0-PadCN8_1)">
+      <node ref="U1" pin="CN8_1" pinfunction="A0" pintype="input+no_connect"/>
+    </net>
+    <net code="87" name="unconnected-(U1E-A1-PadCN8_2)">
+      <node ref="U1" pin="CN8_2" pinfunction="A1" pintype="input+no_connect"/>
+    </net>
+    <net code="88" name="unconnected-(U1E-A2-PadCN8_3)">
+      <node ref="U1" pin="CN8_3" pinfunction="A2" pintype="input+no_connect"/>
+    </net>
+    <net code="89" name="unconnected-(U1E-A3-PadCN8_4)">
+      <node ref="U1" pin="CN8_4" pinfunction="A3" pintype="input+no_connect"/>
+    </net>
+    <net code="90" name="unconnected-(U1E-A4-PadCN8_5)">
+      <node ref="U1" pin="CN8_5" pinfunction="A4" pintype="input+no_connect"/>
+    </net>
+    <net code="91" name="unconnected-(U1E-A5-PadCN8_6)">
+      <node ref="U1" pin="CN8_6" pinfunction="A5" pintype="input+no_connect"/>
+    </net>
+    <net code="92" name="unconnected-(U1F-AREF-PadCN5_8)">
+      <node ref="U1" pin="CN5_8" pinfunction="AREF" pintype="power_in+no_connect"/>
+    </net>
+    <net code="93" name="unconnected-(U1F-D8-PadCN5_1)">
+      <node ref="U1" pin="CN5_1" pinfunction="D8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="94" name="unconnected-(U1F-D9-PadCN5_2)">
+      <node ref="U1" pin="CN5_2" pinfunction="D9" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="95" name="unconnected-(U1F-D10-PadCN5_3)">
+      <node ref="U1" pin="CN5_3" pinfunction="D10" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="96" name="unconnected-(U1F-D11-PadCN5_4)">
+      <node ref="U1" pin="CN5_4" pinfunction="D11" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="97" name="unconnected-(U1F-D12-PadCN5_5)">
+      <node ref="U1" pin="CN5_5" pinfunction="D12" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="98" name="unconnected-(U1F-D13-PadCN5_6)">
+      <node ref="U1" pin="CN5_6" pinfunction="D13" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="99" name="unconnected-(U1F-D14-PadCN5_9)">
+      <node ref="U1" pin="CN5_9" pinfunction="D14" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="100" name="unconnected-(U1F-D15-PadCN5_10)">
+      <node ref="U1" pin="CN5_10" pinfunction="D15" pintype="bidirectional+no_connect"/>
+    </net>
+  </nets>
+</export>
