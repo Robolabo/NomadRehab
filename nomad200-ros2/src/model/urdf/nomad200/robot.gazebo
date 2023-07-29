@@ -1,18 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<gazebo reference="link_chassis">
-    <material>Gazebo/Orange</material>
-  </gazebo>
-  <gazebo reference="link_left_wheel">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-  <gazebo reference="link_right_wheel">
-    <material>Gazebo/Blue</material>
-  </gazebo>
-
-
-   <gazebo>
+  <gazebo>
     <plugin
       filename="libignition-gazebo-diff-drive-system.so"
       name="ignition::gazebo::systems::DiffDrive">
@@ -28,8 +17,18 @@
     </plugin>
   </gazebo>
 
-<gazebo>
-  <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
-</gazebo>
+  <gazebo>
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+  </gazebo>
+
+  <gazebo reference="link_sensor_imu">
+    <gravity>true</gravity>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>1</always_on>
+        <update_rate>1000</update_rate>
+        <visualize>true</visualize>
+        <topic>imu</topic>
+      </sensor> 
+  </gazebo>
 
 </robot>

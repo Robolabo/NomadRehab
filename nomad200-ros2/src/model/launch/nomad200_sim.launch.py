@@ -121,6 +121,23 @@ def generate_launch_description():
                                   ('/world/empty/model/my_custom_model/joint_state', '/joint_states')
                               ])
 
+
+    # imu bridge
+    imu_bridge = Node(package='ros_ign_bridge', executable='parameter_bridge',
+                          namespace=namespace,
+                          name='imu_bridge',
+                          output='screen',
+                          parameters=[{
+                              'use_sim_time': use_sim_time
+                          }],
+                          arguments=[
+                              '/imu' + '@sensor_msgs/msg/Imu' + '[ignition.msgs.IMU'
+                          ],
+                          remappings=[
+                              ('/imu', '/imu')
+                          ])
+
+
     return LaunchDescription([
       DeclareLaunchArgument(
           'ign_args',
@@ -134,4 +151,5 @@ def generate_launch_description():
         cmd_vel_bridge,
         odom_base_tf_bridge,
         joint_state_bridge,
+        imu_bridge
     ])

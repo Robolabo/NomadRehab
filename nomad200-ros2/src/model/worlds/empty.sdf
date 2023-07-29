@@ -25,12 +25,18 @@
     </plugin>
 
     <!-- Generates rendering sensor data -->
-    <!-- <plugin
+    <plugin
       filename="libignition-gazebo-sensors-system.so"
       name="ignition::gazebo::systems::Sensors">
   
       <render_engine>ogre</render_engine>
-    </plugin> -->
+    </plugin>
+
+    <!-- Imu -->
+    <plugin
+      filename="libignition-gazebo-imu-system.so"
+      name="ignition::gazebo::systems::Imu">
+    </plugin>
 
     <!-- SUN -->
     <light name='sun' type='directional'>

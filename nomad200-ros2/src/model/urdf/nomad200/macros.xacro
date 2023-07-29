@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="link_wheel" params="name">
-        <link name="${name}">
-            <inertial>
-              <mass value="0.2"/>
-              <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
-              <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
-            </inertial>
-            <collision name="link_right_wheel_collision">
-              <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
-              <geometry>
-                <cylinder length="0.04" radius="0.1"/>
-              </geometry>
-            </collision>
-            <visual name="${name}_visual">
-              <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
-              <geometry>
-                <cylinder length="0.04" radius="0.1"/>
-              </geometry>
-            </visual>
-        </link>
+      <link name="${name}">
+          <inertial>
+            <mass value="0.2"/>
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+           </inertial>
+           <collision name="${name}_collision">
+             <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+             <geometry>
+               <cylinder length="0.04" radius="0.1"/>
+             </geometry>
+           </collision>
+           <visual name="${name}_visual">
+             <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+             <geometry>
+               <cylinder length="0.04" radius="0.1"/>
+             </geometry>
+             <material name="Nomad/Blue"/>
+           </visual>
+      </link>
     </xacro:macro>
 
     <xacro:macro name="joint_wheel" params="name child origin_xyz">
@@ -32,4 +33,38 @@
         <joint_properties damping="1.0" friction="1.0"/>
       </joint>
     </xacro:macro>
+
+    <xacro:macro name="link_imu" params="name">
+      <link name="${name}">
+        <inertial>
+          <mass value="0.001" />
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <inertia ixx="0.00000015" ixy="0" ixz="0" iyy="0.00000015" iyz="0" izz="0.00000015" />
+        </inertial>
+        <collision  name="${name}_collision">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <box size="0.02 0.02 0.02" />
+          </geometry>
+        </collision>
+        <visual  name="${name}_visual">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <box size="0.02 0.02 0.02" />
+          </geometry>
+          <material name="Nomad/Green"/>        
+        </visual>
+      </link>
+    </xacro:macro>
+    
+
+    <xacro:macro name="joint_imu" params="name child origin_xyz rpy">
+      <joint name="${name}" type="fixed">
+        <origin xyz="${origin_xyz}" rpy="${rpy}" />
+        <child link="${child}" />
+        <parent link="link_chassis" />
+        <axis xyz="0 0 1" />
+      </joint>
+    </xacro:macro>
+
 </robot>
