@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="wheel_diameter" default="0.6"/>
+  <xacro:arg name="base_diameter" default="2.5"/>
+
+  <xacro:property name="wheel_radius" value="${$(arg wheel_diameter)/2}"/>
+  <xacro:property name="base_radius" value="${$(arg base_diameter)/2}"/>
+  <xacro:property name="wheel_wheelbase" value="1.7"/>
+  <xacro:property name="wheel_track" value="0.9"/>
+  <xacro:property name="wheel_thickness" value="0.08"/>
+  <xacro:property name="wheel_mass" value="0.05"/>
+  <xacro:property name="base_mass" value="0.05"/>
+  <xacro:property name="base_thickness" value="0.1"/>
+
+  <xacro:include filename="inertial_macros.xacro"/>
+  
+
+  
+  <link name="base_link" />
+  <!-- Chassis -->
+  <link name="chassis">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${base_thickness}" radius="${base_radius}" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${base_thickness}" radius="${base_radius}" />
+      </geometry>
+      <material name="Orange" />
+    </visual>
+
+    <xacro:inertial_cylinder mass="${base_mass}" length="${base_thickness}" radius="${base_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+
+  </link>
+
+  <gazebo reference="chassis">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <joint name="chassis_joint" type="fixed">
+    <origin xyz="0 0 ${wheel_radius*2}" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="chassis" />
+  </joint>
+
+
+  <!-- left Steering Link -->
+  <link name="left_steering_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="Black" />
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.005" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+  </link>
+
+  <joint name="left_steering_joint" type="continuous">
+    <origin xyz="${-wheel_wheelbase/2} ${wheel_track/2} ${-wheel_radius}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="left_steering_link" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <!-- left wheel Link -->
+  <link name="left_wheel">
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}" />
+      </geometry>
+    </collision>
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}"/>
+      </geometry>
+      <material name="Black" />
+    </visual>
+
+    <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_thickness}" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+
+  </link>
+
+  <gazebo reference="left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="-1.57 0 0" />
+    <parent link="left_steering_link" />
+    <child link="left_wheel" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.2" />
+  </joint>
+
+  <!-- right Steering Link -->
+    <link name="right_steering_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="Black" />
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.005" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+  </link>
+
+  <joint name="right_steering_joint" type="continuous">
+    <origin xyz="${-wheel_wheelbase/2} ${-wheel_track/2} ${-wheel_radius}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="right_steering_link" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <!-- right wheel Link -->
+  <link name="right_wheel">
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}"/>
+      </geometry>
+      <material name="Black" />
+    </visual>
+
+    <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_thickness}" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+
+
+  </link>
+
+  <gazebo reference="right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="-1.57 0 0" />
+    <parent link="right_steering_link" />
+    <child link="right_wheel" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.2" />
+  </joint>
+
+  <!-- Steering Link -->
+  <link name="steering_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01" />
+      </geometry>
+      <material name="Black" />
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.005" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+  </link>
+
+  <joint name="steering_joint" type="continuous">
+    <origin xyz="${wheel_wheelbase/2} 0 ${-wheel_radius}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="steering_link" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <!-- traction wheel link -->
+  <link name="wheel_front_link">
+    <collision>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <geometry>
+        <cylinder length="${wheel_thickness}" radius="${wheel_radius}"/>
+      </geometry>
+      <material name="Black" />
+    </visual>
+
+    <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_thickness}" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+  </link>
+
+  <gazebo reference="wheel_front_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="traction_joint" type="continuous">
+    <parent link="steering_link" />
+    <child link="wheel_front_link" />
+    <origin xyz="0 0 0" rpy="-1.57 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+</robot>
