@@ -59,7 +59,7 @@ def generate_launch_description():
 
     load_tricycle_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'tricycle_controller'],
+             'synchro_drive_controller'],
         output='screen'
     )
 

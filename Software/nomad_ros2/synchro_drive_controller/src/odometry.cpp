@@ -39,14 +39,13 @@ bool Odometry::update(double Ws, double alpha, const rclcpp::Duration & dt)
   // using naming convention in http://users.isr.ist.utl.pt/~mir/cadeiras/robmovel/Kinematics.pdf
   double Vs = Ws * wheel_radius_;
   double Vx = Vs * std::cos(alpha);
-  double theta_dot = Vs * std::sin(alpha) / wheelbase_;
 
   // Integrate odometry:
-  integrateExact(Vx * dt.seconds(), theta_dot * dt.seconds());
+  integrateExact(Vx * dt.seconds(), alpha * dt.seconds());
 
   // Estimate speeds using a rolling mean to filter them out:
   linear_accumulator_.accumulate(Vx);
-  angular_accumulator_.accumulate(theta_dot);
+  angular_accumulator_.accumulate(alpha);
 
   linear_ = linear_accumulator_.getRollingMean();
   angular_ = angular_accumulator_.getRollingMean();

@@ -37,7 +37,7 @@ TEST(TestLoadTricycleController, load_controller)
     executor, "test_controller_manager");
 
   ASSERT_NE(
-    cm.load_controller("test_tricycle_controller", "tricycle_controller/TricycleController"),
+    cm.load_controller("test_synchro_drive_controller", "synchro_drive_controller/TricycleController"),
     nullptr);
 
   rclcpp::shutdown();

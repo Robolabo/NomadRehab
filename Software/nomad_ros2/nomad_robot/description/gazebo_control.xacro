@@ -13,11 +13,23 @@
       <state_interface name="velocity" />
       <state_interface name="position" />
     </joint>
+    <joint name="left_steering_joint">
+      <command_interface name="position" />
+    </joint>
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity" />
+    </joint>
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity" />
+    </joint>
+    <joint name="right_steering_joint">
+      <command_interface name="position" />
+    </joint>
   </ros2_control>
 
   <gazebo>
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-      <parameters>$(find gazebo_ros2_control_demos)/config/tricycle_drive_controller.yaml</parameters>
+      <parameters>/mnt/c/Workspace/repositories/NomadRehab/Software/nomad_ros2/nomad_robot/config/nomad_drive_controller.yaml</parameters>
     </plugin>
   </gazebo>
 </robot>

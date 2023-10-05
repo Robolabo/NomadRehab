@@ -59,8 +59,8 @@ CallbackReturn SychroController::on_init()
     auto_declare<std::string>("left_wheel_joint_name", std::string());
     auto_declare<std::string>("left_steering_joint_name", std::string());
 
-    auto_declare<std::string>("rigth_wheel_joint_name", std::string());
-    auto_declare<std::string>("rigth_steering_joint_name", std::string());
+    auto_declare<std::string>("right_wheel_joint_name", std::string());
+    auto_declare<std::string>("right_steering_joint_name", std::string());
 
     auto_declare<double>("wheelbase", wheel_params_.wheelbase);
     auto_declare<double>("wheel_radius", wheel_params_.radius);
@@ -107,8 +107,19 @@ InterfaceConfiguration SychroController::command_interface_configuration() const
 {
   InterfaceConfiguration command_interfaces_config;
   command_interfaces_config.type = interface_configuration_type::INDIVIDUAL;
+
+  /* Configure front wheel commands */
   command_interfaces_config.names.push_back(traction_joint_name_ + "/" + HW_IF_VELOCITY);
   command_interfaces_config.names.push_back(steering_joint_name_ + "/" + HW_IF_POSITION);
+
+  /* configure left wheel commands */
+  command_interfaces_config.names.push_back(left_wheel_joint_name_ + "/" + HW_IF_VELOCITY);
+  command_interfaces_config.names.push_back(left_steering_joint_name_ + "/" + HW_IF_POSITION);
+
+  /* configure right wheel commands */
+  command_interfaces_config.names.push_back(right_wheel_joint_name_ + "/" + HW_IF_VELOCITY);
+  command_interfaces_config.names.push_back(right_steering_joint_name_ + "/" + HW_IF_POSITION);
+
   return command_interfaces_config;
 }
 
@@ -116,6 +127,8 @@ InterfaceConfiguration SychroController::state_interface_configuration() const
 {
   InterfaceConfiguration state_interfaces_config;
   state_interfaces_config.type = interface_configuration_type::INDIVIDUAL;
+  /* Define only two state interface for all */
+  /* The three wheels are supposed to move synchronuslly*/
   state_interfaces_config.names.push_back(traction_joint_name_ + "/" + HW_IF_VELOCITY);
   state_interfaces_config.names.push_back(steering_joint_name_ + "/" + HW_IF_POSITION);
   return state_interfaces_config;
@@ -259,9 +272,11 @@ controller_interface::return_type SychroController::update(
   traction_joint_[1].velocity_command.get().set_value(Ws_write);
   traction_joint_[2].velocity_command.get().set_value(Ws_write);
 
+
   steering_joint_[0].position_command.get().set_value(alpha_write);
   steering_joint_[1].position_command.get().set_value(alpha_write);
   steering_joint_[2].position_command.get().set_value(alpha_write);
+
 
   return controller_interface::return_type::OK;
 }
@@ -277,8 +292,8 @@ CallbackReturn SychroController::on_configure(const rclcpp_lifecycle::State & /*
   left_wheel_joint_name_ = get_node()->get_parameter("left_wheel_joint_name").as_string();
   left_steering_joint_name_ = get_node()->get_parameter("left_steering_joint_name").as_string();
 
-  rigth_wheel_joint_name_ = get_node()->get_parameter("rigth_wheel_joint_name").as_string();
-  rigth_steering_joint_name_ = get_node()->get_parameter("rigth_steering_joint_name").as_string();
+  right_wheel_joint_name_ = get_node()->get_parameter("right_wheel_joint_name").as_string();
+  right_steering_joint_name_ = get_node()->get_parameter("right_steering_joint_name").as_string();
 
 
   if (traction_joint_name_.empty())
@@ -303,14 +318,14 @@ CallbackReturn SychroController::on_configure(const rclcpp_lifecycle::State & /*
     return CallbackReturn::ERROR;
   }
 
-  if (rigth_wheel_joint_name_.empty())
+  if (right_wheel_joint_name_.empty())
   {
-    RCLCPP_ERROR(logger, "'rigth_wheel_joint_name_' parameter was empty");
+    RCLCPP_ERROR(logger, "'right_wheel_joint_name_' parameter was empty");
     return CallbackReturn::ERROR;
   }
-  if (rigth_steering_joint_name_.empty())
+  if (right_steering_joint_name_.empty())
   {
-    RCLCPP_ERROR(logger, "'rigth_steering_joint_name_' parameter was empty");
+    RCLCPP_ERROR(logger, "'right_steering_joint_name_' parameter was empty");
     return CallbackReturn::ERROR;
   }
 
@@ -498,7 +513,7 @@ CallbackReturn SychroController::on_activate(const rclcpp_lifecycle::State &)
   RCLCPP_INFO(get_node()->get_logger(), "On activate: Initialize Joints");
 
   // Initialize the joints
-  auto wheel_front_result = get_traction(traction_joint_name_, traction_joint_);
+  auto traction_result = get_traction(traction_joint_name_, traction_joint_);
   auto steering_result = get_steering(steering_joint_name_, steering_joint_);
 
   if (traction_result == CallbackReturn::ERROR || steering_result == CallbackReturn::ERROR)
@@ -506,7 +521,7 @@ CallbackReturn SychroController::on_activate(const rclcpp_lifecycle::State &)
     return CallbackReturn::ERROR;
   }
 
-  wheel_front_result = get_traction(left_wheel_joint_name_, traction_joint_);
+  traction_result = get_traction(left_wheel_joint_name_, traction_joint_);
   steering_result = get_steering(left_steering_joint_name_, steering_joint_);
 
   if (traction_result == CallbackReturn::ERROR || steering_result == CallbackReturn::ERROR)
@@ -514,20 +529,14 @@ CallbackReturn SychroController::on_activate(const rclcpp_lifecycle::State &)
     return CallbackReturn::ERROR;
   }
 
-  wheel_front_result = get_traction(rigth_wheel_joint_name_, traction_joint_);
-  steering_result = get_steering(rigth_steering_joint_name_, steering_joint_);
+  traction_result = get_traction(right_wheel_joint_name_, traction_joint_);
+  steering_result = get_steering(right_steering_joint_name_, steering_joint_);
 
   if (traction_result == CallbackReturn::ERROR || steering_result == CallbackReturn::ERROR)
   {
     return CallbackReturn::ERROR;
   }
-  
-  if ((traction_joint_.size() != 3) || (steering_joint_.empty() != 3))
-  {
-    RCLCPP_ERROR(
-      get_node()->get_logger(), "Either steering or traction interfaces are non existent");
-    return CallbackReturn::ERROR;
-  }
+
 
   is_halted = false;
   subscriber_is_active_ = true;
@@ -622,10 +631,10 @@ CallbackReturn SychroController::get_traction(
     });
   if (state_handle == state_interfaces_.cend())
   {
-    RCLCPP_ERROR(
+    /* Some joints may not have state interfaces */
+    RCLCPP_INFO(
       get_node()->get_logger(), "Unable to obtain joint state handle for %s",
       traction_joint_name.c_str());
-    return CallbackReturn::ERROR;
   }
 
   // Lookup the velocity command interface
@@ -662,12 +671,14 @@ CallbackReturn SychroController::get_steering(
       return interface.get_prefix_name() == steering_joint_name &&
              interface.get_interface_name() == HW_IF_POSITION;
     });
+
+  
   if (state_handle == state_interfaces_.cend())
   {
-    RCLCPP_ERROR(
+    /* Some joints may not have state interfaces */
+    RCLCPP_INFO(
       get_node()->get_logger(), "Unable to obtain joint state handle for %s",
       steering_joint_name.c_str());
-    return CallbackReturn::ERROR;
   }
 
   // Lookup the velocity command interface

@@ -111,10 +111,12 @@ protected:
 
   std::string traction_joint_name_;
   std::string steering_joint_name_;
+
   std::string left_wheel_joint_name_;
   std::string left_steering_joint_name_;
-  std::string rigth_wheel_joint_name_;
-  std::string rigth_steering_joint_name_;
+
+  std::string right_wheel_joint_name_;
+  std::string right_steering_joint_name_;
 
 
   // HACK: put into vector to avoid initializing structs because they have no default constructors
