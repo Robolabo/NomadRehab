@@ -73,14 +73,14 @@
  *
  * @param rotation reference position.
  */
-void NOMAD_ROTATION_setPoint (float rotation);
+void NOMAD_ROTATION_setPoint (int rotation);
 
 /**
  * @brief Get current wheel angle in radians.
  *
  * @return wheel angle in radians.
  */
-float NOMAD_ROTATION_getRotation ();
+int NOMAD_ROTATION_getRotation ();
 
 /**
  * @brief Check if the control is enabled.
@@ -122,5 +122,22 @@ void NOMAD_ROTATION_saveContext ();
  * @brief Restore context.
  */
 void NOMAD_ROTATION_restoreContext ();
+
+/**
+ * @brief
+ *
+ * @param kp
+ * @param kd
+ * @param ki
+ * @param limit
+ * @param cpr
+ * @param reduction
+ */
+void NOMAD_ROTATION_setPID (
+    int kp, int kd,
+    int ki, int limit,
+    uint32_t cpr, int reduction);
+
+
 
 #endif /* APP_INCLUDE_NOMAD_ROTATION_CONTROLLER_H_ */

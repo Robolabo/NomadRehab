@@ -7,8 +7,8 @@ tricycle_controller:
     left_wheel_joint_name: left_wheel_joint # Name of traction joint in URDF
     left_steering_joint_name: left_steering_joint # Name of steering joint in URDF
 
-    rigth_wheel_joint_name: rigth_wheel_joint # Name of traction joint in URDF
-    rigth_steering_joint_name: rigth_steering_joint # Name of steering joint in URDF
+    right_wheel_joint_name: right_wheel_joint # Name of traction joint in URDF
+    right_steering_joint_name: right_steering_joint # Name of steering joint in URDF
 
     wheel_radius: 0.0 # Radius of front wheel
     wheelbase: 0.0 # Distance between center of back wheels and front wheel

@@ -71,26 +71,13 @@ static void NOMAD_ROTATION_TaskFn() {
   float rotation_input = 0.0;
   float rotation_output = 0.0;
   TickType_t elapsed_ticks = 0;
-  /* Initialize hardware encoders */
-  NOMAD_ROTATION_rotation_enc = ENC_CONTROL_init(
-      NOMAD_ROTATION_ENC,
-      NOMAD_ROTATION_CPR,
-      NOMAD_ROTATION_REDUCTION);
 
   /* Initialize PWM */
-
   NOMAD_PWM_init();
   NOMAD_PWM_setDuty(NOMAD_ROTATION_PWM_CH, 0.0);
   NOMAD_PWM_start(NOMAD_ROTATION_PWM_CH);
 
-  /* Initialize encoder */
-  if (NOMAD_ROTATION_IS_VALID_CONTEXT()) {
-    NOMAD_ROTATION_restoreContext();
-    NOMAD_ROTATION_INVALIDATE_CONTEXT();
-  }
-  else {
-    ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
-  }
+  ENC_CONTROL_reset(NOMAD_ROTATION_ENC);
 
   while (1) {
     elapsed_ticks = xTaskGetTickCount();
@@ -119,11 +106,9 @@ static void NOMAD_ROTATION_TaskFn() {
 
 /**
  * @brief Set controller reference point.
- *
- * @param rotation reference position.
  */
-void NOMAD_ROTATION_setPoint (float rotation) {
-  NOMAD_ROTATION_controller.base.params.setpoit = rotation;
+void NOMAD_ROTATION_setPoint (int rotation) {
+  NOMAD_ROTATION_controller.base.params.setpoit = (float)(rotation)/1000.0;
 }
 
 /**
@@ -131,8 +116,8 @@ void NOMAD_ROTATION_setPoint (float rotation) {
  *
  * @return wheel angle in radians.
  */
-float NOMAD_ROTATION_getRotation () {
-  return NOMAD_ROTATION_controller.base.params.last_input;
+int NOMAD_ROTATION_getRotation () {
+  return (int)(NOMAD_ROTATION_controller.base.params.last_input * 1000.0);
 }
 
 /**
@@ -162,27 +147,6 @@ void NOMAD_ROTATION_disableControl () {
 }
 
 
-/**
- * @brief store the context in ram to restore in case of soft reset.
- */
-void NOMAD_ROTATION_saveContext () {
-  NOMAD_ROTATION_rotation_enc->cnt = NOMAD_ROTATION_rotation_enc->htim->Instance->CNT;
-
-  memcpy(&NOMAD_ROTATION_context.rotation_controller, &NOMAD_ROTATION_controller, sizeof(PID_controller_t));
-  memcpy(&NOMAD_ROTATION_context.rotation_encoder, NOMAD_ROTATION_rotation_enc, sizeof(Encoder_controller_t));
-
-  NOMAD_ROTATION_context.magicNumber = NOMAG_WHEEL_MAGIC;
-}
-
-/**
- * @brief Restore context.
- */
-void NOMAD_ROTATION_restoreContext () {
-  memcpy(&NOMAD_ROTATION_controller, &NOMAD_ROTATION_context.rotation_controller, sizeof(PID_controller_t));
-  memcpy(NOMAD_ROTATION_rotation_enc, &NOMAD_ROTATION_context.rotation_encoder, sizeof(Encoder_controller_t));
-
-  NOMAD_ROTATION_rotation_enc->htim->Instance->CNT = NOMAD_ROTATION_rotation_enc->cnt;
-}
 
 /**
  * @brief Reset the controller. Set the origin.
@@ -207,21 +171,43 @@ void NOMAD_ROTATION_reset () {
   NOMAD_ROTATION_enableControl();
 }
 
+
+
+void NOMAD_ROTATION_setPID (
+    int kp, int kd,
+    int ki, int limit,
+    uint32_t cpr, int reduction)
+{
+  float f_kp = ((float)kp)/1000.0;
+  float f_kd = ((float)kd)/1000.0;
+  float f_ki = ((float)ki)/1000.0;
+  float f_limit = ((float)limit)/1000.0;
+  uint32_t ui_cpr = ((uint32_t)cpr);
+  float f_reduction = ((float)reduction)/1000.0;
+
+  NOMAD_ROTATION_disableControl();
+  /* Initialize PID controller */
+  PID_CONTROLLER_Init(
+    &NOMAD_ROTATION_controller, f_kp, f_kd, f_ki, f_limit);
+
+  /* Initialize encoder */
+  NOMAD_ROTATION_rotation_enc =
+      ENC_CONTROL_init(NOMAD_ROTATION_ENC, ui_cpr, f_reduction);
+  NOMAD_ROTATION_controller.base.params.dt = NOMAD_ROTATION_DT;
+  NOMAD_ROTATION_reset();
+}
+
 /**
  * @brief Initialize rotation controller task.
  *
  */
 void NOMAD_ROTATION_Init () {
 
-  /* Initialize encoder controller */
-  PID_CONTROLLER_Init(
-      &NOMAD_ROTATION_controller,
-      NOMAD_ROTATION_KP,
-      NOMAD_ROTATION_KD,
-      NOMAD_ROTATION_KI,
-      NOMAD_ROTATION_LIMIT);
-  /* ToDO: include this in the Controller init function */
-  NOMAD_ROTATION_controller.base.params.dt = NOMAD_ROTATION_DT;
+  NOMAD_ROTATION_setPID (
+      NOMAD_ROTATION_KP * 1000, NOMAD_ROTATION_KD * 1000,
+      NOMAD_ROTATION_KD * 1000, NOMAD_ROTATION_LIMIT * 1000,
+      NOMAD_ROTATION_CPR, NOMAD_ROTATION_REDUCTION * 1000);
+
 
   /* Initialize main task */
   xTaskCreate(

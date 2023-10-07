@@ -9,8 +9,8 @@ def generate_launch_description():
   joy_params = os.path.join(get_package_share_directory('nomad_robot'),'config','joystick.yaml')
 
   joy_node = Node(
-    package='joy',
-    executable='joy_node',
+    package='joy_linux',
+    executable='joy_linux_node',
     parameters=[joy_params],
   )
   

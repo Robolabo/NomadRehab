@@ -43,7 +43,7 @@ synchro_drive_controller:
       # min_velocity: 0.0
       # max_velocity: 1000.0
       # min_acceleration: 0.0
-      max_acceleration: 5.0
+      max_acceleration: 100.0
       # min_deceleration: 0.0
       max_deceleration: 8.0
       # min_jerk: 0.0

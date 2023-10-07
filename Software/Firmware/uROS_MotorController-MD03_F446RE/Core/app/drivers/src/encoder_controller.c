@@ -49,48 +49,19 @@ static void ENC_CONTROL_periodElapsedCallback (TIM_HandleTypeDef* htim);
 ************************************************************************/
 
 
-
-/**
- * @brief Initialize an encoder structure.
- *        WARNING: The timer handle must be previously initialized
- *        and the interrupt enabled!!!!
- *
- * @param htim Associated timer handle.
- * @param countPerRevolution Encoder resolution
- * @param reductionFactor Motor speed reduction factor
- * @return
- */
-Encoder_controller_t* ENC_CONTROL_init (
-    TIM_HandleTypeDef* htim,
+void ENC_CONTROL_setCPR (
+    Encoder_controller_t* instance,
     uint32_t countPerRevolution,
     float reductionFactor)
 {
-  Encoder_controller_t* instance =  ENC_CONTROL_getEncoderInstance (htim);
-
   uint32_t period = 0;
 
-  /* Check the parameter boundaries */
-
-  if ((countPerRevolution == 0) || (reductionFactor <= 0)) {
-    /* Incorrect parameters */
-    return NULL;
-  }
-
-  /* Create new instance */
   if (instance == NULL){
-    /* Sanity check! */
-    if (ENC_CONTROL_encoderIndex < ENC_CONTROL_MAX_ENCODERS) {
-      instance = &ENC_CONTROL_encoders[ENC_CONTROL_encoderIndex];
-      ENC_CONTROL_encoderIndex++;
-    }
-    else {
-      /* Something went wrong */
-      while(1);
-    }
+    return;
   }
 
   /* Initialize encoder parameters */
-  instance->htim = htim;
+
   instance->countPerRevolution = countPerRevolution;
   instance->reduction = reductionFactor;
   instance->revolutions = 0;
@@ -110,9 +81,49 @@ Encoder_controller_t* ENC_CONTROL_init (
   instance->htim->Init.Period = period;
   instance->htim->Instance->ARR = instance->htim->Init.Period;
   instance->htim->PeriodElapsedCallback = ENC_CONTROL_periodElapsedCallback;
+}
 
-  __HAL_TIM_ENABLE_IT(htim, TIM_IT_UPDATE);
-  HAL_TIM_Encoder_Start(htim, TIM_CHANNEL_ALL);
+/**
+ * @brief Initialize an encoder structure.
+ *        WARNING: The timer handle must be previously initialized
+ *        and the interrupt enabled!!!!
+ *
+ * @param htim Associated timer handle.
+ * @param countPerRevolution Encoder resolution
+ * @param reductionFactor Motor speed reduction factor
+ * @return
+ */
+Encoder_controller_t* ENC_CONTROL_init (
+    TIM_HandleTypeDef* htim,
+    uint32_t countPerRevolution,
+    float reductionFactor)
+{
+  Encoder_controller_t* instance =  ENC_CONTROL_getEncoderInstance(htim);
+
+  /* Check the parameter boundaries */
+
+  if ((countPerRevolution == 0) || (reductionFactor <= 0)) {
+    /* Incorrect parameters */
+    return NULL;
+  }
+
+  /* Create new instance */
+  if (instance == NULL){
+    /* Sanity check! */
+    if (ENC_CONTROL_encoderIndex < ENC_CONTROL_MAX_ENCODERS) {
+      instance = &ENC_CONTROL_encoders[ENC_CONTROL_encoderIndex];
+      ENC_CONTROL_encoderIndex++;
+
+      instance->htim = htim;
+      ENC_CONTROL_setCPR(instance, countPerRevolution, reductionFactor);
+      __HAL_TIM_ENABLE_IT(htim, TIM_IT_UPDATE);
+      HAL_TIM_Encoder_Start(htim, TIM_CHANNEL_ALL);
+    }
+
+  } else {
+    /* Make sure we don't start the timer twice */
+    ENC_CONTROL_setCPR(instance, countPerRevolution, reductionFactor);
+  }
 
   return instance;
 }

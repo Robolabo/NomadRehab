@@ -87,5 +87,17 @@ void ENC_CONTROL_reset (TIM_HandleTypeDef* htim);
  */
 float ENC_CONTROL_getPostion (TIM_HandleTypeDef* htim);
 
+/**
+ * @brief
+ *
+ * @param instance
+ * @param countPerRevolution
+ * @param reductionFactor
+ */
+void ENC_CONTROL_setCPR (
+    Encoder_controller_t* instance,
+    uint32_t countPerRevolution,
+    float reductionFactor);
+
 
 #endif /* INC_ENCODER_CONTROLLER_H_ */

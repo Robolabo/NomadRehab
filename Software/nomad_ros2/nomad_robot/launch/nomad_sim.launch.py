@@ -97,4 +97,5 @@ def generate_launch_description():
     rviz,
     node_robot_state_publisher,
     spawn_entity,
-    joy,])
+    #joy,
+  ])

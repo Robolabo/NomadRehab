@@ -27,7 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "uros_motor_app.h"
+#include "nomad_motor_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,9 +61,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define ADDRESS_M1  0xB0
-#define ADDRESS_M2  0xB2
-#define ADDRESS_M3  0xB4
+
 /* USER CODE END 0 */
 
 /**
@@ -103,10 +101,6 @@ int main(void)
   MX_TIM4_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  /*
-  ENCODER_TEST_Init();
-  PWM_TEST_Init ();
-  */
 
   UROS_MOTOR_init();
 

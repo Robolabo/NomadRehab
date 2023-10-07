@@ -7,9 +7,28 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(serial REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(controller_manager REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(pluginlib REQUIRED)
+
+include_directories(include)
+
+add_executable(test_serial 
+  src/test_serial.cpp
+  src/nomad_motor_comms.cpp
+)
+
+ament_target_dependencies( test_serial
+  "hardware_interface"
+  "controller_manager"
+  "serial"
+  "rclcpp"
+  "pluginlib"
+)
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

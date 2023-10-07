@@ -80,49 +80,24 @@
 #define WHEEL_RADIUS_M                  0.05f   /*<! Wheel radius */
 
 
-/**
- * @brief Odometry structure.
- */
-typedef struct{
- float x;     /*<! X-axis position */
- float y;     /*<! Y-axis position */
- float v_x;   /*<! X-axis linear speed */
- float v_y;   /*<! Y-axis linear speed */
- float v_th;  /*<! Z-axis angular speed */
-} NOMAD_WHEEL_Odometry_t;
-
-
 /************************************************************************
     FUNCTIONS
 ************************************************************************/
 
-/**
- * @brief Set controller reference point.
- *
- * @param speed Reference speed.
- * @param rotation reference position.
- */
-void NOMAD_WHEEL_setPoint (float speed, float rotation);
 
 /**
  * @brief Get current wheel speed in radians per second.
  *
  * @return Wheel speed in radians per second.
  */
-float NOMAD_WHEEL_getSpeed ();
+int NOMAD_WHEEL_getSpeed ();
 
 /**
  * @brief Get current wheel angle in radians.
  *
  * @return wheel angle in radians.
  */
-float NOMAD_WHEEL_getRotation ();
-
-/**
- * @brief Return calculated odometry from encoders.
- * @param odom Pointer to odometry allocation.
- */
-void NOMAD_WHEEL_getOdometry(NOMAD_WHEEL_Odometry_t* odom);
+int NOMAD_WHEEL_getRotation ();
 
 /**
  * @brief Check if the control is enabled.
@@ -167,6 +142,20 @@ void NOMAD_WHEEL_saveContext ();
  */
 void NOMAD_WHEEL_restoreContext ();
 
+void NOMAD_WHEEL_setVelocity (int velocity);
+
+void NOMAD_WHEEL_setSteering (int rotation);
+
+void NOMAD_WHEEL_setSteeringPID (
+    int kp, int kd,
+    int ki, int limit,
+    uint32_t cpr, int reduction);
+
+
+void NOMAD_WHEEL_setTractionPID (
+    int kp, int kd,
+    int ki, int limit,
+    uint32_t cpr, int reduction);
 
 
 #endif /* INC_NOMAD_WHEEL_CONTROLLER_H_ */
