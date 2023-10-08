@@ -29,7 +29,7 @@ public:
    * @return true 
    * @return false 
    */
-  bool get_state(float& velocity, float& steering, float& base);
+  bool get_state(double& velocity, double& steering, double& base);
 
   /**
    * @brief Set the state object
@@ -38,7 +38,7 @@ public:
    * @param steering 
    * @param base 
    */
-  void set_state(float velocity, float steering, float base);
+  void set_state(double velocity, double steering, double base);
 
   void set_base_pid(
     float kp, float kd, float ki, 

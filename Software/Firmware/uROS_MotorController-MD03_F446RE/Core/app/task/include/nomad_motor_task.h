@@ -61,7 +61,7 @@
 #define NOMAD_APP_FEEDBACK_DATA     'r'
 
 
-#define NOMAND_APP_CMD_CONF_VEL      'w'
+#define NOMAND_APP_CMD_CONF_VEL      'v'
 #define NOMAND_APP_CMD_CONF_STEERING 's'
 #define NOMAND_APP_CMD_CONF_BASE     'b'
 

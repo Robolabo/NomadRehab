@@ -31,11 +31,9 @@
       </geometry>
       <material name="Orange" />
     </visual>
-
     <xacro:inertial_cylinder mass="${base_mass}" length="${base_thickness}" radius="${base_radius}">
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:inertial_cylinder>
-
   </link>
 
   <gazebo reference="chassis">
@@ -48,6 +46,36 @@
     <child link="chassis" />
   </joint>
 
+  <!-- rotatory base  -->
+  <link name="rotatory_base">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${base_thickness}" radius="${base_radius}" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${base_thickness}" radius="${base_radius}" />
+      </geometry>
+      <material name="Orange" />
+    </visual>
+    <xacro:inertial_cylinder mass="${base_mass}" length="${base_thickness}" radius="${base_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+  </link>
+
+  <gazebo reference="rotatory_base">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <joint name="rotatory_base_joint" type="continuous">
+    <origin xyz="0 0 ${wheel_radius*2}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="rotatory_base" />
+    <axis xyz="0 0 1"/>
+  </joint>
 
   <!-- left Steering Link -->
   <link name="left_steering_link">

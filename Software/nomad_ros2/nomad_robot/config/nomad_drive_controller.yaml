@@ -1,7 +1,7 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50 # Hz
-    use_sim_time: true
+    update_rate: 100 # Hz
+    use_sim_time: false
 
     synchro_drive_controller:
       type: synchro_drive_controller/SychroController
@@ -18,12 +18,6 @@ synchro_drive_controller:
     # Model
     traction_joint_name: traction_joint # Name of traction joint in URDF
     steering_joint_name: steering_joint # Name of steering joint in URDF
-
-    left_wheel_joint_name: left_wheel_joint # Name of traction joint in URDF
-    left_steering_joint_name: left_steering_joint # Name of steering joint in URDF
-
-    right_wheel_joint_name: right_wheel_joint # Name of traction joint in URDF
-    right_steering_joint_name: right_steering_joint # Name of steering joint in URDF
 
     wheel_radius: 0.3 # Radius of front wheel
     wheelbase: 1.7 # Distance between center of back wheels and front wheel

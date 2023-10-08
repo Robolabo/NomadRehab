@@ -13,7 +13,7 @@ namespace nomad_robot
       serial_.open();
   }
 
-  bool NomadComm::get_state(float& velocity, float& steering, float& base)
+  bool NomadComm::get_state(double& velocity, double& steering, double& base)
   {
     char command;
     /* Send data request */
@@ -30,7 +30,7 @@ namespace nomad_robot
     return ('r' == command);
   }
 
-  void NomadComm::set_state(float velocity, float steering, float base)
+  void NomadComm::set_state(double velocity, double steering, double base)
   {
     int i_velocity = (int)(velocity*1000);
     int i_steering = (int)(steering*1000);
@@ -63,7 +63,7 @@ namespace nomad_robot
     float kp, float kd, float ki, 
     float limit, uint32_t cpr, float reduction)
   {
-    set_pid("w", kp, kd, ki, limit, cpr, reduction);
+    set_pid("v", kp, kd, ki, limit, cpr, reduction);
   }
 
   void NomadComm::set_steering_pid(

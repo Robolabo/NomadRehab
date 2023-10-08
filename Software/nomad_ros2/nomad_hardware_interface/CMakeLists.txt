@@ -15,12 +15,12 @@ find_package(pluginlib REQUIRED)
 
 include_directories(include)
 
-add_executable(test_serial 
-  src/test_serial.cpp
+add_library(${PROJECT_NAME} SHARED 
+  src/nomad_hardware_interface.cpp 
   src/nomad_motor_comms.cpp
 )
 
-ament_target_dependencies( test_serial
+ament_target_dependencies(${PROJECT_NAME}
   "hardware_interface"
   "controller_manager"
   "serial"
@@ -28,18 +28,38 @@ ament_target_dependencies( test_serial
   "pluginlib"
 )
 
+add_executable(test_serial 
+  src/test_serial.cpp
+  src/nomad_motor_comms.cpp
+)
+
+ament_target_dependencies(test_serial
+  "serial"
+  "rclcpp"
+)
+
+pluginlib_export_plugin_description_file(hardware_interface nomad_hardware_interface.xml)
 
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
 
+install(TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_libraries(
+  ${PROJECT_NAME}
+)
+
+ament_export_dependencies(
+  hardware_interface
+  controller_manager
+  serial
+  rclcpp
+  pluginlib
+)
+
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_package()

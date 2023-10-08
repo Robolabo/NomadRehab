@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <ros2_control name="RealRobot" type="system">
+    <hardware>
+      <plugin>nomad_hardware_interface/NomadHardware</plugin>
+
+      <param name="emulate">0</param>
+      <!-- communication parameters -->
+      <param name="serial_port">/dev/ttyUSB0</param>
+      <param name="baudrate">576000</param>
+      <!-- Base joint -->
+      <param name="base_joint_name">rotatory_base_joint</param>
+      <param name="base_kp">10</param>
+      <param name="base_kd">0</param>
+      <param name="base_ki">0</param>
+      <param name="base_limit">100</param>
+      <param name="base_cpr">100</param>
+      <param name="base_reduction">10.0</param>
+      <!--  Velocity joint -->
+      <param name="velocity_joint_name">traction_joint</param>
+      <param name="velocity_kp">10</param>
+      <param name="velocity_kd">0</param>
+      <param name="velocity_ki">0</param>
+      <param name="velocity_limit">100</param>
+      <param name="velocity_cpr">500</param>
+      <param name="velocity_reduction">126.0</param>
+      <!-- Steering joint -->
+      <param name="steering_joint_name">steering_joint</param>
+      <param name="steering_kp">10</param>
+      <param name="steering_kd">0</param>
+      <param name="steering_ki">0</param>
+      <param name="steering_limit">100</param>
+      <param name="steering_cpr">500</param>
+      <param name="steering_reduction">10947.0</param>
+      <!-- Back wheels joints -->
+      <param name="r_wheel_vel_joint_name">right_wheel_joint</param>
+      <param name="r_wheel_steering_joint_name">right_steering_joint</param>
+
+      <param name="l_wheel_vel_joint_name">left_wheel_joint</param>
+      <param name="l_wheel_steering_joint_name">left_steering_joint</param>
+    </hardware>
+
+    <!-- Base joint -->
+
+    <!-- Base joint -->
+    <joint name="traction_joint">
+      <command_interface name="velocity" />
+      <state_interface name="velocity" />
+    </joint>
+
+    <joint name="rotatory_base_joint">
+      <command_interface name="position" />
+      <state_interface name="position" />
+    </joint>
+    <!-- Steering joint -->
+    <joint name="steering_joint">
+      <command_interface name="position" />
+      <state_interface name="position" />
+    </joint>
+
+    <!-- Back wheels joints -->
+    <joint name="left_steering_joint">
+      <state_interface name="position" />
+    </joint>
+    <joint name="left_wheel_joint">
+      <state_interface name="velocity" />
+    </joint>
+    <joint name="right_wheel_joint">
+      <state_interface name="velocity" />
+    </joint>
+    <joint name="right_steering_joint">
+      <state_interface name="position" />
+    </joint>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <parameters>/mnt/c/Workspace/repositories/NomadRehab/Software/nomad_ros2/nomad_robot/config/nomad_drive_controller.yaml</parameters>
+    </plugin>
+  </gazebo>
+</robot>

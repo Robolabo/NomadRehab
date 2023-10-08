@@ -1,0 +1,7 @@
+<library path="nomad_hardware_interface">
+  <class name="nomad_hardware_interface/NomadHardware" type="nomad_hardware_interface::NomadHardware" base_class_type="hardware_interface::SystemInterface">
+  <description>
+    Nomad interace 
+  </description>
+  </class>
+</library>

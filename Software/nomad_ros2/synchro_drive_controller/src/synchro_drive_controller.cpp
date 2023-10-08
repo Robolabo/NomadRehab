@@ -56,12 +56,6 @@ CallbackReturn SychroController::on_init()
     auto_declare<std::string>("traction_joint_name", std::string());
     auto_declare<std::string>("steering_joint_name", std::string());
 
-    auto_declare<std::string>("left_wheel_joint_name", std::string());
-    auto_declare<std::string>("left_steering_joint_name", std::string());
-
-    auto_declare<std::string>("right_wheel_joint_name", std::string());
-    auto_declare<std::string>("right_steering_joint_name", std::string());
-
     auto_declare<double>("wheelbase", wheel_params_.wheelbase);
     auto_declare<double>("wheel_radius", wheel_params_.radius);
 
@@ -112,14 +106,6 @@ InterfaceConfiguration SychroController::command_interface_configuration() const
   command_interfaces_config.names.push_back(traction_joint_name_ + "/" + HW_IF_VELOCITY);
   command_interfaces_config.names.push_back(steering_joint_name_ + "/" + HW_IF_POSITION);
 
-  /* configure left wheel commands */
-  command_interfaces_config.names.push_back(left_wheel_joint_name_ + "/" + HW_IF_VELOCITY);
-  command_interfaces_config.names.push_back(left_steering_joint_name_ + "/" + HW_IF_POSITION);
-
-  /* configure right wheel commands */
-  command_interfaces_config.names.push_back(right_wheel_joint_name_ + "/" + HW_IF_VELOCITY);
-  command_interfaces_config.names.push_back(right_steering_joint_name_ + "/" + HW_IF_POSITION);
-
   return command_interfaces_config;
 }
 
@@ -167,6 +153,8 @@ controller_interface::return_type SychroController::update(
   TwistStamped command = *last_command_msg;
   double & linear_command = command.twist.linear.x;
   double & angular_command = command.twist.angular.z;
+
+
   double Ws_read = traction_joint_[0].velocity_state.get().get_value();     // in radians/s
   double alpha_read = steering_joint_[0].position_state.get().get_value();  // in radians
 
@@ -269,14 +257,7 @@ controller_interface::return_type SychroController::update(
   }
 
   traction_joint_[0].velocity_command.get().set_value(Ws_write);
-  traction_joint_[1].velocity_command.get().set_value(Ws_write);
-  traction_joint_[2].velocity_command.get().set_value(Ws_write);
-
-
   steering_joint_[0].position_command.get().set_value(alpha_write);
-  steering_joint_[1].position_command.get().set_value(alpha_write);
-  steering_joint_[2].position_command.get().set_value(alpha_write);
-
 
   return controller_interface::return_type::OK;
 }
@@ -288,12 +269,6 @@ CallbackReturn SychroController::on_configure(const rclcpp_lifecycle::State & /*
   // update parameters
   traction_joint_name_ = get_node()->get_parameter("traction_joint_name").as_string();
   steering_joint_name_ = get_node()->get_parameter("steering_joint_name").as_string();
-
-  left_wheel_joint_name_ = get_node()->get_parameter("left_wheel_joint_name").as_string();
-  left_steering_joint_name_ = get_node()->get_parameter("left_steering_joint_name").as_string();
-
-  right_wheel_joint_name_ = get_node()->get_parameter("right_wheel_joint_name").as_string();
-  right_steering_joint_name_ = get_node()->get_parameter("right_steering_joint_name").as_string();
 
 
   if (traction_joint_name_.empty())
@@ -307,27 +282,6 @@ CallbackReturn SychroController::on_configure(const rclcpp_lifecycle::State & /*
     return CallbackReturn::ERROR;
   }
 
-  if (left_wheel_joint_name_.empty())
-  {
-    RCLCPP_ERROR(logger, "'left_wheel_joint_name_' parameter was empty");
-    return CallbackReturn::ERROR;
-  }
-  if (left_steering_joint_name_.empty())
-  {
-    RCLCPP_ERROR(logger, "'left_steering_joint_name_' parameter was empty");
-    return CallbackReturn::ERROR;
-  }
-
-  if (right_wheel_joint_name_.empty())
-  {
-    RCLCPP_ERROR(logger, "'right_wheel_joint_name_' parameter was empty");
-    return CallbackReturn::ERROR;
-  }
-  if (right_steering_joint_name_.empty())
-  {
-    RCLCPP_ERROR(logger, "'right_steering_joint_name_' parameter was empty");
-    return CallbackReturn::ERROR;
-  }
 
   wheel_params_.wheelbase = get_node()->get_parameter("wheelbase").as_double();
   wheel_params_.radius = get_node()->get_parameter("wheel_radius").as_double();
@@ -521,23 +475,6 @@ CallbackReturn SychroController::on_activate(const rclcpp_lifecycle::State &)
     return CallbackReturn::ERROR;
   }
 
-  traction_result = get_traction(left_wheel_joint_name_, traction_joint_);
-  steering_result = get_steering(left_steering_joint_name_, steering_joint_);
-
-  if (traction_result == CallbackReturn::ERROR || steering_result == CallbackReturn::ERROR)
-  {
-    return CallbackReturn::ERROR;
-  }
-
-  traction_result = get_traction(right_wheel_joint_name_, traction_joint_);
-  steering_result = get_steering(right_steering_joint_name_, steering_joint_);
-
-  if (traction_result == CallbackReturn::ERROR || steering_result == CallbackReturn::ERROR)
-  {
-    return CallbackReturn::ERROR;
-  }
-
-
   is_halted = false;
   subscriber_is_active_ = true;
 
@@ -608,12 +545,7 @@ CallbackReturn SychroController::on_shutdown(const rclcpp_lifecycle::State &)
 void SychroController::halt()
 {
   traction_joint_[0].velocity_command.get().set_value(0.0);
-  traction_joint_[1].velocity_command.get().set_value(0.0);
-  traction_joint_[2].velocity_command.get().set_value(0.0);
-
   steering_joint_[0].position_command.get().set_value(0.0);
-  steering_joint_[1].position_command.get().set_value(0.0);
-  steering_joint_[2].position_command.get().set_value(0.0);
 }
 
 CallbackReturn SychroController::get_traction(
