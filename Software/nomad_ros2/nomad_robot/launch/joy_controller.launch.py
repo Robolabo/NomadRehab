@@ -21,7 +21,7 @@ def generate_launch_description():
     parameters=[joy_params],
     remappings=[('/cmd_vel', '/synchro_drive_controller/cmd_vel')]
     )
-
+  
   return LaunchDescription([
     joy_node,
     teleop_node,    

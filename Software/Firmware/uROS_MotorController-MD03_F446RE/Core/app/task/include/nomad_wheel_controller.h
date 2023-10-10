@@ -58,7 +58,7 @@
                                               to the control values are reset */
 
 #define NOMAD_WHEEL_WHEEL_ENC           &htim2              /*<! Timer handle associated to the movement motor */
-#define NOMAD_WHEEL_WHEEL_PWM_CH        NOMAD_PWM_CHANNEL_3 /*<! PWM channel associated to the movement motor */
+#define NOMAD_WHEEL_WHEEL_PWM_CH        NOMAD_PWM_CHANNEL_1 /*<! PWM channel associated to the movement motor */
 #define NOMAD_WHEEL_WHEEL_CPR           500U                 /*<! Count per revolution */
 #define NOMAD_WHEEL_WHEEL_REDUCTION     126.0f               /*<! Motor reduction factor */
 

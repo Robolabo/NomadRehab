@@ -21,6 +21,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command
 
 from launch_ros.actions import Node
 
@@ -28,50 +29,62 @@ import xacro
 
 
 def generate_launch_description():
+  
+  package_name = "nomad_robot"
+  
+  # Get Robot State publisher launcher
+  robot_state_pub = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+      [os.path.join(get_package_share_directory(package_name), "launch", "rsp.launch.py")]),
+    launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'false'}.items()
+  )
+  
+  # spawn gazebo entity
+  spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+    arguments=['-topic', 'robot_description','-entity', 'nomad'],
+    output='screen')
+  
+  # Controller loaders
+  joint_state_broadcaster_spawner = Node(
+    package="controller_manager",
+    executable="spawner",
+    arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+  )
+
+  robot_controller_spawner = Node(
+    package="controller_manager",
+    executable="spawner",
+    arguments=["synchro_drive_controller", "--controller-manager", "/controller_manager"],
+  )
+  
+  # Delay the spwaners until the controller manager is completely loaded 
+  delayed_state_publisher = RegisterEventHandler(
+    event_handler=OnProcessExit(
+      target_action=spawn_entity,
+      on_exit=[joint_state_broadcaster_spawner],
+    )
+  )
+  
+  delayed_controller = RegisterEventHandler(
+    event_handler=OnProcessExit(
+      target_action=joint_state_broadcaster_spawner,
+      on_exit=[robot_controller_spawner],
+    )
+  )
+  
   # Launch gazebo simulation
   gazebo = IncludeLaunchDescription(
     PythonLaunchDescriptionSource([os.path.join(
       get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
   )
   
-  # Load robot description
-  pkg_path = os.path.join(get_package_share_directory('nomad_robot'))
-  xacro_file = os.path.join(pkg_path,'description','robot.urdf.xacro')
-  robot_description_config = xacro.process_file(xacro_file)
-  params = {'robot_description': robot_description_config.toxml()}
-
-  # Create robot_state_publisher
-  node_robot_state_publisher = Node(
-    package='robot_state_publisher',
-    executable='robot_state_publisher',
-    output='screen',
-    parameters=[params]
-  )
-
-  # spawn gazebo entity
-  spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-    arguments=['-topic', 'robot_description','-entity', 'tricycle'],
-    output='screen')
-
-  # Load state broadcaster controller
-  load_joint_state_controller = ExecuteProcess(
-    cmd=['ros2', 'control', 'load_controller', '--set-state', 'active','joint_state_broadcaster'],
-    output='screen'
-  )
-
-  # load synchro driver controller
-  load_tricycle_controller = ExecuteProcess(
-    cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'synchro_drive_controller'],
-    output='screen'
-  )
-
   # Load RVIZ2
   rviz = Node(
     package="rviz2",
     executable="rviz2",
     arguments=[
       "-d",
-      os.path.join(pkg_path, "config/config.rviz"),
+      os.path.join(get_package_share_directory(package_name), "config/config.rviz"),
     ],
     output="screen",
   )
@@ -79,23 +92,15 @@ def generate_launch_description():
   # Load joy controller
   joy = IncludeLaunchDescription(
     PythonLaunchDescriptionSource([os.path.join(
-      get_package_share_directory('nomad_robot'), 'launch', 'joy_controller.launch.py')]),
+      get_package_share_directory(package_name), 'launch', 'joy_controller.launch.py')]),
   )
 
   return LaunchDescription([
-    RegisterEventHandler(
-      event_handler=OnProcessExit(
-      target_action=spawn_entity,
-      on_exit=[load_joint_state_controller],)
-    ),
-    RegisterEventHandler(
-      event_handler=OnProcessExit(
-      target_action=load_joint_state_controller,
-      on_exit=[load_tricycle_controller],)
-    ),
     gazebo,
     rviz,
-    node_robot_state_publisher,
+    robot_state_pub,
     spawn_entity,
+    delayed_state_publisher,
+    delayed_controller,
     #joy,
   ])

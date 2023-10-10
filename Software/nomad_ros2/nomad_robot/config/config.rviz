@@ -60,11 +60,11 @@ Visualization Manager:
           Value: true
         chassis:
           Value: true
-        left_wheel:
+        left_wheel_link:
           Value: true
         odom:
           Value: true
-        right_wheel:
+        right_wheel_link:
           Value: true
         steering_link:
           Value: true
@@ -79,9 +79,9 @@ Visualization Manager:
         odom:
           base_link:
             chassis:
-              left_wheel:
+              left_wheel_link:
                 {}
-              right_wheel:
+              right_wheel_link:
                 {}
               steering_link:
                 wheel_front_link:
@@ -115,12 +115,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        left_wheel:
+        left_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_wheel:
+        right_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false

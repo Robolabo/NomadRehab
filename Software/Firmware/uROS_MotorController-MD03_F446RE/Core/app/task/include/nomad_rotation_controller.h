@@ -54,7 +54,7 @@
                                                  to the control values are reset */
 
 #define NOMAD_ROTATION_ENC        &htim4             /*<! Timer handle associated to the movement motor */
-#define NOMAD_ROTATION_PWM_CH     NOMAD_PWM_CHANNEL_1 /*<! PWM channel associated to the movement motor */
+#define NOMAD_ROTATION_PWM_CH     NOMAD_PWM_CHANNEL_3 /*<! PWM channel associated to the movement motor */
 #define NOMAD_ROTATION_CPR        48U                 /*<! Count per revolution */
 #define NOMAD_ROTATION_REDUCTION  10.0f               /*<! Motor reduction factor */
 

@@ -20,6 +20,9 @@ add_library(${PROJECT_NAME} SHARED
   src/nomad_motor_comms.cpp
 )
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+
 ament_target_dependencies(${PROJECT_NAME}
   "hardware_interface"
   "controller_manager"

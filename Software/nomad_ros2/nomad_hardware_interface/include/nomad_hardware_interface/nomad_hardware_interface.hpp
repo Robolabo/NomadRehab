@@ -80,33 +80,36 @@ private:
     BASE_INDEX = 0,
     VEL_INDEX,
     STEERING_INDEX,
-    /* enum size*/
-    PURE_STATE_JOINTS,
-    /****/
-    LEFT_WHEEL_VEL = PURE_STATE_JOINTS,
-    LEFT_WHEEL_STEERING,
-    RIGTH_WHEEL_VEL,
-    RIGHT_WHEEL_STEERING,
-    /* last joint*/
     END_OF_JOINTS
   };
 
   struct motor_data
   {
     std::string name;
-    std::string joint_name;
-    const char* join_type;
     float kp;
     float kd;
     float ki;
     float limit;
     uint32_t cpr;
     float reduction;
-
-    double command;
-    double state;
   };
+
+  std::vector<std::string> wheel_joints_;
+  double wheel_command_;
+  double wheel_vel_state_;
+  double wheel_pos_state_;
   
+  std::vector<std::string> steering_joints_;
+  double steering_command_;
+  double steering_pos_state_;
+
+  std::string base_joint_;
+  double base_command_;
+  double base_pos_state_;
+
+
+
+
   motor_data motors_[END_OF_JOINTS];
 };
 }
