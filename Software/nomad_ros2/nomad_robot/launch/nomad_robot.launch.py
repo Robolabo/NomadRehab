@@ -81,5 +81,5 @@ def generate_launch_description():
     delayed_controller_manager,
     delayed_state_publisher,
     delayed_controller,
-    rviz
+    #rviz
   ])

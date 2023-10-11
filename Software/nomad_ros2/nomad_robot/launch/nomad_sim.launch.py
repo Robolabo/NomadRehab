@@ -97,7 +97,7 @@ def generate_launch_description():
 
   return LaunchDescription([
     gazebo,
-    rviz,
+    #rviz,
     robot_state_pub,
     spawn_entity,
     delayed_state_publisher,

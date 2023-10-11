@@ -1,0 +1,25 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="circular_sensor.xacro"/>
+  <xacro:property name="elements" value="16"/>
+  <xacro:property name="base_name" value="ir"/>
+
+  <xacro:macro name="ir" params="x:=0 y:=0 z:=0 radius:=0.2 lenght:=0.1">
+    <xacro:sensor_base base_name="${base_name}" x="${x}" y="${y}" z="${z+(lenght/2)}" radius="${radius}" lenght="${lenght}" elements="${elements}">
+      <geometry_sensor>
+        <sphere radius="0.05"/>
+      </geometry_sensor>
+      <geometry_base>
+        <cylinder radius="${radius}" length="${lenght}"/>
+      </geometry_base>
+    </xacro:sensor_base>
+    <xacro:property name="sonar_z_limit" value="${z + lenght}"/>
+  </xacro:macro>
+  <xacro:ir x="0" y="0"  radius="${base_radius}" lenght="${base_thickness}"/>
+
+  <joint name="${base_name}_joint" type="fixed">
+    <parent link="rotatory_base"/>
+    <child link="${base_name}_link"/>
+    <origin xyz="0 0 1"/>
+  </joint>
+
+</robot>

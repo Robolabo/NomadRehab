@@ -2,6 +2,10 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
     <xacro:include filename="materials.xacro"/>
     <xacro:include filename="robot_wheels.xacro"/>
+
+    <xacro:include filename="sonar.xacro"/>
+    <xacro:include filename="infrarated.xacro"/>
+
     <xacro:if value="$(arg use_ros2_control)">
       <xacro:include filename="robot_control.xacro" />
     </xacro:if>
