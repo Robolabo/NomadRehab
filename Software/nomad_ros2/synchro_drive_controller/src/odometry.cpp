@@ -36,31 +36,24 @@ Odometry::Odometry(size_t velocity_rolling_window_size)
 
 bool Odometry::update(double Ws, double alpha, const rclcpp::Duration & dt)
 {
-  // using naming convention in http://users.isr.ist.utl.pt/~mir/cadeiras/robmovel/Kinematics.pdf
-  double Vs = Ws * wheel_radius_;
-  double Vx = Vs * std::cos(alpha);
+  static double alpha_prev = 0.0;
+  /* calculate linear velocity*/
+  double vl = Ws * wheel_radius_;
+  double w = (alpha - alpha_prev) / dt.seconds();
 
-  // Integrate odometry:
-  integrateExact(Vx * dt.seconds(), alpha * dt.seconds());
+  /* Integrate values */
+  heading_ = alpha;
+  x_ += vl * cos(heading_) * dt.seconds();
+  y_ += vl * sin(heading_)* dt.seconds();
 
-  // Estimate speeds using a rolling mean to filter them out:
-  linear_accumulator_.accumulate(Vx);
-  angular_accumulator_.accumulate(alpha);
+  /* Estimate speeds using a rolling mean to filter them out */
+  linear_accumulator_.accumulate(vl);
+  angular_accumulator_.accumulate(w);
 
   linear_ = linear_accumulator_.getRollingMean();
   angular_ = angular_accumulator_.getRollingMean();
 
   return true;
-}
-
-void Odometry::updateOpenLoop(double linear, double angular, const rclcpp::Duration & dt)
-{
-  /// Save last linear and angular velocity:
-  linear_ = linear;
-  angular_ = angular;
-
-  /// Integrate odometry:
-  integrateExact(linear * dt.seconds(), angular * dt.seconds());
 }
 
 void Odometry::resetOdometry()
@@ -71,50 +64,20 @@ void Odometry::resetOdometry()
   resetAccumulators();
 }
 
-void Odometry::setWheelParams(double wheelbase, double wheel_radius)
+void Odometry::setWheelParams(double wheel_radius)
 {
-  wheelbase_ = wheelbase;
   wheel_radius_ = wheel_radius;
 }
 
 void Odometry::setVelocityRollingWindowSize(size_t velocity_rolling_window_size)
 {
   velocity_rolling_window_size_ = velocity_rolling_window_size;
-
   resetAccumulators();
-}
-
-void Odometry::integrateRungeKutta2(double linear, double angular)
-{
-  const double direction = heading_ + angular * 0.5;
-
-  /// Runge-Kutta 2nd order integration:
-  x_ += linear * cos(direction);
-  y_ += linear * sin(direction);
-  heading_ += angular;
-}
-
-void Odometry::integrateExact(double linear, double angular)
-{
-  if (fabs(angular) < 1e-6)
-  {
-    integrateRungeKutta2(linear, angular);
-  }
-  else
-  {
-    /// Exact integration (should solve problems when angular is zero):
-    const double heading_old = heading_;
-    const double r = linear / angular;
-    heading_ += angular;
-    x_ += r * (sin(heading_) - sin(heading_old));
-    y_ += -r * (cos(heading_) - cos(heading_old));
-  }
 }
 
 void Odometry::resetAccumulators()
 {
   linear_accumulator_ = RollingMeanAccumulator(velocity_rolling_window_size_);
-  angular_accumulator_ = RollingMeanAccumulator(velocity_rolling_window_size_);
 }
 
 }  // namespace synchro_drive_controller

@@ -91,43 +91,11 @@ public:
   CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state) override;
 
 protected:
-  struct TractionHandle
+  struct JointHandle
   {
-    std::reference_wrapper<const hardware_interface::LoanedStateInterface> velocity_state;
-    std::reference_wrapper<hardware_interface::LoanedCommandInterface> velocity_command;
+    std::reference_wrapper<const hardware_interface::LoanedStateInterface> state;
+    std::reference_wrapper<hardware_interface::LoanedCommandInterface> command;
   };
-  struct SteeringHandle
-  {
-    std::reference_wrapper<const hardware_interface::LoanedStateInterface> position_state;
-    std::reference_wrapper<hardware_interface::LoanedCommandInterface> position_command;
-  };
-
-  CallbackReturn get_traction(
-    const std::string & traction_joint_name, std::vector<TractionHandle> & joint);
-  CallbackReturn get_steering(
-    const std::string & steering_joint_name, std::vector<SteeringHandle> & joint);
-  double convert_trans_rot_vel_to_steering_angle(double v, double omega, double wheelbase);
-  std::tuple<double, double> twist_to_ackermann(double linear_command, double angular_command);
-
-  std::string traction_joint_name_;
-  std::string steering_joint_name_;
-
-  std::string left_wheel_joint_name_;
-  std::string left_steering_joint_name_;
-
-  std::string right_wheel_joint_name_;
-  std::string right_steering_joint_name_;
-
-
-  // HACK: put into vector to avoid initializing structs because they have no default constructors
-  std::vector<TractionHandle> traction_joint_;
-  std::vector<SteeringHandle> steering_joint_;
-
-  struct WheelParams
-  {
-    double wheelbase = 0.0;
-    double radius = 0.0;
-  } wheel_params_;
 
   struct OdometryParams
   {
@@ -140,49 +108,67 @@ protected:
     std::array<double, 6> twist_covariance_diagonal;
   } odom_params_;
 
-  bool publish_ackermann_command_ = false;
-  std::shared_ptr<rclcpp::Publisher<AckermannDrive>> ackermann_command_publisher_ = nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<AckermannDrive>>
-    realtime_ackermann_command_publisher_ = nullptr;
 
-  Odometry odometry_;
+  CallbackReturn get_traction(
+    const std::string & traction_joint_name, std::vector<JointHandle> & joint);
 
-  std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> odometry_publisher_ = nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>
-    realtime_odometry_publisher_ = nullptr;
-
-  std::shared_ptr<rclcpp::Publisher<tf2_msgs::msg::TFMessage>> odometry_transform_publisher_ =
-    nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>
-    realtime_odometry_transform_publisher_ = nullptr;
-
-  // Timeout to consider cmd_vel commands old
-  std::chrono::milliseconds cmd_vel_timeout_{500};
-
-  bool subscriber_is_active_ = false;
-  rclcpp::Subscription<TwistStamped>::SharedPtr velocity_command_subscriber_ = nullptr;
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr
-    velocity_command_unstamped_subscriber_ = nullptr;
-
-  realtime_tools::RealtimeBox<std::shared_ptr<TwistStamped>> received_velocity_msg_ptr_{nullptr};
-
-  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_odom_service_;
-
-  std::queue<AckermannDrive> previous_commands_;  // last two commands
-
-  // speed limiters
-  TractionLimiter limiter_traction_;
-  SteeringLimiter limiter_steering_;
-
-  bool is_halted = false;
-  bool use_stamped_vel_ = true;
+  CallbackReturn get_steering(
+    const std::string & steering_joint_name, std::vector<JointHandle> & joint);
 
   void reset_odometry(
     const std::shared_ptr<rmw_request_id_t> request_header,
     const std::shared_ptr<std_srvs::srv::Empty::Request> req,
     std::shared_ptr<std_srvs::srv::Empty::Response> res);
+
   bool reset();
-  void halt();
+
+
+  double wheel_radius_ = 0.0;
+  std::chrono::milliseconds cmd_vel_timeout_{500}; // Timeout to consider cmd_vel commands old
+  
+  /* speed limiters */
+  TractionLimiter limiter_traction_;
+  SteeringLimiter limiter_steering_;
+  /* Joints */
+  std::string traction_joint_name_;
+  std::string steering_joint_name_;
+  std::vector<JointHandle> traction_joint_; // HACK: put into vector to avoid initializing structs because they have no default constructors
+  std::vector<JointHandle> steering_joint_;
+  /* Storage */
+  std::queue<AckermannDrive::SharedPtr> 
+    previous_commands_;
+  realtime_tools::RealtimeBox<std::shared_ptr<TwistStamped>> 
+    received_velocity_msg_ptr_;
+  /* Odom */
+  Odometry odometry_;
+
+  bool publish_ackermann_command_ = false;
+  bool subscriber_is_active_ = false;
+  bool use_stamped_vel_ = true;
+  
+  /* Pub, subs and srv*/
+  rclcpp::Publisher<AckermannDrive>::SharedPtr 
+    ackermann_command_publisher_ = nullptr;
+  std::shared_ptr<realtime_tools::RealtimePublisher<AckermannDrive>>
+    realtime_ackermann_command_publisher_ = nullptr;
+
+  rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr 
+    odometry_publisher_ = nullptr;
+  std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>
+    realtime_odometry_publisher_ = nullptr;
+
+  rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr 
+    odometry_transform_publisher_ = nullptr;
+  std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>
+    realtime_odometry_transform_publisher_ = nullptr;
+
+  rclcpp::Subscription<TwistStamped>::SharedPtr 
+    velocity_command_subscriber_ = nullptr;
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr
+    velocity_command_unstamped_subscriber_ = nullptr;
+
+  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr 
+    reset_odom_service_;
 };
 }  // namespace synchro_drive_controller
 #endif  // SYNCHRO_DRIVE_CONTROLLER__SYNCHRO_DRIVE_CONTROLLER_HPP_
